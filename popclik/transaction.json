@@ -1,0 +1,48 @@
+{
+"transactions": [
+{
+"id": 2343634993226,
+"order_id": 1814983671882,
+"kind": "sale",
+"gateway": "Transferencia bancaria",
+"status": "pending",
+"message": "Pending the Transferencia bancaria payment from the buyer",
+"created_at": "2019-10-21T10:36:49-04:00",
+"test": false,
+"authorization": null,
+"location_id": null,
+"user_id": null,
+"parent_id": null,
+"processed_at": "2019-10-21T10:36:49-04:00",
+"device_id": null,
+"receipt": {},
+"error_code": null,
+"source_name": "web",
+"amount": "81.83",
+"currency": "USD",
+"admin_graphql_api_id": "gid://shopify/OrderTransaction/2343634993226"
+},
+{
+"id": 2368050167882,
+"order_id": 1814983671882,
+"kind": "sale",
+"gateway": "Transferencia bancaria",
+"status": "success",
+"message": "Marked the Transferencia bancaria payment as received",
+"created_at": "2019-10-28T11:48:28-04:00",
+"test": false,
+"authorization": null,
+"location_id": null,
+"user_id": null,
+"parent_id": 2343634993226,
+"processed_at": "2019-10-28T11:48:28-04:00",
+"device_id": null,
+"receipt": {},
+"error_code": null,
+"source_name": "web",
+"amount": "81.83",
+"currency": "USD",
+"admin_graphql_api_id": "gid://shopify/OrderTransaction/2368050167882"
+}
+]
+}

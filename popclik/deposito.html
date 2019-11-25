@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, scalable=yes"> -->
+		<title>POP CLIK</title>
+		<link rel="stylesheet" href="cobro.css">
+		<script type="text/javascript" src="../js/funciones.js"></script>
+	</head>
+	<body onload="inicio()">
+		<div id="container">
+			<div class="logo" align="center">
+				<img class="img-logo" id="logo" src="../img/popclik.png" alt="">
+			</div>
+			<h2 style="text-align: center; color: black;">Punto de recaudación</h2>
+			<h3 id="menu" align="center"></h3>
+			<h3 align="center">Recarga de línea de crédito</h3>
+			<div id="div1" align="center">
+
+				<div id="div2" class="cmps">
+					<span class="etiq">Fecha de la transacción:</span>
+					<input id="fechadepago" class="campo" type="date" size="50" maxlength="100" />
+				</div>
+
+				<div id="div2" class="cmps">
+					<span class="etiq">Banco u origen:</span>
+					<input id="bancopago" class="campo" type="text" size="50" maxlength="100" />
+				</div>
+
+				<div id="div2" class="cmps">
+					<span class="etiq">Referencia:</span>
+					<input id="referenciapago" class="campo" type="text" size="50" maxlength="100" />
+				</div>
+
+				<div class="cmps">
+					<span class="etiq">Monto de la transacción:</span>
+					<input id="montopago" class="campo" type="text" size="50" maxlength="100" style="text-align: right;" />
+				</div>
+				<!-- Linea de botones -->
+				<div class="btns">
+					<button id="btnenviar" onclick="enviar()" style="width: 7em;">Enviar</button>
+					<button id="limpiar" onclick="limpiar()" style="width: 7em;">Limpiar</button>
+				</div>
+				<div class="btns">
+					<button id="btnvolver" style="width: 7em; margin: 0.5em 0 0 0;">Volver</button>
+				</div>
+			</div>
+		</div>
+		<div align="right" style="width: 100%; position: fixed; padding-bottom: 0.25em; bottom: 0">
+			<pie style="font-size: 100%; margin-right: 1em;">
+				Desarrollado por <a href="https://www.sgc-consultores.com.ve"><b>SGC Consultores C.A.</b><img src="../img/sgc_icon.png" style="width: 2.5em" alt="SGC Consultores C.A." title="SGC Consultores C.A." /></a>
+			</pie>
+		</div>
+		<script>
+			var fechapago="",banco="",referencia="",monto="", datos = new FormData();
+
+			// Estas variables se deben sustituir por las correctas
+			var punto = 1, usuario = 1;
+
+			function inicio() {
+				var nombrepunto = sessionStorage.getItem("nombrepunto");
+				var operador = sessionStorage.getItem("operador");
+				document.getElementById("menu").innerHTML = nombrepunto + ' - Operador: ' + operador;
+				limpiar();
+				document.getElementById("btnvolver").addEventListener('click', function(){
+					window.open(sessionStorage.getItem("url_back"), "_self") });
+			}
+
+			// limpia el formulario
+			function limpiar() {
+				fechapago = "";
+				banco = "";
+				referencia = "";
+				monto = "";
+				document.getElementById("fechadepago").value = "";
+				document.getElementById("bancopago").value = "";
+				document.getElementById("referenciapago").value = "";
+				document.getElementById("montopago").value = "";
+
+				document.getElementById("fechadepago").focus();
+			}
+
+			// valida la entrada de los datos de la orden
+			function validaciones() {
+				var continuar = true, vacios = 0, campo = "";
+				if (document.getElementById("fechadepago").value=="" || document.getElementById("fechadepago").value==undefined) {
+					alert("El campo fecha de la transacción no puede quedar en blanco");
+					vacios++;
+					campo = "fechadepago";
+					continuar = false;
+				}
+				if ((document.getElementById("bancopago").value=="" || document.getElementById("bancopago").value==undefined) && vacios == 0) {
+					alert("El campo banco no puede quedar en blanco");
+					vacios++;
+					campo = "bancopago";
+				}
+				if ((document.getElementById("referenciapago").value=="" || document.getElementById("referenciapago").value==undefined) && vacios == 0) {
+					alert("El campo referencia no puede quedar en blanco");
+					vacios++;
+					campo = "referenciapago";
+				}
+				if ((document.getElementById("montopago").value=="" || document.getElementById("montopago").value==undefined) && vacios == 0) {
+					alert("El campo monto de la transacción no puede quedar en blanco");
+					vacios++;
+					campo = "montopago";
+				}
+				if (vacios>0) { continuar = false; }
+				if (continuar) {
+					fechapago = document.getElementById("fechadepago").value;
+					banco = document.getElementById("bancopago").value;
+					referencia = document.getElementById("referenciapago").value;
+					monto = document.getElementById("montopago").value;
+				} else {
+					document.getElementById(campo).focus();
+				}
+				return continuar;
+			}
+
+			function enviar() {
+				if (validaciones()) {
+					datos.append("punto", punto);
+					datos.append("fechapago", fechapago);
+					datos.append("banco", banco);
+					datos.append("referencia", referencia);
+					datos.append("monto", monto);
+					datos.append("usuario", usuario);
+
+					var xmlhttp = new XMLHttpRequest();
+					xmlhttp.onreadystatechange = function() {
+						console.log('readystate '+this.readyState);
+						console.log('status '+this.status);
+						if (this.readyState == 4 && this.status == 200) {
+							console.log('response '+this.responseText);
+							respuesta = JSON.parse(this.responseText);
+							if (respuesta.exito == 'SI') {
+								alert(respuesta.mensaje);
+								limpiar();
+							}
+						}
+					};
+					xmlhttp.open("POST", "./consignacion.php", false);
+					xmlhttp.send(datos);
+				}
+			}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <link rel="stylesheet" href="css/styles.css">
+    <title>Instascan</title>
+    <script type="text/javascript" src="./instascan.min.js" ></script>	
+    <script type="text/javascript" src="js/funciones.js"></script>
+    <!-- <script src="script.js"></script> -->
+  </head>
+  <style>
+		@media only screen and (max-width: 700px) {
+			video {
+				max-width: 100%;
+			}
+		}
+	</style>
+  <body>
+
+    <div>
+    
+    </div>
+	<div id="container">
+            <h3 style="text-align: center; color: black;">Club de consumidores</h3>
+            <h5 style="text-align: center; color: black;">Servicios a los socios</h5>
+            <h3 id="tituloformulario" align="center">LECTOR DE CÓDIGOS QR</h3>
+            <p align="center">Coloque el código en el siguiente recuadro, al ser leído se redireccionará su navegador a la sección que corresponda.</p>
+            <br/>
+            <!--<button style="width: 220px; height: 30px; margin: auto;" onclick="botonpulsado()">Encender/Apagar cámara</button>-->
+            
+            <!--<select name="listaDeDispositivos" id="listaDeDispositivos"></select>-->
+            <br/>
+            <div style="width: 220px; height: 206px; position: relative; margin: auto; border: 1px solid;">
+				<video muted="muted" id="video"></video>
+				<canvas id="canvas" style="width: 220px; height: 206px;"></canvas>
+                <div class="scanner-laser laser-rightBottom"></div>
+                <div class="scanner-laser laser-rightTop"></div>
+                <div class="scanner-laser laser-leftBottom"></div>
+                <div class="scanner-laser laser-leftTop"></div>
+            </div>
+            <p id="mensaje"></p>
+            <br/>
+        </div>
+            <button id="volver" style="margin-left: 45%; width: 60px; height: 30px;" onclick="volveralmenu()">Volver</button>    
+    <br>
+    <!--video id="preview"></video-->
+     <script>
+        let scanner = new Instascan.Scanner(
+            {
+                video: document.getElementById('video'), mirror: false
+            }
+        );
+        scanner.addListener('scan', function(content) {
+            alert('Su QR informa: ' + content);
+			//AQUI PUEDES VER  LOS DATOS CAPTURADOS DEL QR, Y SI ES UNA DIRECCION TE REDIRECCIONA
+//			window.location.href = "DIRECCION-QUE-DESEAS.HTML";
+            window.open(content, "_blank");
+        });
+        console.log(Instascan.Camera.getCameras());
+        Instascan.Camera.getCameras().then(function (cameras) {
+            if(cameras.length > 0){
+                if (cameras.length == 1){
+    	            scanner.start(cameras[0]);
+					//scanner.stop(cameras[0]);
+	            }else{
+                    scanner.start(cameras[1]);
+                }
+            } else {
+				console.error("No existen dispositivos de camara!");
+			}
+        }).catch(function(e) {
+			console.error(e);
+        });
+		
+		function botonpulsado() {
+                if (pulsado) { 
+                    document.getElementById("listaDeDispositivos").disabled = true;
+                    document.getElementById("video").style.display = "none";
+                    // lector.stop();
+                    pulsado = false; 
+                } else { 
+                    document.getElementById("listaDeDispositivos").disabled = false;
+                    document.getElementById("video").style.display = "block";
+                    // lector.play();
+                    pulsado = true;
+                }
+            }
+
+            function volveralmenu() {
+                window.location.replace("../"+params.menu+"/menu.html")
+                //alert("Hola");
+            }
+    </script>
+
+ </body>
+</html>

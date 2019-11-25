@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, scalable=yes"> -->
+		<title>POP CLIK</title>
+		<link rel="stylesheet" href="../menu.css">
+		<script type="text/javascript" src="../../js/funciones.js"></script>
+	</head>
+	<body onload="inicio()">
+		<div id="container">
+			<div class="logo" align="center">
+				<img class="img-logo" id="logo" src="../../img/popclik.png" alt="">
+			</div>
+			<h1 align="center" style="color: blue;">Menú de administración</h1>
+			<div id="div1" align="center">
+				<h3 id="menu"></h3>
+				<br/>
+				<div id="comercios" class="catalogo">
+					<a id="consignacion" href="./deposito.html" onclick="">
+						<div class="item" align="center">
+							<div class="imagen" align="center">
+								Recarga línea de crédito
+							</div>
+						</div>
+					</a>
+					<a id="confirmacion" href="./confirmacionrecarga.html" onclick="">
+						<div class="item" align="center">
+							<div class="imagen" align="center">
+								Confirmar depósitos o transferencias
+							</div>
+						</div>
+					</a>
+					<a id="salida" href="./" onclick="salir()">
+						<div class="item" align="center">
+							<div class="imagen" align="center">
+								Salir de la aplicación
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+		<div align="right" style="width: 100%; position: fixed; padding-bottom: 0.25em; bottom: 0">
+			<pie style="font-size: 100%; margin-right: 1em;">
+				Desarrollado por <a href="https://www.sgc-consultores.com.ve"><b>SGC Consultores C.A.</b><img src="../../img/sgc_icon.png" style="width: 2.5em" alt="SGC Consultores C.A." title="SGC Consultores C.A." /></a>
+			</pie>
+		</div>
+		<script>
+			function inicio() {
+				sessionStorage.setItem("url_back",window.location);
+			}
+
+			function salir() {
+				sessionStorage.clear();
+			}
+		</script>
+	</body>
+</html>

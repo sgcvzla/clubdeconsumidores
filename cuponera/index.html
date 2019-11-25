@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, scalable=yes"> -->
+		<title>Club de consumidores</title>
+		<link rel="stylesheet" href="cuponera.css">
+		<script type="text/javascript" src="../js/funciones.js"></script>
+	</head>
+	<body onload="inicio()">
+		<div id="container">
+			<div class="logo" align="center">
+				<img class="img-logo" id="logo" src="../img/logoclub.png" alt="">
+			</div>
+			<h3 style="text-align: center; color: black;">Club de consumidores</h3>
+			<h5 style="text-align: center; color: black;">Servcios a los socios</h5>
+			<h3 id="titulosocio" style="text-align: center; color: blue;"></h3>
+			<h2 style="text-align: center; color: black;">Cupones</h2>
+			<h5 style="text-align: center; color: red;">Haz click sobre un renglón para ver sus opciones</h5>
+			<br/>
+			<!-- <div id="cuponera" class="tabla"> -->
+			<div id="f-t0" class="filtros" display="none">
+				<div id="" class="columna5">
+					Comercio<br/>
+					<select id="filtrocomercio2" onchange="filtrocomercio2()">
+						<option value="todos">Todos</option>
+					</select>
+				</div>
+				<div id="" class="columna6">
+					Premio<br/>
+					<select id="filtropremio2" onchange="filtropremio2()">
+						<option value="todos">Todos</option>
+					</select>
+				</div>
+			</div>
+			<br/>
+			<div id="cuponera" class="tabla">
+				<div id="f-t" class="fila titulo">
+					<div id="" class="columna1">
+						Cupón<br/>
+						<div style="display: inline-flex; justify-content: center;">
+							<button id="orden1" onclick="ordenar(1,12)" style="width: 3em;">A->Z</button>
+							<button id="orden2" onclick="ordenar(1,21)" style="width: 3em;">Z->A</button>
+						</div>
+					</div>
+					<div id="" class="columna2">
+						Comercio<br/>
+						<select id="filtrocomercio" onchange="filtrocomercio()">
+							<option value="todos">Todos</option>
+						</select>
+					</div>
+					<div id="" class="columna3">
+						Premio<br/>
+						<select id="filtropremio" onchange="filtropremio()">
+							<option value="todos">Todos</option>
+						</select>
+					</div>
+					<div id="" class="columna4">
+						Vencimiento<br/>
+						<div style="display: inline-flex; justify-content: center;">
+							<button id="orden3" onclick="ordenar(2,12)" style="width: 3em;">A->Z</button>
+							<button id="orden4" onclick="ordenar(2,21)" style="width: 3em;">Z->A</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="codigocupon" class="modal" align="center">
+				<br/>
+				<br/>
+				<img id="barracupon" src="" />
+				<br/>
+				<br/>
+				<br/>
+				<img id="qrcupon" src="" height="200" width="200" />
+				<br/>
+				<br/>
+				<br/>
+				<button id="cerrar" onclick="cerrarmodal()" style="margin: 10px;">Cerrar</button>
+<!-- 				<br/>
+				<p id="hash" style="font-size: 60%;"></p>
+ -->				<br/>
+			</div>
+		</div>
+		<script>
+			var idsocio = sessionStorage.getItem("idsocio");
+			if (idsocio==undefined) {
+				idsocio = 1;
+			}
+
+			var respuesta, proveedores, premios, cupones, dspl = "", cupondspl = "";
+			var canjear = function() { canje_cupon(this.id); }
+			var transferir = function() { transf_cupon(this.id); }
+			var validaemail = function () { soloemail(this.id,this.value,1); }
+			var opciones = function () { despliegue(this.id); }
+
+			function inicio() {
+				var paroimpar;
+				var xmlhttp = new XMLHttpRequest();
+				xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						respuesta = JSON.parse(this.responseText);
+						document.getElementById("titulosocio").innerHTML = respuesta.socio;
+						proveedores = respuesta.proveedores;
+						premios = respuesta.premios;
+						cupones = respuesta.cupones;
+						// Rellena la lista de Proveedores
+						for (var i = 0; i < proveedores.length; i++) {
+							opc = document.createElement("option");
+							lblopc = document.createTextNode(proveedores[i].nombreproveedor);
+							opc.appendChild(lblopc);
+							opc.value = proveedores[i].nombreproveedor;
+							document.getElementById("filtrocomercio").appendChild(opc);
+
+							opc = document.createElement("option");
+							lblopc = document.createTextNode(proveedores[i].nombreproveedor);
+							opc.appendChild(lblopc);
+							opc.value = proveedores[i].nombreproveedor;
+							document.getElementById("filtrocomercio2").appendChild(opc);
+						}
+						// Rellena la lista de Premios
+						for (var i = 0; i < premios.length; i++) {
+							opc = document.createElement("option");
+							lblopc = document.createTextNode(premios[i].premio);
+							opc.appendChild(lblopc);
+							opc.value = premios[i].premio;
+							document.getElementById("filtropremio").appendChild(opc);
+
+							opc = document.createElement("option");
+							lblopc = document.createTextNode(premios[i].premio);
+							opc.appendChild(lblopc);
+							opc.value = premios[i].premio;
+							document.getElementById("filtropremio2").appendChild(opc);
+						}
+						// Rellena la lista de Cupones
+						pintarcupones();
+						document.getElementById("codigocupon").style.display = 'none';
+					}
+				};
+				xmlhttp.open("GET", "../php/buscacupones.php?idsocio="+idsocio, false);
+				xmlhttp.send();
+			}
+
+			function pintarcupones() {
+				par = true;
+				for (var i = 0; i < cupones.length; i++) {
+					// cupon en la columna 1
+					txtcpn = document.createTextNode(cupones[i].cuponlargo);
+					cl1 = document.createElement("div");
+					cl1.id = '1-'+cupones[i].cuponlargo;
+					cl1.classList.add("columna1");
+					cl1.appendChild(txtcpn);
+					// comercio en la columna 2
+					txtprv = document.createTextNode(cupones[i].nombreproveedor);
+					cl2 = document.createElement("div");
+					cl2.id = '2-'+cupones[i].cuponlargo;
+					cl2.classList.add("columna2");
+					cl2.appendChild(txtprv);
+					// premio en la columna 3
+					txtprm = document.createTextNode(cupones[i].premio);
+					cl3 = document.createElement("div");
+					cl3.id = '3-'+cupones[i].cuponlargo;
+					cl3.classList.add("columna3");
+					cl3.appendChild(txtprm);
+					// vencimiento en la columna 4
+					txtfvn = document.createTextNode(cupones[i].fechavencimiento);
+					cl4 = document.createElement("div");
+					cl4.id = '4-'+cupones[i].cuponlargo;
+					cl4.classList.add("columna4");
+					cl4.appendChild(txtfvn);
+					// Crear la seccion de la fila donde se mostrará la información
+					infocupon = document.createElement("div");
+					infocupon.id = 'cupon-'+cupones[i].cuponlargo;
+					infocupon.classList.add("fila");
+					// Agregar la clase para definir el comportamiento del css
+					if (par) {
+						infocupon.classList.add("par");
+						paroimpar = "par";
+						par = false;
+					} else {
+						infocupon.classList.add("impar");								
+						paroimpar = "impar";
+						par = true;
+					}
+					// Agregar las columnas a la fila
+					infocupon.appendChild(cl1);
+					infocupon.appendChild(cl2);
+					infocupon.appendChild(cl3);
+					infocupon.appendChild(cl4);
+					// Agregar evento click que expanda las opciones por cupón
+					infocupon.addEventListener('click', function(){ despliegue(this.id) });
+
+					// Botón canjear
+					txtcnj = document.createTextNode("Canjear");
+					btn1 = document.createElement("button");
+					btn1.appendChild(txtcnj);
+					btn1.id = "canjear-"+cupones[i].cuponlargo;
+					btn1.addEventListener('click', canjear);
+					// Transferir a otro socio
+					// Etiqueta solicitando el email
+					lblcmp = document.createElement("span");
+					lbl = document.createTextNode("Transferir a otro socio");
+					lblcmp.appendChild(lbl);
+					lblcmp.style = "padding-right: 0.5em;";
+					// Campo para colocar el email
+					valcmp = document.createElement("input");
+					valcmp.id = "input-"+cupones[i].cuponlargo;
+					valcmp.type = "email";
+					valcmp.size = "50";
+					valcmp.setAttribute("maxlength", "100");
+					valcmp.title = "Debe introducir un formato de email válido (incluir el @ y al menos un . )";
+					valcmp.addEventListener('focus',  function(){ despliegue(this.id) });
+					// Boton transferir
+					txttrf = document.createTextNode("Enviar");
+					btn2 = document.createElement("button");
+					btn2.appendChild(txttrf);
+					btn2.id = "transferir-"+cupones[i].cuponlargo;
+					btn2.addEventListener('click', transferir);
+					// Crear div para la opción de transferir que incluye la etiqueta, el input y el botón
+					trnsfr = document.createElement("div");
+					trnsfr.id = "divtransferir-"+cupones[i].cuponlargo;
+					trnsfr.appendChild(lblcmp);
+					trnsfr.appendChild(valcmp);
+					trnsfr.appendChild(btn2);
+					// Crear la sección donde estarán las opciones del cupón
+					opciones = document.createElement("div");
+					opciones.id = 'despliegue-'+cupones[i].cuponlargo;
+					opciones.classList.add("fila");
+					opciones.classList.add(paroimpar);
+					opciones.classList.add("despliegue");
+					opciones.appendChild(btn1);
+					opciones.appendChild(trnsfr);
+					// Agregar evento click que expanda las opciones por cupón
+					opciones.addEventListener('click',  function(){ despliegue(this.id) }, true);
+					// ocultar esta sección para que se despliegue al hacer click
+					opciones.style.display = 'none';
+
+					// Crear fila para el cupón
+					fila = document.createElement("div");
+					fila.id = cupones[i].cuponlargo;
+					fila.classList.add("cupones");
+					// Agregar las dos secciones a la fila
+					fila.appendChild(infocupon);
+					fila.appendChild(opciones);
+					// Agregar la fila a la cuponera
+					document.getElementById("cuponera").appendChild(fila);
+				}
+			}
+
+			function ordenar(columna,orden) {
+				var auxiliar, cantidad = cupones.length;
+				var f1,f2;
+
+				if (cupondspl!="") {
+					document.getElementById("despliegue-"+cupondspl).style.display = 'none';
+					dspl = "";
+					cupondspl = "";
+				}
+				for (var i = 0; i < cantidad; i++) {
+					for (var j = i+1; j < cantidad; j++) {
+						if (columna==1) {
+							if (orden==12) {
+								if (cupones[i].cuponlargo>cupones[j].cuponlargo) {
+									auxiliar = cupones[i];
+									cupones[i] = cupones[j];
+									cupones[j] = auxiliar;
+								}
+							} else {
+								if (cupones[i].cuponlargo<cupones[j].cuponlargo) {
+									auxiliar = cupones[i];
+									cupones[i] = cupones[j];
+									cupones[j] = auxiliar;
+								}							
+							}
+						} else {
+							f1 = cupones[i].fechavencimiento.substr(6,4)+cupones[i].fechavencimiento.substr(3,2)+cupones[i].fechavencimiento.substr(0,2);
+							f2 = cupones[j].fechavencimiento.substr(6,4)+cupones[j].fechavencimiento.substr(3,2)+cupones[j].fechavencimiento.substr(0,2);
+							if (orden==12) {
+								if (f1>f2) {
+									auxiliar = cupones[i];
+									cupones[i] = cupones[j];
+									cupones[j] = auxiliar;
+								}
+							} else {
+								if (f1<f2) {
+									auxiliar = cupones[i];
+									cupones[i] = cupones[j];
+									cupones[j] = auxiliar;
+								}							
+							}
+						}
+					}
+				}
+				refrescarcupones();
+			}
+
+			function refrescarcupones() {
+				par = true;
+				for (var i = 0; i < cupones.length; i++) {
+					// La fila
+					document.getElementById("cuponera").childNodes[i+3].id = cupones[i].cuponlargo;
+
+					// Primera sección
+					document.getElementById("cuponera").childNodes[i+3].childNodes[0].id = 'cupon-'+cupones[i].cuponlargo;
+					// Columna 1
+					document.getElementById("cuponera").childNodes[i+3].childNodes[0].childNodes[0].id = '1-'+cupones[i].cuponlargo;
+					document.getElementById("cuponera").childNodes[i+3].childNodes[0].childNodes[0].innerHTML = cupones[i].cuponlargo;
+					// Columna 2
+					document.getElementById("cuponera").childNodes[i+3].childNodes[0].childNodes[1].id = '2-'+cupones[i].cuponlargo;
+					document.getElementById("cuponera").childNodes[i+3].childNodes[0].childNodes[1].innerHTML = cupones[i].nombreproveedor;
+					// Columna 3
+					document.getElementById("cuponera").childNodes[i+3].childNodes[0].childNodes[2].id = '3-'+cupones[i].cuponlargo;
+					document.getElementById("cuponera").childNodes[i+3].childNodes[0].childNodes[2].innerHTML = cupones[i].premio;
+					// Columna 4
+					document.getElementById("cuponera").childNodes[i+3].childNodes[0].childNodes[3].id = '4-'+cupones[i].cuponlargo;
+					document.getElementById("cuponera").childNodes[i+3].childNodes[0].childNodes[3].innerHTML = cupones[i].fechavencimiento;
+
+					// Segunda sección
+					document.getElementById("cuponera").childNodes[i+3].childNodes[1].id = 'despliegue-'+cupones[i].cuponlargo;
+					// Primer componente - boton canjear
+					document.getElementById("cuponera").childNodes[i+3].childNodes[1].childNodes[0].id = 'canjear-'+cupones[i].cuponlargo;
+					// Segundo componente - div para transferir a otro
+					document.getElementById("cuponera").childNodes[i+3].childNodes[1].childNodes[1].id = 'divtransferir-'+cupones[i].cuponlargo;
+					// Input para el correo
+					document.getElementById("cuponera").childNodes[i+3].childNodes[1].childNodes[1].childNodes[1].id = 'input-'+cupones[i].cuponlargo;
+					// Boton transferir
+					document.getElementById("cuponera").childNodes[i+3].childNodes[1].childNodes[1].childNodes[2].id = 'transferir-'+cupones[i].cuponlargo;
+
+				}
+			}
+
+			function despliegue(ident) {
+				var pos, elm, trg, clk, cupon;
+				cupondspl = dspl.slice(-18);
+
+				trg = event.target.id.split('-');
+				objeto = trg[0];
+				cupon = trg[1];
+
+				if (cupondspl=="") {
+					document.getElementById("despliegue-"+cupon).style.display = 'grid';
+					dspl = ident;
+					cupondspl = ident.slice(-18);
+				} else {
+					if (objeto == '1' || objeto == '2' || objeto == '3' || objeto == '4' || objeto == 'despliegue') {
+						if (cupon==cupondspl) {
+							document.getElementById("despliegue-"+cupondspl).style.display = 'none';
+							dspl = "";
+							cupondspl = "";
+						} else {
+							document.getElementById("despliegue-"+cupondspl).style.display = 'none';
+							document.getElementById("despliegue-"+cupon).style.display = 'grid';
+							dspl = ident;
+							cupondspl = cupon;
+						}
+					}
+				}
+			}
+
+			function transf_cupon(elemento) {
+				acupon  = elemento.split("transferir-");
+				cupon = acupon[1];
+				elemento = "input-"+cupon;
+				correo = document.getElementById(elemento).value;
+				if (soloemail(elemento,correo,2)) {
+					var datos = new FormData();
+					datos.append("correo", correo);
+					datos.append("cupon", cupon);
+
+					var xmlhttp = new XMLHttpRequest();
+					xmlhttp.onreadystatechange = function() {
+						if (this.readyState == 4 && this.status == 200) {
+							respuesta = JSON.parse(this.responseText);
+							if (respuesta.exito == 'SI') {
+								document.getElementById("despliegue-"+cupondspl).style.display = 'none';
+								totcupones = cupones.length;
+								fila = totcupones + 2;
+								cupones.splice(cupones.findIndex(comparacupon,cupon),1);
+								document.getElementById("cuponera").removeChild(document.getElementById("cuponera").childNodes[fila]);
+								dspl = "";
+								cupondspl = "";
+								refrescarcupones();
+								alert(respuesta.mensaje);
+							} else {
+								alert(respuesta.mensaje);
+							}
+						}
+					};
+					xmlhttp.open("POST", "../php/transfierecupon.php", false);
+					xmlhttp.send(datos);
+				} else {
+					alert('Formato del email no valido, por favor intenta de nuevo.');
+					document.getElementById(elemento).focus();
+				}
+			}
+
+			function soloemail(elemento,correo,opc) {
+				if (correo!="") {
+					arroba = 0;
+					punto = 0;
+					posa = 0;
+					posp = 0;
+					for (index = 0; index < correo.length; index++) {
+						if (correo[index] == "@") { arroba++; posa = index; }
+						if (correo[index] == ".") { punto++; posp = index; }
+					}
+					if (arroba + punto > 1 && posp > posa) {
+						return true;
+					} else {
+						if (opc==1) { alert('Email invalido.'); }
+						// document.getElementById(elemento).focus();
+						return false;
+					}
+				}
+			}
+
+			function comparacupon(valor,indice,cupones) { return valor.cuponlargo == cupon; }
+
+			function filtrocomercio() {
+				var filapar = true;
+				if (cupondspl!="") {
+					document.getElementById("despliegue-"+cupondspl).style.display = 'none';
+					dspl = "";
+					cupondspl = "";
+				}
+				for (var i = 0; i < cupones.length; i++) {
+					if (document.getElementById("filtrocomercio").value=='todos') {
+						if (document.getElementById("filtropremio").value=='todos') {
+							document.getElementById(cupones[i].cuponlargo).style.display = 'block';
+						} else {
+							if (document.getElementById("filtropremio").value!=cupones[i].premio) {
+								document.getElementById(cupones[i].cuponlargo).style.display = 'none';
+							} else {
+								document.getElementById(cupones[i].cuponlargo).style.display = 'block';
+							} 
+						}
+					} else {
+						if (document.getElementById("filtrocomercio").value!=cupones[i].nombreproveedor) {
+							document.getElementById(cupones[i].cuponlargo).style.display = 'none';
+						} else {
+							if (document.getElementById("filtropremio").value!=cupones[i].premio && document.getElementById("filtropremio").value!='todos') {
+								document.getElementById(cupones[i].cuponlargo).style.display = 'none';
+							} else {
+								document.getElementById(cupones[i].cuponlargo).style.display = 'block';
+							} 
+						} 
+					}
+					if (document.getElementById(cupones[i].cuponlargo).style.display=='block') {
+						if (document.getElementById('cupon-'+cupones[i].cuponlargo).classList.contains("par")) {
+							document.getElementById('cupon-'+cupones[i].cuponlargo).classList.remove("par");
+							document.getElementById('despliegue-'+cupones[i].cuponlargo).classList.remove("par");
+						}
+						if (document.getElementById('cupon-'+cupones[i].cuponlargo).classList.contains("impar")) {
+							document.getElementById('cupon-'+cupones[i].cuponlargo).classList.remove("impar");
+							document.getElementById('despliegue-'+cupones[i].cuponlargo).classList.remove("impar");
+						}
+						if (filapar) {
+							document.getElementById('cupon-'+cupones[i].cuponlargo).classList.add("par");
+							document.getElementById('despliegue-'+cupones[i].cuponlargo).classList.add("par");
+							filapar = false;
+						} else {
+							document.getElementById('cupon-'+cupones[i].cuponlargo).classList.add("impar");
+							document.getElementById('despliegue-'+cupones[i].cuponlargo).classList.add("impar");
+							filapar = true;
+						}
+					}
+				}
+				refrescarcupones();
+			}
+
+			function filtropremio() {
+				var filapar = true;
+				if (cupondspl!="") {
+					document.getElementById("despliegue-"+cupondspl).style.display = 'none';
+					dspl = "";
+					cupondspl = "";
+				}
+				for (var i = 0; i < cupones.length; i++) {
+					if (document.getElementById("filtropremio").value=='todos') {
+						if (document.getElementById("filtrocomercio").value=='todos') {
+							document.getElementById(cupones[i].cuponlargo).style.display = 'block';
+						} else {
+							if (document.getElementById("filtrocomercio").value!=cupones[i].nombreproveedor) {
+								document.getElementById(cupones[i].cuponlargo).style.display = 'none';
+							} else {
+								document.getElementById(cupones[i].cuponlargo).style.display = 'block';
+							} 
+						}
+					} else {
+						if (document.getElementById("filtropremio").value!=cupones[i].premio) {
+							document.getElementById(cupones[i].cuponlargo).style.display = 'none';
+						} else {
+							if (document.getElementById("filtrocomercio").value!=cupones[i].nombreproveedor && document.getElementById("filtrocomercio").value!='todos') {
+								document.getElementById(cupones[i].cuponlargo).style.display = 'none';
+							} else {
+								document.getElementById(cupones[i].cuponlargo).style.display = 'block';
+							} 
+						} 
+					}
+					if (document.getElementById(cupones[i].cuponlargo).style.display=='block') {
+						if (document.getElementById('cupon-'+cupones[i].cuponlargo).classList.contains("par")) {
+							document.getElementById('cupon-'+cupones[i].cuponlargo).classList.remove("par");
+							document.getElementById('despliegue-'+cupones[i].cuponlargo).classList.remove("par");
+						}
+						if (document.getElementById('cupon-'+cupones[i].cuponlargo).classList.contains("impar")) {
+							document.getElementById('cupon-'+cupones[i].cuponlargo).classList.remove("impar");
+							document.getElementById('despliegue-'+cupones[i].cuponlargo).classList.remove("impar");
+						}
+						if (filapar) {
+							document.getElementById('cupon-'+cupones[i].cuponlargo).classList.add("par");
+							document.getElementById('despliegue-'+cupones[i].cuponlargo).classList.add("par");
+							filapar = false;
+						} else {
+							document.getElementById('cupon-'+cupones[i].cuponlargo).classList.add("impar");
+							document.getElementById('despliegue-'+cupones[i].cuponlargo).classList.add("impar");
+							filapar = true;
+						}
+					}
+				}
+			}
+
+			function filtrocomercio2() {
+				var filapar = true;
+				if (cupondspl!="") {
+					document.getElementById("despliegue-"+cupondspl).style.display = 'none';
+					dspl = "";
+					cupondspl = "";
+				}
+				for (var i = 0; i < cupones.length; i++) {
+					if (document.getElementById("filtrocomercio2").value=='todos') {
+						if (document.getElementById("filtropremio2").value=='todos') {
+							document.getElementById(cupones[i].cuponlargo).style.display = 'block';
+						} else {
+							if (document.getElementById("filtropremio2").value!=cupones[i].premio) {
+								document.getElementById(cupones[i].cuponlargo).style.display = 'none';
+							} else {
+								document.getElementById(cupones[i].cuponlargo).style.display = 'block';
+							} 
+						}
+					} else {
+						if (document.getElementById("filtrocomercio2").value!=cupones[i].nombreproveedor) {
+							document.getElementById(cupones[i].cuponlargo).style.display = 'none';
+						} else {
+							if (document.getElementById("filtropremio2").value!=cupones[i].premio && document.getElementById("filtropremio2").value!='todos') {
+								document.getElementById(cupones[i].cuponlargo).style.display = 'none';
+							} else {
+								document.getElementById(cupones[i].cuponlargo).style.display = 'block';
+							} 
+						} 
+					}
+					if (document.getElementById(cupones[i].cuponlargo).style.display=='block') {
+						if (document.getElementById('cupon-'+cupones[i].cuponlargo).classList.contains("par")) {
+							document.getElementById('cupon-'+cupones[i].cuponlargo).classList.remove("par");
+							document.getElementById('despliegue-'+cupones[i].cuponlargo).classList.remove("par");
+						}
+						if (document.getElementById('cupon-'+cupones[i].cuponlargo).classList.contains("impar")) {
+							document.getElementById('cupon-'+cupones[i].cuponlargo).classList.remove("impar");
+							document.getElementById('despliegue-'+cupones[i].cuponlargo).classList.remove("impar");
+						}
+						if (filapar) {
+							document.getElementById('cupon-'+cupones[i].cuponlargo).classList.add("par");
+							document.getElementById('despliegue-'+cupones[i].cuponlargo).classList.add("par");
+							filapar = false;
+						} else {
+							document.getElementById('cupon-'+cupones[i].cuponlargo).classList.add("impar");
+							document.getElementById('despliegue-'+cupones[i].cuponlargo).classList.add("impar");
+							filapar = true;
+						}
+					}
+				}
+			}
+
+			function filtropremio2() {
+				var filapar = true;
+				if (cupondspl!="") {
+					document.getElementById("despliegue-"+cupondspl).style.display = 'none';
+					dspl = "";
+					cupondspl = "";
+				}
+				for (var i = 0; i < cupones.length; i++) {
+					if (document.getElementById("filtropremio2").value=='todos') {
+						if (document.getElementById("filtrocomercio2").value=='todos') {
+							document.getElementById(cupones[i].cuponlargo).style.display = 'block';
+						} else {
+							if (document.getElementById("filtrocomercio2").value!=cupones[i].nombreproveedor) {
+								document.getElementById(cupones[i].cuponlargo).style.display = 'none';
+							} else {
+								document.getElementById(cupones[i].cuponlargo).style.display = 'block';
+							} 
+						}
+					} else {
+						if (document.getElementById("filtropremio2").value!=cupones[i].premio) {
+							document.getElementById(cupones[i].cuponlargo).style.display = 'none';
+						} else {
+							if (document.getElementById("filtrocomercio2").value!=cupones[i].nombreproveedor && document.getElementById("filtrocomercio2").value!='todos') {
+								document.getElementById(cupones[i].cuponlargo).style.display = 'none';
+							} else {
+								document.getElementById(cupones[i].cuponlargo).style.display = 'block';
+							} 
+						} 
+					}
+					if (document.getElementById(cupones[i].cuponlargo).style.display=='block') {
+						if (document.getElementById('cupon-'+cupones[i].cuponlargo).classList.contains("par")) {
+							document.getElementById('cupon-'+cupones[i].cuponlargo).classList.remove("par");
+							document.getElementById('despliegue-'+cupones[i].cuponlargo).classList.remove("par");
+						}
+						if (document.getElementById('cupon-'+cupones[i].cuponlargo).classList.contains("impar")) {
+							document.getElementById('cupon-'+cupones[i].cuponlargo).classList.remove("impar");
+							document.getElementById('despliegue-'+cupones[i].cuponlargo).classList.remove("impar");
+						}
+						if (filapar) {
+							document.getElementById('cupon-'+cupones[i].cuponlargo).classList.add("par");
+							document.getElementById('despliegue-'+cupones[i].cuponlargo).classList.add("par");
+							filapar = false;
+						} else {
+							document.getElementById('cupon-'+cupones[i].cuponlargo).classList.add("impar");
+							document.getElementById('despliegue-'+cupones[i].cuponlargo).classList.add("impar");
+							filapar = true;
+						}
+					}
+				}
+			}
+
+			function canje_cupon(elemento) {
+				acupon  = elemento.split("canjear-");
+				cupon = acupon[1];
+				id_proveedor = 0;
+				for (var i = 0; i < cupones.length ; i++) {
+					if (cupones[i].cuponlargo==cupon) {
+						for (var j = 0; j < proveedores.length; j++) {
+							if (proveedores[j].nombreproveedor==cupones[i].nombreproveedor) {
+								id_proveedor = proveedores[j].id_proveedor;
+								break;
+							}
+						}
+					}
+				}
+				if (id_proveedor>0) {
+					var datos = new FormData();
+					console.log("cupon "+cupon);
+					datos.append("cupon", cupon);
+
+					var xmlhttp = new XMLHttpRequest();
+					xmlhttp.onreadystatechange = function() {
+						if (this.readyState == 4 && this.status == 200) {
+							respuesta = JSON.parse(this.responseText);
+							if (respuesta.exito == 'SI') {
+								document.getElementById("barracupon").src = respuesta.barras;
+								document.getElementById("qrcupon").src = respuesta.qr;
+								// document.getElementById("hash").innerHTML = respuesta.hash;
+								document.getElementById("codigocupon").style.display = 'block';
+							}
+						}
+					};
+					xmlhttp.open("POST", "../php/presentacupon.php", false);
+					xmlhttp.send(datos);
+					// alert('En construcción.');
+					// window.location.replace('../canje/canje.html?cJson={"id_proveedor":'+id_proveedor+',"cupon":"'+cupon+'"}');
+				}
+			}
+
+			function cerrarmodal() { document.getElementById("codigocupon").style.display = 'none'; }
+		</script>
+	</body>
+</html>

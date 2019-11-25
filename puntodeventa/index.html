@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, scalable=yes"> -->
+		<title>Club de consumidores</title>
+		<link rel="stylesheet" href="./puntodeventa.css">
+		<script type="text/javascript" src="../js/classes.js"></script>
+		<script type="text/javascript" src="../js/funciones.js"></script>
+		<script type="text/javascript" src="./puntodeventa.js"></script>
+	</head>
+	<body onload="inicio()">
+		<div id="container">
+			<div class="logo" align="center">
+				<img class="img-logo" id="logo" src="" alt="">
+			</div>
+			<h2 style="text-align: center; color: black;">Club de consumidores</h2>
+			<!--
+			<div class="logo" align="center">
+				<img id="logo" src="../img/logoclub.png" alt="" />
+			</div>
+			 -->
+			<h3 align="center">PUNTO DE VENTA</h3>
+			<div id="div1" align="center">
+				<!-- Moneda -->
+				<div id="div0" class="cmps">
+					<span class="etiq">Moneda:</span>
+					<select id="divisa" class="campo">
+						<option value="bs">Bolívares (Bs.)</option>
+						<option value="dolares">Dólares (US$)</option>
+						<option value="cripto">Criptomonedas (BTC, ETH, DASH, LTC, BNB, USDT)</option>
+					</select>
+				</div>
+				<!-- Monto -->
+				<div id="div7" class="cmps">
+					<span class="etiq">Monto:</span>
+					<input id="monto" class="campo" type="text" size="50" maxlength="12" title="Debe introducir sólo números o el . como separador decimal" style="text-align: right;"/>
+				</div>
+				<!-- Referencia -->
+				<div id="div10" class="cmps">
+					<span class="etiq">Número de tarjeta:</span>
+					<input id="tarjeta" class="campo" type="text" size="50" maxlength="16" title="Debe introducir sólo números" />
+					<!-- <input id="monto" class="campo" type="text" size="50" maxlength="12" title="Debe introducir sólo números o el . como separador decimal" style="text-align: right;"/> -->
+				</div>
+				<!-- Linea de botones -->
+				<div class="opciones">
+					<div class="btns">
+						<!-- <button id="btnescanearqr" onclick="cobro('escanear')">Escanear QR</button> -->
+						<!-- <button id="btnpresentarqr" onclick="cobro('presentar')">Presentar QR</button> -->
+					</div>
+				</div>
+				<div class="btns">
+					<button id="btnenviar" onclick="enviar()">Enviar</button>
+					<button id="limpiar" onclick="limpiar()">Limpiar</button>
+				</div>
+				<div class="btns">
+					<button id="btnvolver" style="margin: 0.5em 0 0 0;">Volver</button>
+				</div>					
+			</div>
+			<div id="div11" style="border: solid thin lightgray; padding: 0 0 0.5em 0;">
+				<h4 style="text-align: center; width: auto; padding: 0.5em; border: solid thin gray; background: gray;">
+					<u>Transacciones del día</u>
+				</h4>
+				<div id="transaccionespendientes" style="margin: 0 0 0 0;">
+					<div id="f-t" class="fila titulo">
+						<div id="" class="columna1">
+							Tarjeta
+						</div>
+						<div id="" class="columna2">
+							Referencia
+						</div>
+						<div id="" class="columna3">
+							Monto
+						</div>
+						<div id="" class="columna4">
+							Status
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

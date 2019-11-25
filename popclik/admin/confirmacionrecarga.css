@@ -1,0 +1,118 @@
+* {
+    padding: 0;
+    margin: 0;
+    --columnas: 1;
+    --filas: 1;
+    --ancho: 180px;
+    --alto: 100px;
+    --linea: 10px;
+    /* font-size: 10px; */
+}
+
+#container {
+    padding: 1em;
+    margin: auto;
+    width: 80%;
+    /* min-width: 400px; */
+    /* background: lightgray; */
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.logo {
+    margin: 10px auto;
+    height: auto;
+    width: 8em;
+    text-align: center;
+}
+
+.img-logo {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.tabla {
+    margin-top: 0.5em;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    border: solid 1px darkgray;
+}
+
+.fila {
+    display: flex;
+    width: 100%;
+    height: 1.5em;
+/*     padding-left: 0.3em;
+    padding-right: 0.3em;
+ */    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+}
+
+.titulo {
+    background: lightblue;
+    font-weight: bold;
+}
+
+.par {
+    background: none;
+}
+
+.impar {
+    background: lightgray;
+}
+
+.columna1 {
+    width: 20%;
+    text-align: center;
+}
+
+.columna2 {
+    width: 8%;
+    text-align: center;
+}
+
+.columna3 {
+    width: 25%;
+    text-align: center;
+}
+
+.columna4 {
+    width: 15%;
+    text-align: center;
+}
+
+.columna5 {
+    width: 15%;
+    text-align: right;
+    padding-right: 1em;
+}
+
+.columna6 {
+    padding-left: 0.5em;
+    width: 15%;
+    text-align: center;
+}
+
+.acciones {
+    padding-left: 0.25em;
+    padding-right: 0.5em;
+}
+
+.btns {
+    padding-top: 0.5em;
+    text-align: right;
+}
+
+@media only screen and (max-width: 1000px) {
+    * {
+        width: 100%;
+    }
+    .fila {
+        height: auto;
+        justify-content: space-around;
+        font-size: 90%;
+    }
+}

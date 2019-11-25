@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, scalable=yes"> -->
+		<title>POP CLIK</title>
+		<link rel="stylesheet" href="cobro.css">
+		<script type="text/javascript" src="../js/funciones.js"></script>
+	</head>
+	<body onload="inicio()">
+		<div id="container">
+			<div class="logo" align="center">
+				<img class="img-logo" id="logo" src="../img/popclik.png" alt="">
+			</div>
+			<h2 style="text-align: center; color: black;">Punto de recaudación</h2>
+			<h3 id="menu" align="center"></h3>
+			<h3 align="center">Cobro de órdenes en efectivo</h3>
+			<div id="div1" align="center">
+				<!-- Nombres -->
+				<div id="div2" class="cmps">
+					<span class="etiq">Número de orden:</span>
+					<input id="numeroorden" class="campo" type="text" size="50" maxlength="100" />
+				</div>
+				<!-- Datos de la orden -->
+				<div id="div3">
+					<!-- Nombres y apellidos -->
+					<div class="cmps">
+						<span class="etiq">Nombres:</span>
+						<input id="nombres" class="campo" type="text" size="50" maxlength="100" style="background: yellow;" readonly />
+					</div>
+					<!-- Identificación -->
+					<div class="cmps">
+						<span class="etiq">correo electrónico:</span>
+						<input id="identificacion" class="campo" type="text" size="50" maxlength="100" style="background: yellow;" readonly />
+					</div>
+					<!-- Monto de la orden -->
+					<div class="cmps">
+						<span class="etiq">Monto de la orden:</span>
+						<input id="montoorden" class="campo" type="text" size="50" maxlength="100" style="background: yellow; text-align: right;" readonly />
+					</div>
+					<!-- Monto a pagar -->
+					<div class="cmps">
+						<span class="etiq">Monto a pagar:</span>
+						<input id="montopago" class="campo" type="text" size="50" maxlength="100" style="text-align: right;" />
+					</div>
+				</div>
+				<!-- Linea de botones -->
+				<div class="btns">
+					<button id="btnbuscar" onclick="buscar()" style="width: 7em;">Buscar</button>
+					<button id="btnenviar" onclick="enviar()" style="width: 7em;">Enviar</button>
+					<button id="limpiar" onclick="limpiar()" style="width: 7em;">Limpiar</button>
+				</div>
+				<div class="btns">
+					<button id="btnvolver" style="width: 7em; margin: 0.5em 0 0 0;">Volver</button>
+				</div>
+			</div>
+		</div>
+		<div align="right" style="width: 100%; position: fixed; padding-bottom: 0.25em; bottom: 0">
+			<pie style="font-size: 100%; margin-right: 1em;">
+				Desarrollado por <a href="https://www.sgc-consultores.com.ve"><b>SGC Consultores C.A.</b><img src="../img/sgc_icon.png" style="width: 2.5em" alt="SGC Consultores C.A." title="SGC Consultores C.A." /></a>
+			</pie>
+		</div>
+		<script>
+			var orden="", monto="", orden_id="", nombres="", email="", parcial='no', datos = new FormData();
+
+			// Estas variables se deben sustituir por las correctas
+			var punto = sessionStorage.getItem("idpunto"), usuario = sessionStorage.getItem("idpunto");
+
+			function inicio() {
+				var nombrepunto = sessionStorage.getItem("nombrepunto");
+				var operador = sessionStorage.getItem("operador");
+				document.getElementById("menu").innerHTML = nombrepunto + ' - Operador: ' + operador;
+				limpiar();
+				document.getElementById("btnvolver").addEventListener('click', function(){
+					window.open(sessionStorage.getItem("url_back"), "_self") });
+				console.log(punto);
+			}
+
+			// limpia el formulario
+			function limpiar() {
+				orden = "";
+				monto = "";
+				orden_id="";
+				nombres="";
+				email="";
+				parcial='no'; 
+				datos = new FormData()
+				document.getElementById("numeroorden").value = "";
+				document.getElementById("nombres").value = "";
+				document.getElementById("identificacion").value = "";
+				document.getElementById("montoorden").value = "";
+				document.getElementById("montopago").value = "";
+
+				document.getElementById("div3").style.display = 'none';
+				document.getElementById("btnbuscar").style.display = 'inline-block';
+				document.getElementById("btnenviar").style.display = 'none';
+
+				document.getElementById("numeroorden").focus();
+			}
+
+			// valida la entrada de los datos de la orden
+			function validaorden() {
+				var continuar = true;
+				if (document.getElementById("numeroorden").value=="" || document.getElementById("numeroorden").value==undefined) {
+					alert("El campo numero de orden no puede quedar en blanco");
+					continuar = false;
+					document.getElementById("numeroorden").focus();
+				} else {
+					orden = document.getElementById("numeroorden").value;
+				}
+				return continuar;
+			}
+
+			// valida la entrada de los datos de la orden
+			function validamonto() {
+				var continuar = true;
+				if (document.getElementById("montopago").value=="" || document.getElementById("montopago").value==undefined) {
+					alert("El campo monto a pagar no puede quedar en blanco");
+					continuar = false;
+					document.getElementById("montopago").focus();
+				} else {
+					valor1 = parseInt(formatNumber.new(document.getElementById("montopago").value));
+					valor2 = parseInt(document.getElementById("montoorden").value);
+					console.log(valor1);
+					console.log(valor2);
+					console.log(parcial);
+					if (valor1 > valor2) {
+						continuar = false;
+						alert("El campo monto a pagar no puede ser mayor que el saldo de la orden");
+						document.getElementById("montopago").focus();
+					} else {
+						monto = document.getElementById("montopago").value;
+						if (valor1 < valor2) {
+							parcial = 'si';
+						}
+					}
+					console.log(parcial);
+				}
+				return continuar;
+			}
+
+			function buscar() {
+				if (validaorden()) {
+					var respuesta, xmlhttp = new XMLHttpRequest();
+					xmlhttp.onreadystatechange = function() {
+						if (this.readyState == 4 && this.status == 200) {
+							respuesta = JSON.parse(this.responseText);
+							console.log(respuesta);
+							if (respuesta.exito == 'SI') {
+								rellenaorden(respuesta.orden);
+							} else {
+								alert("Orden invalida, pagada o no existe");
+							}
+						}
+					};
+					xmlhttp.open("GET", "./buscaorden.php?orden="+orden, true);
+					// xmlhttp.open("GET", "https://060d3f560e548b08d411633144ae09fb:44e7bd60350b8ad36bc0f899930ad51e@anatie.myshopify.com/admin/api/2019-10/orders.json?financial_status=pending", false);
+					// xmlhttp.setRequestHeader("Access-Control-Allow-Origin","*");
+					xmlhttp.send();
+				}
+			}
+
+			function enviar() {
+				if (validamonto()) {
+					datos.append("orden", orden);
+					datos.append("id", orden_id);
+					datos.append("monto", monto);
+					datos.append("punto", punto);
+					datos.append("usuario", usuario);
+					datos.append("nombres", nombres);
+					datos.append("email", email);
+					datos.append("parcial", parcial);
+					console.log(parcial);
+
+					var xmlhttp = new XMLHttpRequest();
+					xmlhttp.onreadystatechange = function() {
+						if (this.readyState == 4 && this.status == 200) {
+							respuesta = JSON.parse(this.responseText);
+							console.log(respuesta.response);
+							if (respuesta.exito == 'SI') {
+								alert(respuesta.mensaje);
+								console.log(respuesta.reponse);
+								limpiar();
+							} else {
+								alert(respuesta.mensaje);
+								console.log(respuesta.reponse);
+							}
+						}
+					};
+					xmlhttp.open("POST", "./enviapago.php", true);
+					xmlhttp.send(datos);
+				}
+			}
+
+			function rellenaorden(ldatos) {
+				document.getElementById("nombres").value = ldatos.nombres;
+				document.getElementById("identificacion").value = ldatos.identificacion;
+				document.getElementById("montoorden").value = formatNumber.new(ldatos.montoorden);
+				orden_id = ldatos.id;
+				nombres = ldatos.nombres;
+				email = ldatos.identificacion;
+
+				document.getElementById("div3").style.display = 'block';
+				document.getElementById("btnbuscar").style.display = 'none';
+				document.getElementById("btnenviar").style.display = 'inline-block';
+			}
+		</script>
+	</body>
+</html>

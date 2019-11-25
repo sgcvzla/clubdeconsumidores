@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, scalable=yes"> -->
+		<title>POP CLIK</title>
+		<link rel="stylesheet" href="reportes.css">
+		<script type="text/javascript" src="../js/funciones.js"></script>
+	</head>
+	<body onload="inicio()">
+		<div id="container">
+			<div class="logo" align="center">
+				<img class="img-logo" id="logo" src="../img/popclik.png" alt="">
+			</div>
+			<h2 style="text-align: center; color: black;">Punto de recaudación</h2>
+			<h3 id="menu" align="center"></h3>
+			<h3 align="center">Reporte de cierre diario</h3>
+			<div id="div1" align="center">
+				<div style="width: 70%;">
+					<div id="div2" class="cmps">
+						<span class="etiq">Fecha del cierre:</span>
+						<input id="fechadecierre" class="campo" type="date" size="50" maxlength="100" onchange="buscar(this.value)" />
+					</div>
+					<div class="cmps">
+						<span class="etiq">Órdenes procesadas en esta fecha:</span>
+						<input id="ordenes" class="campo" type="text" size="20" maxlength="30" style="background: yellow; text-align: right;" />
+					</div>					
+					<div class="cmps">
+						<span class="etiq">Total recaudado en esta fecha:</span>
+						<input id="cobrado" class="campo" type="text" size="20" maxlength="30" style="background: yellow; text-align: right;" />
+					</div>					
+					<div class="cmps">
+						<span class="etiq">Saldo actual línea de crédito:</span>
+						<input id="lineadecredito" class="campo" type="text" size="20" maxlength="30" style="background: orange; text-align: right;" />
+					</div>
+				</div>
+				<!-- Linea de botones -->
+				<div class="btns">
+					<button id="btnvolver" style="width: 7em; margin: 0.5em 0 0 0;">Volver</button>
+				</div>
+			</div>
+		</div>
+		<div align="right" style="width: 100%; position: fixed; padding-bottom: 0.25em; bottom: 0">
+			<pie style="font-size: 100%; margin-right: 1em;">
+				Desarrollado por <a href="https://www.sgc-consultores.com.ve"><b>SGC Consultores C.A.</b><img src="../img/sgc_icon.png" style="width: 2.5em;" alt="SGC Consultores C.A." title="SGC Consultores C.A." /></a>
+			</pie>
+		</div>
+		<script>
+			var fechacierre="";
+
+			// Estas variables se deben sustituir por las correctas
+			var punto = sessionStorage.getItem("idpunto"), usuario = sessionStorage.getItem("idpunto");
+
+			function inicio() {
+				var nombrepunto = sessionStorage.getItem("nombrepunto");
+				var operador = sessionStorage.getItem("operador");
+				document.getElementById("menu").innerHTML = nombrepunto + ' - Operador: ' + operador;
+				document.getElementById("fechadecierre").value = "";
+				document.getElementById("btnvolver").addEventListener('click', function(){
+					window.open(sessionStorage.getItem("url_back"), "_self") });
+			}
+
+			function buscar(fecha) {
+				let respuesta, xmlhttp = new XMLHttpRequest();
+				let cantidad, recaudado;
+				xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						respuesta = JSON.parse(this.responseText);
+						console.log(respuesta);
+						if (respuesta.exito == 'SI') {
+							document.getElementById("ordenes").value = respuesta.cantidad;
+							document.getElementById("cobrado").value = formatNumber.new(respuesta.recaudado);
+							document.getElementById("lineadecredito").value = formatNumber.new(respuesta.lineadecredito);
+						} else {
+							document.getElementById("ordenes").value = 0;
+							document.getElementById("cobrado").value = formatNumber.new(0);
+							document.getElementById("lineadecredito").value = formatNumber.new(0);
+						}
+					}
+				};
+				xmlhttp.open("GET", "./cierre.php?punto="+punto+"&fecha="+fecha, true);
+				xmlhttp.send();
+			}
+		</script>
+	</body>
+</html>

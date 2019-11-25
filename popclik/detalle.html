@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, scalable=yes"> -->
+		<title>POP CLIK</title>
+		<link rel="stylesheet" href="reportes2.css">
+		<script type="text/javascript" src="../js/funciones.js"></script>
+	</head>
+	<body onload="inicio()">
+		<div id="container">
+			<div class="logo" align="center">
+				<img class="img-logo" id="logo" src="../img/popclik.png" alt="">
+			</div>
+			<h2 style="text-align: center; color: black;">Punto de recaudación</h2>
+			<h3 id="menu" align="center"></h3>
+			<h3 align="center">Detalle de transacciones por fecha</h3>
+			<div id="div1" align="center">
+				<div style="width: 55%;">
+					<div id="div2" class="cmps">
+						<span class="etiq">Fecha del cierre:</span>
+						<input id="fechadecierre" class="campo" type="date" size="50" maxlength="100" onchange="buscar(this.value)" />
+					</div>
+				</div>
+				<div id="detalles" class="tabla">
+					<div id="f-t" class="fila titulo">
+						<div id="" class="columna1">
+							Transacción
+						</div>
+						<div id="" class="columna2">
+							# de orden
+						</div>
+						<div id="" class="columna3">
+							Nombres
+						</div>
+						<div id="" class="columna4">
+							Monto
+						</div>
+					</div>
+				</div>
+				<!-- Linea de botones -->
+				<div class="btns">
+					<button id="btnvolver" style="width: 7em; margin: 0.5em 0 0 0;">Volver</button>
+				</div>
+			</div>
+		</div>
+		<div align="right" style="width: 100%; position: fixed; padding-bottom: 0.25em; bottom: 0">
+			<pie style="font-size: 100%; margin-right: 1em;">
+				Desarrollado por <a href="https://www.sgc-consultores.com.ve"><b>SGC Consultores C.A.</b><img src="../img/sgc_icon.png" style="width: 2.5em" alt="SGC Consultores C.A." title="SGC Consultores C.A." /></a>
+			</pie>
+		</div>
+		<script>
+			var fechacierre="", totordenes=0;
+
+			// Estas variables se deben sustituir por las correctas
+			var punto = sessionStorage.getItem("idpunto"), usuario = sessionStorage.getItem("idpunto");
+
+			function inicio() {
+				var nombrepunto = sessionStorage.getItem("nombrepunto");
+				var operador = sessionStorage.getItem("operador");
+				document.getElementById("menu").innerHTML = nombrepunto + ' - Operador: ' + operador;
+				document.getElementById("fechadecierre").value = "";
+				document.getElementById("btnvolver").addEventListener('click', function(){
+					window.open(sessionStorage.getItem("url_back"), "_self") });
+			}
+
+			function buscar(fecha) {
+				var xmlhttp = new XMLHttpRequest();
+				xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						respuesta = JSON.parse(this.responseText);
+						console.log(respuesta);
+						limpiar();
+						// Rellena la lista de ordenes
+						pintarcobros(respuesta.transacciones);
+					}
+				};
+				xmlhttp.open("GET", "./detallecobros.php?punto="+punto+"&fecha="+fecha, true);
+				xmlhttp.send();
+			}
+
+			function limpiar() {
+				if(totordenes>0) {
+					console.log(totordenes);
+					for (var i = totordenes; i >= 0; i--) {
+						document.getElementById("detalles").removeChild(document.getElementById(i));
+						console.log(document.getElementById(i));
+					}
+				}
+			}
+
+			function pintarcobros(ordenes) {
+				var recaudado=0.00, comision=0.00, consignacion=0.00;
+				var totrecaudado=0.00, totcomision=0.00, totconsignacion=0.00;
+				totordenes = 0;
+				if (ordenes.length>0) {
+					var paroimpar, par = true;
+					for (var i = 0; i < ordenes.length; i++) {
+						// transacción en la columna 1
+						txttran = document.createTextNode(ordenes[i].idtransaccion);
+						cl1 = document.createElement("div");
+						cl1.classList.add("columna1");
+						cl1.appendChild(txttran);
+						// orden en la columna 2
+						txtord = document.createTextNode(ordenes[i].orden);
+						cl2 = document.createElement("div");
+						cl2.classList.add("columna2");
+						cl2.appendChild(txtord);
+						// nombre en la columna 3
+						txtnombre = document.createTextNode(ordenes[i].nombre);
+						cl3 = document.createElement("div");
+						cl3.classList.add("columna3");
+						cl3.appendChild(txtnombre);
+						// Cálculos
+						recaudado = Math.round(ordenes[i].monto*100)/100;
+						// Acumular para el total
+						totrecaudado += Math.round(recaudado*100)/100;
+						// monto en la columna 4
+						txtmonto = document.createTextNode(formatNumber.new(Math.round(recaudado*100)/100));
+						cl4 = document.createElement("div");
+						cl4.classList.add("columna4");
+						cl4.appendChild(txtmonto);
+						// Crear la seccion de la fila donde se mostrará la información
+						fila = document.createElement("div");
+						fila.id = i;
+						fila.classList.add("fila");
+						// Agregar la clase para definir el comportamiento del css
+						if (par) {
+							fila.classList.add("par");
+							paroimpar = "par";
+							par = false;
+						} else {
+							fila.classList.add("impar");								
+							paroimpar = "impar";
+							par = true;
+						}
+						// Agregar las columnas a la fila
+						fila.appendChild(cl1);
+						fila.appendChild(cl2);
+						fila.appendChild(cl3);
+						fila.appendChild(cl4);
+
+						// // Crear fila para el cupón
+						// fila = document.createElement("div");
+						// // Agregar la sección a la fila
+						// fila.appendChild(info);
+						// Agregar la fila a la cuponera
+						document.getElementById("detalles").appendChild(fila);
+						totordenes++;
+					}
+					// transacción en la columna 1
+					txttran = document.createTextNode("");
+					cl1 = document.createElement("div");
+					cl1.classList.add("columna1");
+					cl1.appendChild(txttran);
+					// orden en la columna 2
+					txtord = document.createTextNode("");
+					cl2 = document.createElement("div");
+					cl2.classList.add("columna2");
+					cl2.appendChild(txtord);
+					// nombre en la columna 3
+					txtnombre = document.createTextNode("TOTAL GENERAL");
+					cl3 = document.createElement("div");
+					cl3.classList.add("columna3");
+					cl3.style.bold = true;
+					cl3.appendChild(txtnombre);
+					// monto en la columna 4
+					txtmonto = document.createTextNode(formatNumber.new(Math.round(totrecaudado*100)/100));
+					cl4 = document.createElement("div");
+					cl4.classList.add("columna4");
+					cl4.style.bold = true;
+					cl4.appendChild(txtmonto);
+					// Crear la seccion de la fila donde se mostrará la información
+					fila = document.createElement("div");
+					fila.id = i;
+					fila.classList.add("fila");
+					// Agregar la clase para definir el comportamiento del css
+					fila.classList.add("titulo");
+					// Agregar las columnas a la fila
+					fila.appendChild(cl1);
+					fila.appendChild(cl2);
+					fila.appendChild(cl3);
+					fila.appendChild(cl4);
+
+					// // Crear fila para el cupón
+					// fila = document.createElement("div");
+					// // Agregar la sección a la fila
+					// fila.appendChild(info);
+					// Agregar la fila a la cuponera
+					document.getElementById("detalles").appendChild(fila);
+				}
+			}
+		</script>
+	</body>
+</html>
