@@ -9,8 +9,12 @@ function cargaforma() {
 	if (params.id!=undefined) {
 		prov = params.id;
 	} else {
-		params = JSON.parse(params.cJson);
-		prov = params.id_proveedor;
+		if (params.cJson!=undefined) {
+			params = JSON.parse(params.cJson);
+			prov = params.id_proveedor;
+		} else {
+			prov = 	sessionStorage.getItem("idproveedor");
+		}
 	}
 
 	sessionStorage.setItem("id_proveedor",prov);

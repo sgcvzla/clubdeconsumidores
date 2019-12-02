@@ -55,7 +55,7 @@
 					<select id="divisa" class="campo">
 						<option value="bs">Bolívares (Bs.)</option>
 						<option value="dolares">Dólares (US$)</option>
-						<option value="cripto">Criptomonedas (BTC, ETH, DASH, LTC, BNB, USDT)</option>
+						<!-- <option value="cripto">Criptomonedas (BTC, ETH, DASH, LTC, BNB, USDT)</option> -->
 					</select>
 				</div>
 				<!-- Monto -->
@@ -120,6 +120,7 @@
 						respuesta = JSON.parse(this.responseText);
 						if (respuesta.exito == 'SI') {
 							// document.title = 'Menú principal';
+							console.log(respuesta);
 							logo = respuesta.proveedor.logo;
 							if (logo!="") {
 								document.getElementById("logo").src = "../img/" + logo;
@@ -206,11 +207,12 @@
 					campo = "monto";
 				}
 				if (vacios>0) { continuar = false; }
-				if (continuar) { 
+				if (continuar) {
 					nombres = document.getElementById("nombres").value;
 					apellidos = document.getElementById("apellidos").value;
 					telefono = document.getElementById("telefono").value;
 					email = document.getElementById("email").value;
+					moneda = document.getElementById("divisa").value;
 					monto = document.getElementById("monto").value;
 				} else {
 					document.getElementById(campo).focus();
@@ -255,7 +257,7 @@
 				xmlhttp.send(datos);
 				return respuesta;
 			}
-
+/*
 			function exito_validaciones() {
 				monedayformadepago = moneda+'-'+formadepago
 				switch (monedayformadepago) {
@@ -285,15 +287,38 @@
 			}
 
 			function fallo_validaciones() { console.log('fallo'); }
-
+*/
 			function botondepago(forma) { 
 				if (validaciones()) {
 					formadepago = forma;
-					abremodal2();
+					switch (formadepago) {
+						case 'online':
+							switch (moneda) {
+								case 'bs':
+									propiedades="top=20%, left=50%, width=450, height=635, menubar=0, resizable=0, status=0, titlebar=0, toolbar=0";
+									window.open("../php/formapagoenlinea.php?monto="+monto+"&ruta=giftcard&urlback="+sessionStorage.getItem("url_back")+"&hash="+respuesta.hash,"_blank",propiedades);
+									// De ahi llamar a registro giftcard
+									// Generar la tarjeta
+									break;
+								case 'dolares':
+									alert('En construcción.');
+									break;
+								default:
+									alert('Ocurrió un error, no se identificó la moneda.');
+									break;
+							}
+							break;
+						case 'reporte':
+							datosreportepago();
+							break;
+						default:
+							alert('Ocurrió un error, no se identificó la forma de pago.');
+							break;
+					}
 				}
 			}
 
-			function abremodal2() {
+			function datosreportepago() {
 				document.getElementById("datospago").style.display = 'block';
 
 				document.getElementById("btnenviardatos").style.display = 'inline-block';

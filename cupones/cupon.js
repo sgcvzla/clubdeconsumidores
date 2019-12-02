@@ -13,7 +13,12 @@ function cargaforma() {
 		prov = sessionStorage.getItem("id_proveedor");
 	} else {
 		prov = params.id;
+		console.log(params);
+		console.log(params.btn);
 		sessionStorage.setItem("id_proveedor",params.id);
+		if (params.btn!=1) {
+	        document.getElementById("botonvolver").style.display = 'none';
+		}
 	}
 
 	var titulo = sessionStorage.getItem("nombresistema");
@@ -196,4 +201,8 @@ function buscatitulo() {
 	};
 	xmlhttp.open("GET", "../php/parametros.php", false);
 	xmlhttp.send();
+}
+
+function volver() {
+	window.open(sessionStorage.getItem("url_back"), "_self");
 }

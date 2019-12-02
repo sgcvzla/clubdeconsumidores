@@ -124,7 +124,6 @@ function generagiftcard($nombres,$apellidos,$telefono,$email,$nombreproveedor,$m
     } else {
         $txtgiftcard = trim($numgiftcard);
     }
-
     /*
         El número de la tarjeta está compuesto por 10 caracteres en el orden que sigue:
 
@@ -137,7 +136,6 @@ function generagiftcard($nombres,$apellidos,$telefono,$email,$nombreproveedor,$m
         EE   = Código de dos dígitos correspondiente a la primera letra del nombre del proveedor
         FF   = Código de dos dígitos correspondiente a la primera letra de la moneda
         GGGG = Número correlativo de 4 dígitos
-
     */
     $card = "";
     $card .= generacodigo(substr($nombres,0,1),$link);
@@ -150,6 +148,60 @@ function generagiftcard($nombres,$apellidos,$telefono,$email,$nombreproveedor,$m
     $card .= substr($txtgiftcard,1,1);
     $card .= substr($txtgiftcard,2,1);
     $card .= substr($txtgiftcard,3,1);
+
+    return $card;
+}
+
+function generaprepago($nombres,$apellidos,$telefono,$email,$nombreproveedor,$moneda,$link) {
+    // Busca el próximo número correlativo (único)
+    $query = "select auto_increment from information_schema.tables where table_schema='clubdeconsumidores' and table_name='prepago'";
+    $result = mysqli_query($link,$query);
+    if($row = mysqli_fetch_array($result)) {
+        $numgiftcard = $row["auto_increment"];
+    } else {
+        $numgiftcard = 0;
+    }
+
+    // Si el número del correlativo supera los cuatro dígitos se trunca a cuatro
+    if ($numgiftcard > 9999) { $numgiftcard -= intval($numgiftcard/10000)*10000; }
+
+    // Rellena con ceros los caracteres faltantes hasta 4
+    if ($numgiftcard < 10) {
+        $txtgiftcard = "000".trim($numgiftcard);
+    } elseif ($numgiftcard < 100) {
+        $txtgiftcard = "00".trim($numgiftcard);
+    } elseif ($numgiftcard < 1000) {
+        $txtgiftcard = "0".trim($numgiftcard);
+    } else {
+        $txtgiftcard = trim($numgiftcard);
+    }
+    /*
+        El número de la tarjeta está compuesto por 10 caracteres en el orden que sigue:
+
+        AAGBBGCCDDGEEGFF -> AAGB BGCC DDGE EGFF
+
+        AA = Código de dos dígitos correspondiente a la primera letra del nombre
+        G  = Primer dígito del número correlativo de 4 dígitos
+        BB = Código de dos dígitos correspondiente a la primera letra del apellido
+        G  = Segundo dígito del número correlativo de 4 dígitos
+        CC = Código de dos dígitos correspondiente al último dígito del teléfono
+        DD = Código de dos dígitos correspondiente a la primera letra del email
+        G  = Tercer dígito del número correlativo de 4 dígitos
+        EE = Código de dos dígitos correspondiente a la primera letra del nombre del proveedor
+        G  = Cuarto dígito del número correlativo de 4 dígitos
+        FF = Código de dos dígitos correspondiente a la primera letra de la moneda
+    */
+    $card = "";
+    $card .= generacodigo(substr($nombres,0,1),$link);
+    $card .= substr($txtgiftcard,0,1);
+    $card .= generacodigo(substr($apellidos,0,1),$link);
+    $card .= substr($txtgiftcard,1,1);
+    $card .= generacodigo(substr($telefono,strlen($telefono)-1,1),$link);
+    $card .= generacodigo(substr($email,0,1),$link);
+    $card .= substr($txtgiftcard,2,1);
+    $card .= generacodigo(substr($nombreproveedor,0,1),$link);
+    $card .= substr($txtgiftcard,3,1);
+    $card .= generacodigo(substr($moneda,0,1),$link);
 
     return $card;
 }

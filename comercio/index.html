@@ -52,7 +52,7 @@
 			</div>
 		</div>
 		<script>
-			var respuesta;
+			var respuesta, idproveedor;
 
 			var tipo = "comercio";
 
@@ -97,6 +97,7 @@
 							if (this.readyState == 4 && this.status == 200) {
 								respuesta = JSON.parse(this.responseText);
 								if (respuesta.exito == 'SI') {
+									idproveedor = respuesta.id;
 									document.getElementById("div2").style.display = 'flex';
 									document.getElementById("norecuerda").style.display = 'inline-block';
 									document.getElementById("buscar").style.display = 'none';
@@ -119,7 +120,7 @@
 								}
 							}
 						};
-						xmlhttp.open("GET", "../php/buscausuarios.php?email="+valor+"&tipo="+tipo, false);
+						xmlhttp.open("GET", "../php/buscausuarios.php?email="+valor+"&tipo="+tipo, true);
 						xmlhttp.send();
 					} else {
 						document.getElementById("email").focus();
@@ -134,6 +135,8 @@
 				clave = document.getElementById("clave").value.toLowerCase();
 				hashp = SHA256(usuario.trim()+clave.trim());
 				if (respuesta.hashp==hashp) {
+					sessionStorage.setItem("email", usuario);
+					sessionStorage.setItem("idproveedor", idproveedor);
 					window.location.replace("menu.html");
 				} else {
 					alert('no valido');

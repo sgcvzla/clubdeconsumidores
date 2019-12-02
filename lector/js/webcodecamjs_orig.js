@@ -50,8 +50,8 @@ var WebCodeCamJS = function(element) {
             constraints: {
                 video: {
                     mandatory: {
-                        maxWidth: 320,
-                        maxHeight: 240
+                        maxWidth: 1280,
+                        maxHeight: 720
                     },
                     optional: [{
                         sourceId: true
@@ -62,8 +62,8 @@ var WebCodeCamJS = function(element) {
             flipVertical: false,
             flipHorizontal: false,
             zoom: 0,
-            beep: '../clubdeconsumidores/lector/audio/beep.mp3',
-            decoderWorker: '../clubdeconsumidores/lector/js/DecoderWorker.js',
+            beep: 'audio/beep.mp3',
+            decoderWorker: 'js/DecoderWorker.js',
             brightness: 0,
             autoBrightnessValue: 0,
             grayScale: 0,
@@ -92,6 +92,7 @@ var WebCodeCamJS = function(element) {
 
     function init() {
         var constraints = changeConstraints();
+        console.log(constraints);
         try {
             mediaDevices.getUserMedia(constraints).then(cameraSuccess).catch(function(error) {
                 options.cameraError(error);
@@ -405,6 +406,38 @@ var WebCodeCamJS = function(element) {
         return output;
     }
 
+    function buildSelectMenu(selectorVideo, ind) {
+        videoSelect = Q(selectorVideo);
+        videoSelect.innerHTML = '';
+        try {
+            if (mediaDevices && mediaDevices.enumerateDevices) {
+                mediaDevices.enumerateDevices().then(function(devices) {
+                    devices.forEach(function(device) {
+                        gotSources(device);
+                    });
+                    if (typeof ind === 'string') {
+                        Array.prototype.find.call(videoSelect.children, function(a, i) {
+                            if (a['innerText' in HTMLElement.prototype ? 'innerText' : 'textContent'].toLowerCase().match(new RegExp(ind, 'g'))) {
+                                videoSelect.selectedIndex = i;
+                            }
+                        });
+                    } else {
+                        videoSelect.selectedIndex = videoSelect.children.length <= ind ? 0 : ind;
+                    }
+                }).catch(function(error) {
+                    options.getDevicesError(error);
+                });
+            } else if (mediaDevices && !mediaDevices.enumerateDevices) {
+                html('<option value="true">On</option>', videoSelect);
+                options.getDevicesError(new NotSupportError('enumerateDevices Or getSources is Not supported'));
+            } else {
+                throw new NotSupportError('getUserMedia is Not supported');
+            }
+        } catch (error) {
+            options.getDevicesError(error);
+        }
+    }
+
     function gotSources(device) {
         if (device.kind === 'video' || device.kind === 'videoinput') {
             var face = (!device.facing || device.facing === '') ? 'unknown' : device.facing;
@@ -568,6 +601,10 @@ var WebCodeCamJS = function(element) {
         },
         pause: function() {
             pause();
+            return this;
+        },
+        buildSelectMenu: function(selector, ind) {
+            buildSelectMenu(selector, ind ? ind : 0);
             return this;
         },
         getOptimalZoom: function() {

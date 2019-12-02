@@ -67,37 +67,4 @@ if ($result = mysqli_query($link,$query)) {
     $respuesta = '{"exito":"NO","mensaje":"La tarjeta no pudo generarse por favor comuniquese con soporte técnico","card":"'.$card.'","hash":"'.$hash.'"}';	
 }
 echo $respuesta;
-
-
-
-	/*
-		El número de la tarjeta está compuesto por 10 caracteres en el orden que sigue:
-
-		AAGBBGCCDDGEEGFF -> AAGB BGCC DDGE EGFF
-
-		AA = Código de dos dígitos correspondiente a la primera letra del nombre
-		G  = Primer dígito del número correlativo de 4 dígitos
-		BB = Código de dos dígitos correspondiente a la primera letra del apellido
-		G  = Segundo dígito del número correlativo de 4 dígitos
-		CC = Código de dos dígitos correspondiente al último dígito del teléfono
-		DD = Código de dos dígitos correspondiente a la primera letra del email
-		G  = Tercer dígito del número correlativo de 4 dígitos
-		EE = Código de dos dígitos correspondiente a la primera letra del nombre del proveedor
-		G  = Cuarto dígito del número correlativo de 4 dígitos
-		FF = Código de dos dígitos correspondiente a la primera letra de la moneda
-
-	*/
-		/*
-		$card = "";
-	    $card .= generacodigo(substr($nombres,0,1),$link);
-    	$card .= substr($txtgiftcard,0,1);
-	    $card .= generacodigo(substr($apellidos,0,1),$link);
-    	$card .= substr($txtgiftcard,1,1);
-	    $card .= generacodigo(substr($telefono,strlen($telefono)-1,1),$link);
-    	$card .= generacodigo(substr($email,0,1),$link);
-	    $card .= substr($txtgiftcard,2,1);
-    	$card .= generacodigo(substr($nombreproveedor,0,1),$link);
-	    $card .= substr($txtgiftcard,3,1);
-    	$card .= generacodigo(substr($moneda,0,1),$link);
-		*/
 ?>
