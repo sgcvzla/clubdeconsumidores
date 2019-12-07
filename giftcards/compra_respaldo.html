@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, scalable=yes"> -->
+		<title>Club de consumidores</title>
+		<link rel="stylesheet" href="compra.css">
+		<script type="text/javascript" src="../js/funciones.js"></script>
+	</head>
+	<body onload="inicio()">
+		<div id="container">
+			<div class="logo" align="center">
+				<img class="img-logo" id="logo" src="" alt="">
+			</div>
+			<h2 style="text-align: center; color: black;">Club de consumidores</h2>
+			<!-- 
+			<div class="logo" align="center">
+				<img id="logo" src="../img/logoclub.png" alt="" />
+			</div>
+			 -->
+			<h3 align="center">Recargar tarjetas prepagadas</h3>
+			<div id="div1" align="center">
+				<!-- Nombres -->
+				<div id="div2" class="cmps">
+					<span class="etiq">Nombres:</span>
+					<input id="nombres" class="campo" type="text" size="50" maxlength="100" />
+				</div>
+				<!-- Apellidos -->
+				<div id="div3" class="cmps">
+					<span class="etiq">Apellidos:</span>
+					<input id="apellidos" class="campo" type="text" size="50" maxlength="100" />
+				</div>
+				<!-- Teléfono -->
+				<div id="div4" class="cmps">
+					<span class="etiq">Teléfono:</span>
+					<input id="telefono" class="campo" type="text" size="50" maxlength="100" />
+				</div>
+				<!-- Correo electrónico -->
+				<div id="div5" class="cmps">
+					<span class="etiq">Correo electrónico:</span>
+					<input id="email" class="campo" type="email" size="50" maxlength="100" title="Debe introducir un formato de email válido (incluir el @ y al menos un . )" />
+				</div>
+				<!-- Correo electrónico -->
+				<div id="div6" class="cmps">
+					<span class="etiq">Monto:</span>
+					<input id="monto" class="campo" type="text" size="50" maxlength="12" title="Debe introducir sólo números o el . como separador decimal" style="text-align: right;"/>
+				</div>
+				<!-- Linea de botones -->
+				<div class="btns">
+					<button id="btnpagoenlinea" onclick="botondepago('online')" style="width: 10em;">Pago en línea</button>
+					<button id="btnreporte" onclick="botondepago('reporte')" style="width: 10em;">Reporte de pago</button>
+					<button id="limpiar" onclick="limpiar()" style="width: 7em;">Limpiar</button>
+				</div>
+				<div class="btns">
+					<button id="btnvolver" style="width: 10em; margin: 0.5em 0 0 0;">Volver</button>
+				</div>
+			</div>
+		</div>
+		<!-- Ventana modal para comprar nuevas gift cards -->
+		<div id="compragiftcard" class="modal2" align="center" style="display: none;">
+			<div id="monedas" class="divisas">
+				<div style="margin: auto;">
+					<button id="bolivares" onclick="bolivares()" style="width: auto; margin: 10px; cursor: pointer;">
+						<img id="" src="../img/bs.png" width="auto" height="100" style="width: 121.77px; height: 100px;" />
+						<!-- -->
+					</button>
+					<!-- <button id="dolares" onclick="dolares()" style="margin: 10px; cursor: pointer;">
+						<img id="" src="../img/dolares.png" width="auto" height="100" style="width: 121.77px; height: 100px;" />
+					</button> -->
+				</div>
+			</div>
+			<br/>
+			<button id="cerrar" onclick="cerrarmodal2()" style="width: auto; margin: 10px; cursor: pointer;">Cerrar ventana</button>
+		</div>
+		<script>
+			var nombres="", apellidos="", telefono="", email="", monto="", idproveedor=sessionStorage.getItem("id_proveedor"), moneda='bs', datos = new FormData(), formadepago = "";
+
+			var bolivares = function() { seleccionamoneda('bs'); }
+			var dolares = function() { seleccionamoneda('dolares'); }
+
+			function inicio() {
+				limpiar();
+				document.getElementById("btnvolver").addEventListener('click', function(){
+					window.open(sessionStorage.getItem("url_back"), "_self") });
+				// cargar parámetros de la tabla
+				var xmlhttp = new XMLHttpRequest();
+				xmlhttp.onreadystatechange = function () {
+					if (this.readyState == 4 && this.status == 200) {
+						respuesta = JSON.parse(this.responseText);
+						if (respuesta.exito == 'SI') {
+							// document.title = 'Menú principal';
+							logo = respuesta.proveedor.logo;
+							if (logo!="") {
+								document.getElementById("logo").src = "../img/" + logo;
+							} else {
+								document.getElementById("logo").src = "../img/" + 'sin_imagen.jpg';
+							}
+							document.getElementById("logo").title = respuesta.proveedor.nombre;
+						}
+					}
+				};
+				xmlhttp.open("GET", "../php/proveedores.php?prov="+idproveedor, true);
+				xmlhttp.send();
+			}
+
+			// limpia el formulario
+			function limpiar() {
+				remitente = "";
+				nombres = "";
+				apellidos = "";
+				telefono = "";
+				email = "";
+				monto = "";
+				document.getElementById("nombres").value = "";
+				document.getElementById("apellidos").value = "";
+				document.getElementById("telefono").value = "";
+				document.getElementById("email").value = "";
+				document.getElementById("monto").value = "";
+				document.getElementById("nombres").focus();
+			}
+
+			// valida la entrada en los campos
+			function validaciones() {
+				var continuar = true, vacios = 0, campo = "";
+				if ((document.getElementById("nombres").value=="" || document.getElementById("nombres").value==undefined) && vacios == 0) {
+					alert("El campo nombre no puede quedar en blanco");
+					vacios++;
+					campo = "nombres";
+				}
+				if ((document.getElementById("apellidos").value=="" || document.getElementById("apellidos").value==undefined) && vacios == 0) {
+					alert("El campo apellidos no puede quedar en blanco");
+					vacios++;
+					campo = "apellidos";
+				}
+				if ((document.getElementById("telefono").value=="" || document.getElementById("telefono").value==undefined) && vacios == 0) {
+					alert("El campo teléfono no puede quedar en blanco");
+					vacios++;
+					campo = "telefono";
+				}
+				if ((document.getElementById("email").value=="" || document.getElementById("email").value==undefined) && vacios == 0) {
+					alert("El campo correo electrónico no puede quedar en blanco");
+					vacios++;
+					campo = "email";
+				}
+				if ((document.getElementById("monto").value=="" || document.getElementById("monto").value==undefined) && vacios == 0) {
+					alert("El campo monto no puede quedar en blanco");
+					vacios++;
+					campo = "monto";
+				}
+				if (vacios>0) { continuar = false; }
+				if (continuar) { 
+					nombres = document.getElementById("nombres").value;
+					apellidos = document.getElementById("apellidos").value;
+					telefono = document.getElementById("telefono").value;
+					email = document.getElementById("email").value;
+					monto = document.getElementById("monto").value;
+				} else {
+					document.getElementById(campo).focus();
+				}
+				return continuar;
+			}
+
+			function datosgiftcards() {
+				datos.append("nombres", document.getElementById("nombres").value);
+				datos.append("apellidos", document.getElementById("apellidos").value);
+				datos.append("telefono", document.getElementById("telefono").value);
+				datos.append("email", document.getElementById("email").value);
+				datos.append("monto", document.getElementById("monto").value);
+				datos.append("idproveedor", idproveedor);
+				datos.append("moneda", moneda);
+
+				var xmlhttp = new XMLHttpRequest();
+				xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						respuesta = JSON.parse(this.responseText);
+						if (respuesta.exito == 'NO') {
+							alert(respuesta.hash);
+						}
+					}
+				};
+				xmlhttp.open("POST", "../php/datosgiftcards.php", false);
+				xmlhttp.send(datos);
+				return respuesta;
+			}
+
+			function pago() {
+				respuesta = datosgiftcards();
+				if (respuesta.exito=="SI") {
+					monedayformadepago = moneda+'-'+formadepago
+					switch (monedayformadepago) {
+						case 'bs-online':
+							propiedades="top=20%, left=50%, width=450, height=635, menubar=0, resizable=0, status=0, titlebar=0, toolbar=0";
+							window.open("../php/formapagoenlinea.php?monto="+monto+"&ruta=giftcard&urlback="+sessionStorage.getItem("url_back")+"&hash="+respuesta.hash,"_blank",propiedades);
+							// De ahi llamar a registro giftcard
+							// Generar la tarjeta
+							break;
+						case 'bs-reporte':
+							alert('entro en bs reporte')
+							// De ahi llamar a registro giftcard
+							// Generar la tarjeta
+							break;
+						case 'dolares-online':
+							alert('entro en dolares online')
+							// De ahi llamar a registro giftcard
+							// Generar la tarjeta
+							break;
+						case 'dolares-reporte':
+							alert('entro en dolares reporte')
+							// De ahi llamar a registro giftcard
+							// Generar la tarjeta
+							break;
+					}
+				}
+			}
+
+			function botondepago(forma) { 
+				if (validaciones()) {
+					formadepago = forma;
+					abremodal2();
+				}
+			}
+
+			function abremodal2() { document.getElementById("compragiftcard").style.display = 'block'; }
+
+			function cerrarmodal2() {
+				document.getElementById("monedas").style.display = 'flex';
+				document.getElementById("compragiftcard").style.display = 'none';
+			}
+
+			function seleccionamoneda(divisa) { 
+				moneda = divisa;
+				pago();
+			}
+		</script>
+	</body>
+</html>
+<!-- 
+			function reportedepago() {
+				if (validaciones()) {
+					respuesta = datosgiftcards();
+					if (respuesta.exito=="SI") {
+						alert('Reporte de pago '+respuesta.hash);
+						// Abrir modal para pedir los datos del pago
+						// Enviar datos a registro de giftcard php con status 'Por conciliar'
+					}
+				}
+			}
+ -->

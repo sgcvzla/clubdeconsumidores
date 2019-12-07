@@ -1,97 +1,67 @@
 <?php
 include_once("../_config/conexion.php");
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+include_once("./funciones.php");
 
-$hash1 = (isset($_GET['hash'])) ? $_GET['hash'] : '' ;
-$urlback = (isset($_GET['urlback'])) ? $_GET['urlback'] : 'https://www.clubdeconsumidores.com.ve' ;
+$registro = json_decode($_GET['registro'],true);
+$url = (isset($_GET['url'])) ? $_GET['url'] : "https://www.clubdeconsumidores.com.ve" ;
 
-$query = "select * from datos_giftcards where hash='".$hash1."'";
+// Asignación de variables
+$nombres = $registro['nombres'];
+$apellidos = $registro['apellidos'];
+$email = $registro['email'];
+$moneda = $registro['moneda'];
+
+// Buscaar datos de la tarjeta
+$query = "select * from giftcards where email='".trim($email)."' and moneda='".trim($moneda)."'";
 $result = mysqli_query($link, $query);
 if ($row = mysqli_fetch_array($result)) {
-	$remitente = $row["remitente"];
-	$nombres = $row["nombres"];
-	$apellidos = $row["apellidos"];
-	$telefono = $row["telefono"];
-	$email = $row["email"];
-	$monto = $row["monto"];
-	$idproveedor = $row["id_proveedor"];
-	$moneda = $row["moneda"];
-}
+    // Busca la tarjeta existente
+    $card = $row["card"];
+    $saldo = $row["saldo"];
 
-$query = "select * from proveedores where id=".$idproveedor;
-$result = mysqli_query($link, $query);
-if ($row = mysqli_fetch_array($result)) {
-    $nombreproveedor = $row["nombre"];
-}
+    $fecha = $row["fechacompra"];
+    $fechavencimiento = $row["fechacompra"];
 
-// Busca el próximo número de giftcard
-$query = "select auto_increment from information_schema.tables where table_schema='clubdeconsumidores' and table_name='giftcards'";
-$result = mysqli_query($link,$query);
-if($row = mysqli_fetch_array($result)) {
-    $numgiftcard = $row["auto_increment"];
+    $datetime1 = date_create($fecha);
+    $datetime2 = date_create($fechavencimiento);
+    $diferencia = date_diff($datetime1, $datetime2);
 } else {
-    $numgiftcard = 0;
+    // Generar la tarjeta
+    $card = '';
+    $saldo = 0.00;
+
+    $fecha = '';
+    $fechavencimiento = '';
+
+    $diferencia = 0;
 }
 
-if ($numgiftcard > 9999) { $numgiftcard -= 9999; }
+$txtcard = substr($card,0,4).'-'.substr($card,4,4).'-'.substr($card,8,4).'-'.substr($card,12,4);
 
-if ($numgiftcard < 10) {
-    $txtgiftcard = "000".trim($numgiftcard);
-} elseif ($numgiftcard < 100) {
-    $txtgiftcard = "00".trim($numgiftcard);
-} elseif ($numgiftcard < 1000) {
-    $txtgiftcard = "0".trim($numgiftcard);
-} else {
-    $txtgiftcard = trim($numgiftcard);
+$mensaje = '["Tarjeta de regalo generada exitosamente:","",';
+$mensaje .= '"A nombre de: '.trim($nombres).' '.trim($apellidos).'",';
+$mensaje .= '"Número de tarjeta: '.$txtcard.'",';
+$mensaje .= '"Su nuevo saldo es de: ';
+switch ($moneda) {
+    case 'bs':      $mensaje .= "Bs. ";     break;
+    case 'dolares': $mensaje .= "US$ ";     break;
+    case 'cripto':  $mensaje .= "Criptos "; break;
 }
+$mensaje .= number_format($saldo,2,',','.').'","",';
+$mensaje .= '"Fecha de vencimiento: '.substr($fechavencimiento,8,2)."/".substr($fechavencimiento,5,2)."/".substr($fechavencimiento,0,4).'",';
+$mensaje .= '"Te quedan ';
+$mensaje .= $diferencia->format('%a').' días';
+$mensaje .= ' para usarla."]';
 
-$card = "";
-$card .= generacodigo(substr($nombres,0,1),$link);
-$card .= generacodigo(substr($apellidos,0,1),$link);
-$card .= generacodigo(substr($telefono,strlen($telefono)-1,1),$link);
-$card .= generacodigo(substr($email,0,1),$link);
-$card .= generacodigo(substr($nombreproveedor,0,1),$link);
-$card .= generacodigo(substr($moneda,0,1),$link);
-$card .= substr($txtgiftcard,0,1);
-$card .= substr($txtgiftcard,1,1);
-$card .= substr($txtgiftcard,2,1);
-$card .= substr($txtgiftcard,3,1);
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+$cadena = $url.'&exito=si&mensaje='.$mensaje; 
+// $cadena = 'https://www.clubdeconsumidores.com.ve/prepago/exito.html'; 
 
-$fecha = date('Y-m-d');
-$status = 'Lista para usar';
-$hash = hash("sha256",$card.$idproveedor.$nombres.$apellidos.$telefono.$email.$monto.$moneda.$status);
-
-$query = "INSERT INTO giftcards (card, remitente, nombres, apellidos, telefono, email, saldo, moneda, fechacompra, status, id_proveedor, hash) VALUES ('".$card."','".$remitente."','".$nombres."','".$apellidos."','".$telefono."','".$email."',".$monto.",'".$moneda."','".$fecha."','".$status."',".$idproveedor.",'".$hash."')";
-if ($result = mysqli_query($link,$query)) {
-	$quer2 = "DELETE FROM datos_giftcards WHERE hash='".$hash1."'";
-	if ($result = mysqli_query($link,$quer2)) {
-	    $respuesta = '{"exito":"SI","card":"'.$card.'"}';
-	} else {
-	    $respuesta = '{"exito":"NO","card":""}';
-	}
-} else {
-    $respuesta = '{"exito":"NO","card":""}';
-}
-
-echo '
-<script>
-	parent.opener.location.assign("'.$urlback.'");
-	window.close();
-</script>
-';
-
-function generacodigo($letra,$link) {
-    $query = "select codigo from _codigo where valor='".$letra."'";
-	echo $query;
-    $result = mysqli_query($link, $query);
-    if ($row = mysqli_fetch_array($result)) {
-        $codigo = $row["codigo"];
-    } else {
-        $query = "select codigo from _codigo where valor='?'";
-		echo $query;
-        $result = mysqli_query($link, $query);
-        $row = mysqli_fetch_array($result);
-        $codigo = $row["codigo"];
-    }
-    return $codigo;
-}
+echo "
+    <script>
+        parent.opener.location.assign('".$cadena."');
+        window.close();
+    </script>
+    ";
 ?>

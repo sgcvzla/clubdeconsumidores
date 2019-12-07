@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, scalable=yes"> -->
+		<title>Club de consumidores</title>
+		<link rel="stylesheet" href="./compra.css">
+		<script type="text/javascript" src="../js/funciones.js"></script>
+	</head>
+	<body onload="inicio()">
+		<div id="container">
+			<div class="logo" align="center">
+				<img class="img-logo" id="logo" src="" alt="">
+			</div>
+			<h2 style="text-align: center; color: black;">Club de consumidores</h2>
+			<h3 align="center">Recargar tarjetas prepagadas</h3>
+			<div id="div1" align="center">
+				<h3 align="center">Transacción registrada exitosamente.</h3>
+				<!-- Linea de botones -->
+				<div class="btns">
+					<button id="btnvolver" style="width: 10em; margin: 0.5em 0 0 0;">Volver</button>
+				</div>
+			</div>
+		</div>	
+		<script>
+			function inicio() {
+				// // Mostrar mensaje de éxito cuando se pague con tarjeta de crédito
+				// params = fparamurl(window.location.search.substr(1));
+				// console.log(window.location.search.substr(1));
+				// console.log(params.mensaje);
+				// if (params.exito!=undefined) {
+				// 	exito = params.exito;
+				// 	if(exito=='si') { alert(fmensaje(JSON.parse(params.mensaje))); }
+				// }
+				// // Hasta aquí
+
+				document.getElementById("btnvolver").addEventListener('click', function(){
+					window.open(sessionStorage.getItem("url_back"), "_self") });
+				// cargar parámetros de la tabla
+				var xmlhttp = new XMLHttpRequest();
+				xmlhttp.onreadystatechange = function () {
+					if (this.readyState == 4 && this.status == 200) {
+						respuesta = JSON.parse(this.responseText);
+						if (respuesta.exito == 'SI') {
+							// document.title = 'Menú principal';
+							console.log(respuesta);
+							logo = respuesta.proveedor.logo;
+							if (logo!="") {
+								document.getElementById("logo").src = "../img/" + logo;
+							} else {
+								document.getElementById("logo").src = "../img/" + 'sin_imagen.jpg';
+							}
+							document.getElementById("logo").title = respuesta.proveedor.nombre;
+						}
+					}
+				};
+				xmlhttp.open("GET", "../php/proveedores.php?prov="+idproveedor, true);
+				xmlhttp.send();
+			}
+		</script>
+	</body>
+</html>

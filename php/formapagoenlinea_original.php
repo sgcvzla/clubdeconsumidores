@@ -6,33 +6,26 @@ $monto = (isset($_GET['monto'])) ? $_GET['monto'] : 0 ;
 $ruta = (isset($_GET['ruta'])) ? $_GET['ruta'] : '' ;
 $urlback = (isset($_GET['urlback'])) ? $_GET['urlback'] : 'https://www.clubdeconsumidores.com.ve' ;
 // $urlback = 'https://www.clubdeconsumidores.com.ve';
+$registro = (isset($_GET['registro'])) ? $_GET['registro'] : '{"nombres":"","apellidos":"","telefono":"","email":"","moneda":"","monto":0.00,"idproveedor":0,"tipopago":"online","origen":"online","referencia":"0"}' ;
 
 $urlok = '';
-$okrequest = '';
 $urlcb = '';
-$registro = '';
 switch ($ruta) {
     case 'giftcard':
         $urlok = 'https://www.clubdeconsumidores.com.ve/php/exitocompragiftcards.php?url='.$urlback.'&registro='.$registro;
         // $urlok = 'exitocompragiftcards.php?hash='.$hash.'&url='.$urlback;
         $urlcb = $urlback;
         // $urlok = 'https://www.clubdeconsumidoes.com.ve/php/exitocompragiftcards.php?orden='.trim($orden).'&orden='.trim($monto);
-        $registro = (isset($_GET['registro'])) ? $_GET['registro'] : '{"remitente":"","nombres":"","apellidos":"","telefono":"","email":"","moneda":"","monto":0.00,"idproveedor":0,"tipopago":"online","origen":"online","referencia":"0"}' ;
-        $okrequest = "https://www.clubdeconsumidores.com.ve/php/procesagiftcard.php?url=".$urlback."&registro=".$registro;
         break;
     case 'prepago':
         $urlok = 'https://www.clubdeconsumidores.com.ve/php/exitocompraprepago.php?url='.$urlback.'&registro='.$registro;
         // ?card='.$card;
         $urlcb = $urlback;
         // $urlok = 'https://www.clubdeconsumidoes.com.ve/php/exitocompragiftcards.php?orden='.trim($orden).'&orden='.trim($monto);
-        $registro = (isset($_GET['registro'])) ? $_GET['registro'] : '{"nombres":"","apellidos":"","telefono":"","email":"","moneda":"","monto":0.00,"idproveedor":0,"tipopago":"online","origen":"online","referencia":"0"}' ;
-        $okrequest = "https://www.clubdeconsumidores.com.ve/php/procesaprepago.php?url=".$urlback."&registro=".$registro;
         break;
     default:
         $urlok = '';
         $urlcb = '';
-        $registro = '';
-        $okrequest = '';
         break;
 }
 
@@ -56,7 +49,7 @@ $pagoFlashRequestData = array(
     'productos_items'       => $ProductItems,
     "additional_parameters" => array(
             "url_ok_redirect" =>$urlok, // en esta url le muestas a tu cliente que el pago fue exitoso
-            "url_ok_request" => $okrequest // en esta url debes verificar la transaccion
+            "url_ok_request" => "https://www.clubdeconsumidores.com.ve/php/procesapagoenlinea.php" // en esta url debes verificar la transaccion
 
             // "url_ok_redirect" =>'https://www.corporacionmanna.com/plataforma/oficina/exitotc.php?orden='.trim($orden), // en esta url le muestas a tu cliente que el pago fue exitoso
             // "url_ok_request" => "https://www.corporacionmanna.com/plataforma/oficina/procesarpagoenlinea.php" // en esta url debes verificar la transaccion
