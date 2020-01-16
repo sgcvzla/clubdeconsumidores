@@ -219,4 +219,19 @@ function generacodigo($letra,$link) {
     }
     return $codigo;
 }
+
+// Generar el próximo número de transacción en el pdv
+function generatransaccion_pdv($link) {
+    // Busca el próximo número correlativo (único)
+    $query = "select auto_increment from information_schema.tables ";
+    $query .= "where table_schema='clubdeconsumidores' and table_name='pdv_transacciones'";
+    $result = mysqli_query($link,$query);
+    if($row = mysqli_fetch_array($result)) {
+            $numero = $row["auto_increment"];
+    } else {
+            $numero = 0;
+    }
+    return $numero;
+}
+
 ?>

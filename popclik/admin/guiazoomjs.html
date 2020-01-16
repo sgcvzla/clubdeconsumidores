@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- <link rel="stylesheet" type="text/css" href="style/estilo.css"> -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Ejemplo con Javascript</title>
+<meta name="keywords" content="Desarrollado por Carlos De Oliveira cardeol@gmail.com para Zoom International Services." />
+<script type="text/javascript" src="./jquery.js"></script>
+<script type="text/javascript" src="./jquery.zoomwebservices.js"></script>
+<style type="text/css">
+	fieldset span {
+		width: 500px;
+		margin:20px;
+		color:red;	
+	}
+	#error, #ok {
+		border:1px solid black;
+		padding:20px;
+		background-color: #FF9;
+	}
+	#error { color: red; }
+	#ok { color: green; }
+</style>
+</head>
+<body>
+	<p>Ejemplo de llamada a trav&eacute;s del proxy javascript de zoom. La funcion genera aleatoriamente un error o una respuesta v&aacute;lida.</p>
+	<input type="button" id="calldummy" value="Invocar a la funcion Dummy" />
+	<br />
+	<script type="text/javascript">
+		const url = "http://sandbox.grupozoom.com/proveedores/frontend/webservicesge/";
+		const cod_clte = "1";
+		const cod_pass = "456789";
+		const fraseprivada = "RH0sVTL9za7O6gutqI43";
+		const servicio = 'generarToken';
+
+		let rsp_token = "", respuesta = "", xmlhttp = new XMLHttpRequest(), datos = new FormData();
+
+		// var urlServicio = "http://www.grupozoom.com/servicios/webservices/";
+		// var urlServicio = "http://sandbox.grupozoom.com/proveedores/frontend/webservicesge/";
+		$(function() {
+			$("#calldummy").click(function() {
+				$.ZoomWebServices( url , { 	
+					service: servicio,
+					data: {
+						"codcliente": cod_clte,
+						"password": cod_pass
+					},
+					onSuccess: function(rsp) {
+						if(rsp.errormessage==undefined){
+							console.log(rsp.token);
+
+							$("#ok").html("Respuesta: " + rsp);	
+							$("#error").html("");
+							$("#ok").hide().show("fast");
+
+							rsp_token = "rsp.token";
+							datos.append("codcliente", cod_clte);
+							datos.append("password", cod_pass);
+							datos.append("token", rsp_token);
+							datos.append("fraseprivada", fraseprivada);
+							xmlhttp.onreadystatechange = function() {
+								if (this.readyState == 4 && this.status == 200) {
+									respuesta = this.responseText;
+									console.log(respuesta);
+									ok.innerHTML = respuesta;
+								}
+							};
+							xmlhttp.open("POST", "./certificado.php", true);
+							xmlhttp.send(datos);
+						}
+						else{
+							$("#error").html(rsp.errormessage);
+							$("#ok").html("");
+							$("#error").hide().show("fast");
+						}
+					}	
+				});	
+			});
+		});
+
+	</script>
+	<br />
+
+	Evento onSuccess (ocurre cuando los datos se obtuvieron exitosamente)
+	<div id="ok"></div>
+	<br />
+
+	Evento onError (se dispara cuando ocurre un error)
+	<div id="error"></div>
+	<br />
+</body>
+</html>

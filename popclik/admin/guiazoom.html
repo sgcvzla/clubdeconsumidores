@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, scalable=yes"> -->
+		<title>POP CLIK</title>
+		<link rel="stylesheet" href="guia.css">
+		<script type="text/javascript" src="../../js/funciones.js"></script>
+	</head>
+	<body onload="inicio()">
+		<div>
+			<p id="mensaje"></p>
+		</div>
+		<script>
+			function inicio() {
+					let respuesta, xmlhttp = new XMLHttpRequest();
+					xmlhttp.onreadystatechange = function() {
+						if (this.readyState == 4 && this.status == 200) {
+							respuesta = JSON.parse(this.responseText);
+							console.log(respuesta);
+							mensaje.innerHTML = respuesta;
+						}
+					};
+					xmlhttp.open("GET", "./guiazoom.php", true);
+					xmlhttp.send();
+			}
+		</script>
+	</body>
+</html>

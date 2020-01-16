@@ -1,0 +1,24 @@
+* {
+    padding: 0;
+    margin: 0;
+    text-align: center; 
+    --medida: 320px;
+}
+
+#lector {
+    padding: 1em;
+    margin: auto;
+    width: var(--medida);
+    height: var(--medida);
+}
+
+@media only screen and (max-width: 1200px) {
+    * {
+        width: 100%;
+    }
+
+    #lector {
+        width: calc(var(--medida)*2.5);
+        height: calc(var(--medida)*2.5);
+    }
+}

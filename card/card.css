@@ -1,0 +1,105 @@
+* {
+  --ancho: 400px;
+  --ancho-container: 100%;
+  --alto-container: 500px;
+}
+
+.container {
+  background: lightgray;
+  height: var(--alto-container);
+}
+
+.card {
+  /* background: black; */
+  /* color: #7A7A7A; */
+
+  /* border: solid 5px white; */
+
+  width: var(--ancho);
+  height: calc(var(--ancho)*0.65);
+  margin: auto;
+  position: relative;
+  top: 10%;
+  border-radius: 6%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card2 {
+  /* border: solid 2px white; */
+  margin: 5px;
+  border-radius: 5%;
+  height: 95%;
+}
+
+.area-logo {
+  width: 30%;
+  height: 20%;
+  top: 5px;
+  left: 5px;
+  position: relative;
+  padding: 2% 0 0 2%;
+}
+
+.img-logo {
+  width: 100%;
+  height: auto;
+}
+
+.cuerpo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-right: 20px;
+}
+
+.card-type {
+  font-size: 120%;
+}
+
+.card-number {
+  font-size: 150%;  
+}
+
+.card-nombre {
+  font-size: 120%;  
+}
+
+.card-valida {
+  font-size: 100%;  
+}
+
+.debajo {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: -3%;
+  height: 40%;
+}
+
+.area-qr {
+  width: 25%;
+  height: auto;
+  position: relative;
+  bottom: 0px;
+  padding: 0 0 2% 7%;
+}
+
+.codigo-qr {
+  width: 95%;
+  height: auto;
+}
+
+.area-ico {
+  width: 18%;
+  height: auto;
+  position: relative;
+  bottom: -20px;
+  padding: 0 3% 2% 0;
+}
+
+.img-gift {
+  width: 100%;
+  height: auto;
+}

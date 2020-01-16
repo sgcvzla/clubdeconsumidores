@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Card</title>
+	<link rel="stylesheet" href="card.css">
+</head>
+<body>
+	<div class="container">
+		<div class="card">
+			<div class="area-logo">
+				<img id="crd-logo" class="img-logo" src="https://www.clubdeconsumidores.com.ve/img/logoclub.png" />
+			</div>
+			<div class="cuerpo">
+				<span id="crd-tipo" class="card-type">Tarjeta prepagada</span>
+				<span id="crd-numero" class="card-number">1234 5678 9012 3456</span>
+				<span id="crd-nombre" class="card-nombre">Luis Rodriguez</span>
+			</div>
+			<div class="area-qr">
+				<img id="crd-codigo" class="codigo-qr" src="https://www.clubdeconsumidores.com.ve/php/qr/0000000021.png" />
+			</div>
+		</div>
+	</div>
+	<script>
+		var xmlhttp = new XMLHttpRequest();							// Se puede llamar de cualquier manera, pero este es el mas usado
+		xmlhttp.onreadystatechange = function () {					// Esta función recibe la respuesta del .php
+			if (this.readyState == 4 && this.status == 200) {		// Estos dos valores indican que el .php se ejecutó correctamente
+				respuesta = JSON.parse(this.responseText);			// Esto puede variar, en este caso responseText se convierte en un objeto JSON
+				if (respuesta.exito == 'SI') {						// Esto puede variar, en este caso se evalúa un valor de JSON y se actúa
+				}
+			}
+		};
+		xmlhttp.open("GET", "../php/proveedores.php?prov="+idproveedor, true);	// El primer parámetro varía si es consulta (GET) o registro (POST)
+																				// El segundo parámetro cambia para cada .php que desees llamar
+		xmlhttp.send();															// Este comando envía la solicitud
+
+	</script>
+</body>
+</html>

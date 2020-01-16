@@ -1,0 +1,89 @@
+* {
+    padding: 0;
+    margin: 0 auto;
+    --columnas: 1;
+    --filas: 1;
+    --ancho: 240px;
+    --alto: 240px;
+    --linea: 10px;
+    /* font-size: 10px; */
+}
+
+body {
+    width: 94%;
+}
+
+.framevideo {
+    width: 200px;
+    height: 200px;
+    margin: 10px auto;
+    background: lightblue;
+    position: relative;
+}
+
+.vd {
+    width: 100%;
+    height: 160%;
+    transform: scale(1,1.6);
+}
+
+.scanner-laser {
+    position: absolute;
+    margin: 1em;
+    height: 30px;
+    width: 30px;
+    z-index: 1000;
+    /* opacity: 0.5; */
+}
+
+.laser-leftTop {
+    top: 0;
+    left: 0;
+    border-top: solid white 5px;
+    border-left: solid white 5px;
+}
+
+.laser-leftBottom {
+    bottom: 0;
+    left: 0;
+    border-bottom: solid white 5px;
+    border-left: solid white 5px;
+}
+
+.laser-rightTop {
+    top: 0;
+    right: 0;
+    border-top: solid white 5px;
+    border-right: solid white 5px;
+}
+
+.laser-rightBottom {
+    bottom: 0;
+    right: 0;
+    border-bottom: solid white 5px;
+    border-right: solid white 5px;
+}
+
+@media only screen and (max-width: 960px) {
+    * {
+        width: 100%;
+    }
+	h2 {
+		text-align: center;
+	}
+	h3 {
+		color: blue;
+	}
+    h5 {
+        text-align: center;
+    }
+    p {
+        font-size: 80%;
+    }
+}
+
+@media only screen and (max-width: 640px) {
+    .vd {
+        transform: scale(1,1);
+    }
+}

@@ -80,6 +80,7 @@ function enviar() {
 	xmlhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			respuesta = JSON.parse(this.responseText);
+			console.log(respuesta);
 			if (respuesta.exito == 'SI') {
 				alert(fmensaje(respuesta.mensaje));
 				limpiar();

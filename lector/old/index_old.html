@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Prueba video</title>
+	<link rel="stylesheet" href="css/styles.css">
+	<script type="text/javascript" src="js/qrcodelib.js"></script>
+    <script type="text/javascript" src="js/webcodecamjs.js"></script>
+</head>
+<body style="width: 90%;">
+	<canvas id="lector" style="width: 70%; height: auto;"></canvas>
+	<br/>
+	<p id="mensaje" style="width: 80%;"></p>
+	<script type="text/javascript">
+		sessionStorage.setItem('prueba', '{"uno":"uno","dos":2,"tres":[{"tresuno":311,"tresdos":312},{"tresuno":321,"tresdos":322}]}');
+
+		// console.log(sessionStorage);
+
+		let msg = '';
+		let sourceId = null;
+
+		window.navigator.mediaDevices.enumerateDevices().then( devices => {
+			for (let device of devices) {
+				if (device.kind=="videoinput") {
+					// console.log(device);
+					if (device.label.indexOf('back') >= 0) {
+						sourceId = device.deviceId;
+						msg += sourceId;
+						msg += '<br/>';
+					}
+					// console.log(device.label);
+					msg += device.label;
+					msg += '<br/>';
+				}
+			}
+			if (!sourceId) {
+			    console.log('No hay cámara trasera');
+			}
+			// let constraints = { video: { sourceId: sourceId } };
+
+			let lector = new WebCodeCamJS("canvas");
+			lector.options.constraints = { video: { sourceId: sourceId } };
+			// lector.cameraSuccess();
+
+			window.navigator.mediaDevices.getUserMedia(lector.options.constraints).then(lector.cameraSuccess);
+
+			msg += lector.options.constraints.video.sourceId;
+			lector.play();
+			document.getElementById("mensaje").innerHTML = msg;
+		});
+
+	    function camara(stream) {
+	    	console.log(stream);
+	        lector.localStream = stream;
+	        lector.video.streamSrc(stream);
+	        lector.options.cameraSuccess(stream);
+	    }
+
+	</script>
+</body>
+</html>
+<!-- 
+		// let a = window.navigator.mediaDevices.enumerateDevices();
+
+		// let lector = new WebCodeCamJS("canvas").init().play();
+		// lector.getOptimalZoom();
+
+		// let x;
+		// navigator.mediaDevices.enumerateDevices().then(devices => {
+			// let sourceId = null;
+			// enumerate all devices
+			// let msj = "";
+			// for (var device of devices) {
+				//     // if there is still no video input, or if this is the rear camera
+				//     if (device.kind == 'videoinput' &&
+				//         (!sourceId || device.label.indexOf('back') !== -1)) {
+				//         sourceId = device.deviceId;
+				// console.log(sourceId)
+				// console.log(device.label)
+				// x = device.kind
+				// console.log(x)
+				//     }
+
+				// if there is still no video input, or if this is the rear camera
+				// if (device.kind == 'videoinput') {
+					// if (device.label.indexOf('back') >= 0) {
+						// sourceId = device.deviceId;
+					// } else {
+						// console.log(document.getElementById("camera-select"));
+						// console.log(device.deviceId);
+					// }
+					// console.log(sourceId)
+					// console.log(device.label)
+					// x = device.kind
+					// console.log(x)
+				// }
+			// }
+			// document.getElementById("mensaje").innerHTML = msj;
+			// // we didn't find any video input
+			// if (!sourceId) {
+			//     throw 'No hay cámara trasera';
+			// }
+			// let constraints = {
+			//     video: {
+			//         sourceId: sourceId
+			//     }
+			// };
+			// navigator.mediaDevices.getUserMedia(constraints);
+			// // navigator.mediaDevices.getUserMedia(constraints).then(handleStream);
+		// });
+ -->

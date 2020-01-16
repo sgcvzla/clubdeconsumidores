@@ -33,7 +33,7 @@ $tipo = '01'; // Cobro
 $moneda = $_POST["moneda"];
 $monto = $_POST["monto"];
 $id_instrumento = $_POST["tarjeta"];
-$documento = generatransaccion($link);
+$documento = generatransaccion_pdv($link);
 $status = 'Por confirmar'; // Estatus pendiente por confirmación
 
 // Calcular disponibilidad
@@ -69,18 +69,4 @@ if ($disponible - $monto > 0.00) {
 	$respuesta = '{"exito":"NO","mensaje":'.$mensaje.',"transaccion":"'.$documento.'"}';
 }
 echo $respuesta;
-
-// Generar el próximo número de transacción
-function generatransaccion($link) {
-	// Busca el próximo número correlativo (único)
-	$query = "select auto_increment from information_schema.tables ";
-	$query .= "where table_schema='clubdeconsumidores' and table_name='pdv_transacciones'";
-	$result = mysqli_query($link,$query);
-	if($row = mysqli_fetch_array($result)) {
-			$numero = $row["auto_increment"];
-	} else {
-			$numero = 0;
-	}
-	return $numero;
-}
 ?>

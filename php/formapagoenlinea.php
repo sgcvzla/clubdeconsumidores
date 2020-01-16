@@ -13,19 +13,19 @@ $urlcb = '';
 $registro = '';
 switch ($ruta) {
     case 'giftcard':
+        $registro = (isset($_GET['registro'])) ? $_GET['registro'] : '{"remitente":"","nombres":"","apellidos":"","telefono":"","email":"","moneda":"","monto":0.00,"idproveedor":0,"tipopago":"online","origen":"online","referencia":"0"}' ;
         $urlok = 'https://www.clubdeconsumidores.com.ve/php/exitocompragiftcards.php?url='.$urlback.'&registro='.$registro;
         // $urlok = 'exitocompragiftcards.php?hash='.$hash.'&url='.$urlback;
         $urlcb = $urlback;
         // $urlok = 'https://www.clubdeconsumidoes.com.ve/php/exitocompragiftcards.php?orden='.trim($orden).'&orden='.trim($monto);
-        $registro = (isset($_GET['registro'])) ? $_GET['registro'] : '{"remitente":"","nombres":"","apellidos":"","telefono":"","email":"","moneda":"","monto":0.00,"idproveedor":0,"tipopago":"online","origen":"online","referencia":"0"}' ;
         $okrequest = "https://www.clubdeconsumidores.com.ve/php/procesagiftcard.php?url=".$urlback."&registro=".$registro;
         break;
     case 'prepago':
+        $registro = (isset($_GET['registro'])) ? $_GET['registro'] : '{"nombres":"","apellidos":"","telefono":"","email":"","moneda":"","monto":0.00,"idproveedor":0,"tipopago":"online","origen":"online","referencia":"0"}' ;
         $urlok = 'https://www.clubdeconsumidores.com.ve/php/exitocompraprepago.php?url='.$urlback.'&registro='.$registro;
         // ?card='.$card;
         $urlcb = $urlback;
         // $urlok = 'https://www.clubdeconsumidoes.com.ve/php/exitocompragiftcards.php?orden='.trim($orden).'&orden='.trim($monto);
-        $registro = (isset($_GET['registro'])) ? $_GET['registro'] : '{"nombres":"","apellidos":"","telefono":"","email":"","moneda":"","monto":0.00,"idproveedor":0,"tipopago":"online","origen":"online","referencia":"0"}' ;
         $okrequest = "https://www.clubdeconsumidores.com.ve/php/procesaprepago.php?url=".$urlback."&registro=".$registro;
         break;
     default:
@@ -65,11 +65,12 @@ $pagoFlashRequestData = array(
 
 //Se realiza el proceso de pago, devuelve JSON con la respuesta del servidor
 $response = $api->procesarPago($pagoFlashRequestData, $_SERVER['HTTP_USER_AGENT']);
+
 $pfResponse = json_decode($response);
 
 //Si es exitoso, genera y guarda un link de pago en (url_to_buy) el cual se usará para redirigir al formulario de pago
 if($pfResponse->success){
-    header("Location: ".$pfResponse->url_to_buy);
+//    header("Location: ".$pfResponse->url_to_buy);
 }else{
     //manejo del error.
 }

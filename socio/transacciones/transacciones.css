@@ -107,6 +107,9 @@
     * {
         width: 100%;
     }
+    #container {
+        width: 93%;
+    }
     .fila {
         height: auto;
         justify-content: space-around;

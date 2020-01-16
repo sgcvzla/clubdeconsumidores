@@ -21,7 +21,7 @@ if ($row = mysqli_fetch_array($result)) {
 	$socio = 1;
 } else {
 	if ($nuevosocio) {
-		$query = "INSERT INTO socios (email,telefono,nombres,apellidos,status) VALUES ('".$_POST["email"]."','".$_POST["telefono"]."','".$_POST["nombres"]."','".$_POST["apellidos"]."','Pendiente')";
+		$query = "INSERT INTO socios (email, status, telefono, nombres, apellidos, fechanacimiento, sexo, pais, estado, ciudad, nombre_pais, nombre_estado, nombre_ciudad, sector, direccion, donde_entregar, direccion_entrega, edocivil, nombrepareja, cumplepareja, aniversario, padre, nombrepadre, cumplepadre, madre, nombremadre, cumplemadre, hijos, menores5, menores10, menores20, mayores, otrotelef, vehiculo, cedula, rif, profesion, ocupacion, nombretrabajo, direcciontrabajo, emailtrabajo, telefonotrabajo, fecha_afiliacion) VALUES ('".$_POST["email"]."', 'Pendiente', '".$_POST["telefono"]."', '".$_POST["nombres"]."', '".$_POST["apellidos"]."', '0000-00-00', '', 0, 0, 0, '', '', '', '', '', '', '', '', '', '0000-00-00', '0000-00-00', 0, '', '0000-00-00', 0, '', '0000-00-00', 0, 0, 0, 0, 0, '', 0, '', '', '', '', '', '', '', '', '".date("Y-m-d")."')";
 		// $query = "INSERT INTO socios (email,telefono,nombres,apellidos) VALUES ('".$email."','0414','xxx','yyy')";
 		$result = mysqli_query($link,$query);
 		$query = "select * from socios where email='".$_POST['email']."'";
@@ -100,7 +100,7 @@ if ($row = mysqli_fetch_array($result)) {
 	*/
 	$hash = hash("sha256",$numcupon.$_POST['id_proveedor']. $id.$tipopremio.$montopremio.$descpremio."Generado");
 
-	$query = "INSERT INTO cupones (cupon,cuponlargo,id_proveedor,id_socio,status,factura,monto,id_premio,tipopremio,montopremio,descpremio,socio,email,telefono,nombres,apellidos,fechacupon,fechavencimiento,hash) VALUES ('".$numcupon."','".$cuponlargo."'," . $_POST['id_proveedor'] . "," . $id . ",'Generado','" . $_POST["factura"] . "'," . $_POST["monto"] . ",".$id_premio.",'".$tipopremio."',".$montopremio.",'".$descpremio."'," . $socio . ",'" . $_POST["email"] . "','" . $_POST["telefono"] . "','" . $_POST["nombres"] . "','" . $_POST["apellidos"] . "','".$fechacupon."','".$fechavencimiento."','".$hash."')";
+	$query = "INSERT INTO cupones (cupon,cuponlargo,id_proveedor,id_socio,status,factura,monto,id_premio,tipopremio,montopremio,descpremio,socio,email,telefono,nombres,apellidos,fechacupon,fechavencimiento,fechacanje,facturacanje,montocanje,hash) VALUES ('".$numcupon."','".$cuponlargo."'," . $_POST['id_proveedor'] . "," . $id . ",'Generado','" . $_POST["factura"] . "'," . $_POST["monto"] . ",".$id_premio.",'".$tipopremio."',".$montopremio.",'".$descpremio."'," . $socio . ",'" . $_POST["email"] . "','" . $_POST["telefono"] . "','" . $_POST["nombres"] . "','" . $_POST["apellidos"] . "','".$fechacupon."','".$fechavencimiento."','0000-00-00','',0,'".$hash."')";
 	if ($result = mysqli_query($link, $query)) {
 
 		$correo = $_POST["email"];
@@ -175,9 +175,9 @@ if ($row = mysqli_fetch_array($result)) {
 
 		$asunto = utf8_decode(trim($_POST["nombres"]).' ganaste un premio en '.($nombreproveedor).' por tu compra.');
 		$cabeceras = 'Content-type: text/html;';
-//		if (strpos($_SERVER["SERVER_NAME"],'localhost')===FALSE) {	           	
-			// mail($correo,$asunto,$mensaje,$cabeceras);
-//		}
+		if ($_SERVER["HTTP_HOST"]!='localhost') {
+			mail($correo,$asunto,$mensaje,$cabeceras);
+		}
 
 		$a = fopen('log.html','w+');
 		fwrite($a,$asunto);
@@ -287,9 +287,9 @@ function mensajebienvenida($reg) {
 
 	$asunto = utf8_decode(trim($reg["nombres"]).', Bienvenido a tu club de consumidores!!!');
 	$cabeceras = 'Content-type: text/html;';
-//	if (strpos($_SERVER["SERVER_NAME"],'localhost')===FALSE) {	           	
-		// mail($correo,$asunto,$mensaje,$cabeceras);
-//	}
+	if ($_SERVER["HTTP_HOST"]!='localhost') {
+		mail($correo,$asunto,$mensaje,$cabeceras);
+	}
 }
 
 ?>

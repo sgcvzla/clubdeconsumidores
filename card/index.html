@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Card</title>
+	<style>
+		* {
+		  --ancho: 340px;
+		  --mitad-ancho: 170px;
+		  --ancho-qr: calc(var(--ancho)*.75);
+		  --left: calc(var(--ancho)-var(--ancho-qr))/2;
+		  --ancho-container: 100%;
+		  --alto-container: 500px;
+		}
+
+		.container {
+		  background: lightgray;
+		  height: var(--alto-container);
+		  padding-top: 5%;
+		}
+
+		.parrafo {
+			display: flex;
+			flex-flow: column;
+			align-items: center;
+			/* width: var(--ancho); */
+		}
+
+		.parrafo_centrado {
+		    padding: 1em 0 0;
+			text-align: center;
+			width: var(--ancho);
+		}
+
+		.parrafo_justificado {
+		    margin: 0.5em 0 0;
+			text-align: justify;
+			width: var(--ancho);
+		}
+
+		.cmps {
+			width: 400px;
+		    display: inline;
+		    /* padding: 0 4em; */
+		}
+
+		.etiq {
+		    width: 35%;
+		    text-align: left;
+		}
+
+		.campo {
+		    width: 35%;
+		    /* margin-right: 4em; */
+		    text-align: right;
+		}
+
+		.btns_centrado {
+		    padding-top: 0.5em;
+		    text-align: center;
+		}
+
+		.clsboton {
+		    padding: 0.5em 0;
+			width: 10em;
+		}
+
+		.area_modal {
+			position: absolute;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			display: none;
+		}
+
+		.modal {
+			text-align: center;
+			width: calc(var(--ancho)*.75);
+			height: auto;
+			border: solid 2px black;
+			border-radius: 5%;
+			background: white;
+			z-index: 1000;
+			padding: 5px;
+			margin: 20px auto 0;
+		}
+
+		.qrtransaccion {
+			width: 100%;
+			height: auto;
+			display: none;
+		}
+	</style>
+	<!--
+	margin: auto; <script type="text/javascript" src="./html2canvas.js"></script> -->
+	<script type="text/javascript" src="./classes.js"></script>
+	<script>
+		const tarjeta = '4404501155154662';
+
+		let card1;
+
+		function generacard() {
+
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					respuesta = JSON.parse(this.responseText);
+
+					mensaje_inicial.style.display = 'none';
+
+					card1 = new Card(
+						tarjeta,
+						respuesta.logo,
+						respuesta.tipo,
+						tarjeta,
+						respuesta.nombres,
+						respuesta.vencimiento,
+						respuesta.qr
+					);
+
+					// const card1 = new Card(
+					// 	'mycard',
+					// 	'../img/sgc_icon.png',
+					// 	'prepago',
+					// 	'4404501155154662',
+					// 	'Juan de los palotes',
+					// 	'12/2024',
+					// 	'./0000000021.png'
+					// );
+
+					card1.dibuja('tarjetero');
+					// card2.dibuja('tarjetero');
+				}
+			};
+			xmlhttp.open("GET", "../php/buscatarjeta.php?t="+tarjeta, true);
+			xmlhttp.send();
+
+			// const card2 = new Card(
+			// 	'mycard2',
+			// 	'../img/sgc_icon.png',
+			// 	'giftcard',
+			// 	'1111222233334444',
+			// 	'Juan de los palotes',
+			// 	'12/2024',
+			// 	'./0000000021.png'
+			// );
+
+		}
+
+		function mostrarQR(){
+			modal_area.style.display = 'block';
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					respuesta = this.responseText;
+					mensaje_qr.style.display = 'none';
+					codigo_qr.src = '../php/'+respuesta;
+					codigo_qr.style.display = 'block';
+
+					document.addEventListener('click', cerrarqr);
+				}
+			};
+			xmlhttp.open("GET", "../php/generatransaccion.php?t=p&c="+card1.cnumber+"&m="+monto.value, true);
+			xmlhttp.send();
+		}
+
+		function cerrarqr(e) {
+			if (e.target.id=='modal_area') {
+				modal_area.style.display = 'none';
+			}
+		}
+
+		function scanearQR(){
+			window.location.replace('../prbvideo/index.html?menu=socio');
+			// alert('{"card":"'+card1.cnumber+'","mnt":'+monto.value+'}')
+		}
+	</script>
+</head>
+<body onload="generacard()">
+	<div class="container">
+		<div id="mensaje_inicial" style="text-align: center;">
+			<span style="margin-top: 15px; font-size: 120%;">Cargando tarjeta...</span>			
+		</div>
+		<div id="tarjetero">
+		</div>
+		<div class="parrafo">
+			<div class="parrafo_centrado">
+				<div class="cmps">
+					<span class="etiq">Monto a pagar:</span>
+					<input id="monto" class="campo" type="text" maxlength="15" />
+				</div>
+			</div>
+			<p class="parrafo_justificado" style="font-size: 75%; margin-top: 0.75em;">
+				A continuación hay dos opciones para enviar la transacción:
+			</p>
+			<p class="parrafo_justificado" style="font-size: 75%;">
+				1) Mostrar el código QR para que el comercio lo escanee y solicite tu aprobación
+			</p>
+			<p class="parrafo_justificado" style="font-size: 75%;">
+				2) Escanear el código del comercio y enviar directamente la transacción aprobada
+			</p>
+		</div>
+		<div class="btns_centrado">
+			<button id="usar" class="clsboton" onclick="mostrarQR()">Mostrar QR</button>
+			<button id="usar" class="clsboton" onclick="scanearQR()">Escanear QR</button>
+		</div>
+	</div>
+	<div id="modal_area" class="area_modal">
+		<div id="qrcode" class="modal">
+			<span id="mensaje_qr">Generando código de transacción, por favor espera...</span>
+			<img id="codigo_qr" class="qrtransaccion" src="" />
+		</div>
+	</div>
+</body>
+</html>

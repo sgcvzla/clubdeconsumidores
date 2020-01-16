@@ -45,15 +45,18 @@ if ($status=="Pendiente") {
 			if ($objetojson["campos"][$i]["tipo"]=="number" || $objetojson["campos"][$i]["tipo"]=="boolean") {
 				$query .= $objetojson["campos"][$i]["nombre"].'='.$_POST[$objetojson["campos"][$i]["nombre"]].$coma;
 			} else {
-				$query .= $objetojson["campos"][$i]["nombre"].'="'.$_POST[$objetojson["campos"][$i]["nombre"]].'"'.$coma;
+				if ($objetojson["campos"][$i]["nombre"]=="cumplepadre" || $objetojson["campos"][$i]["nombre"]=="cumplemadre") {
+					$query .= ($_POST[$objetojson["campos"][$i]["nombre"]]=="") ? $objetojson["campos"][$i]["nombre"].'="0000-00-00"'.$coma : $objetojson["campos"][$i]["nombre"].'="'.$_POST[$objetojson["campos"][$i]["nombre"]].'"'.$coma;
+				} else {
+					$query .= $objetojson["campos"][$i]["nombre"].'="'.$_POST[$objetojson["campos"][$i]["nombre"]].'"'.$coma;
+				}
 			}
 		} 
 	}
 	$query .= ',nombre_pais="'.$nombre_pais.'",nombre_estado="'.$nombre_estado.'",nombre_ciudad="'.$nombre_ciudad.'",fecha_afiliacion="'.date('Y-m-d').'" where id='.$_POST['id_socio'].';';
-	// echo $query;
 	if ($result = mysqli_query($link, $query)) {
 
-		generarprepago($link,$socio,$email,$telefono,$nombres,$apellidos);
+		// generarprepago($link,$socio,$email,$telefono,$nombres,$apellidos);
 
 		$respuesta = '{"exito":"SI","mensaje":' . mensajes($archivojson,"exitoregistro") . '}';
 		cupondebienvenida($link,$socio,$email,$telefono,$nombres,$apellidos,$archivojson);
@@ -76,6 +79,7 @@ if ($status=="Pendiente") {
 	}
 }
 echo $respuesta;
+
 
 function cupondebienvenida($link,$socio,$email,$telefono,$nombres,$apellidos,$archivojson) {
 	// Buscar datos de proveedor
@@ -137,7 +141,8 @@ function cupondebienvenida($link,$socio,$email,$telefono,$nombres,$apellidos,$ar
 		*/
 		$hash = hash("sha256",$numcupon.$_POST['id_proveedor']. $id.$tipopremio.$montopremio.$descpremio."Generado");
 
-		$query = "INSERT INTO cupones (cupon,cuponlargo,id_proveedor,id_socio,status,factura,monto,id_premio,tipopremio,montopremio,descpremio,socio,email,telefono,nombres,apellidos,fechacupon,fechavencimiento,hash) VALUES ('".$numcupon."','".$cuponlargo."'," . $_POST['id_proveedor'] . "," . $_POST['id_socio'] . ",'Generado','00000',0,".$id_premio.",'".$tipopremio."',".$montopremio.",'Bienvenida'," . $socio . ",'" . $email . "','" . $telefono . "','" . $nombres . "','" . $apellidos . "','".$fechacupon."','".$fechavencimiento."','".$hash."')";
+		$query = "INSERT INTO cupones (cupon,cuponlargo,id_proveedor,id_socio,status,factura,monto,id_premio,tipopremio,montopremio,descpremio,socio,email,telefono,nombres,apellidos,fechacupon,fechavencimiento,fechacanje,facturacanje,montocanje,hash) VALUES ('".$numcupon."','".$cuponlargo."'," . $_POST['id_proveedor'] . "," . $_POST['id_socio'] . ",'Generado','00000',0,".$id_premio.",'".$tipopremio."',".$montopremio.",'Bienvenida'," . $socio . ",'" . $email . "','" . $telefono . "','" . $nombres . "','" . $apellidos . "','".$fechacupon."','".$fechavencimiento."','0000-00-00','',0,'".$hash."')";
+		// echo $query;
 
 		if ($result = mysqli_query($link, $query)) {
 
@@ -214,9 +219,9 @@ function cupondebienvenida($link,$socio,$email,$telefono,$nombres,$apellidos,$ar
 
 			$asunto = utf8_decode('Hola '.trim($nombres).', recibe este obsequio de bienvenida al club de consumidores.');
 			$cabeceras = 'Content-type: text/html;';
-	//		if (strpos($_SERVER["SERVER_NAME"],'localhost')===FALSE) {	           	
-				// mail($correo,$asunto,$mensaje,$cabeceras);
-	//		}
+			if ($_SERVER["HTTP_HOST"]!='localhost') {
+				mail($correo,$asunto,$mensaje,$cabeceras);
+			}
 
 			$a = fopen('log.html','w+');
 			fwrite($a,$asunto);

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Card</title>
+	<!-- <link rel="stylesheet" href="card.css"> -->
+	<style>
+		* {
+		  --ancho: 400px;
+		  --ancho-container: 100%;
+		  --alto-container: 500px;
+		}
+
+		.container {
+		  background: lightgray;
+		  height: var(--alto-container);
+		}
+	</style>
+	<script type="text/javascript" src="./html2canvas.js"></script>
+	<script type="text/javascript" src="./classes.js"></script>
+	<script>
+/*		function Div2IMG(divID){
+			// html2canvas(document.getElementById(divID),{ backgroundColor : null, width:300, height: 130}).then(function(canvas) {
+			// 	document.getElementById("card-img").appendChild(canvas)
+			// });
+			html2canvas(document.getElementById(divID),{
+				backgroundColor : null,
+				canvas: document.getElementById('cnv_card'),
+				scale: window.devicePixelratio
+			}).then(function(canvas) {
+				document.getElementById("card_img").appendChild(canvas);
+				url = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+				document.getElementById("imgcrd").src = url;
+			});
+		}
+*/
+		function generacard() {
+			const card = new Card(
+				'tarjetero',
+				'mycard',
+				'../clubdeconsumidores/img/sgc_icon.png',
+				'prepago',
+				'1111222233334444',
+				'Juan de los palotes',
+				'12/2024',
+				'./0000000021.png'
+			);
+
+			// document.getElementById("crd_logo").src = card.imgprov;
+			// document.getElementById("crd_tipo").innerHTML = card.msjtipo;
+			// document.getElementById("crd_numero").innerHTML = card.numcard;
+			// document.getElementById("crd_nombre").innerHTML = card.nombres;
+			// document.getElementById("crd_valida").innerHTML = card.validez;
+			// document.getElementById("crd_codigo").src = card.code_qr;
+			// document.getElementById("crd_imgift").src = card.icongft;
+			// // html2canvas(document.getElementById("mycard")).then(function(canvas) {
+			// // 	document.getElementById("card-img").appendChild(canvas)
+			// // });
+			// // document.getElementById("imgcrd").src = Div2IMG("mycard");
+			// Div2IMG("mycard");
+		}
+	</script>
+</head>
+<body onload="generacard()">
+	<div id="tarjetero" class="container">
+
+<!-- 
+		<div id="mycard" class="card">
+			<div class="card2">
+				<div class="area-logo">
+					<img id="crd_logo" class="img-logo" src="../clubdeconsumidores/img/logoclub.png" />
+				</div>
+				<div class="cuerpo">
+					<span id="crd_tipo" class="card-type"></span>
+					<span id="crd_numero" class="card-number">1234 5678 9012 3456</span>
+					<span id="crd_nombre" class="card-nombre">Luis Rodriguez</span>
+					<span id="crd_valida" class="card-valida">Valida hasta mm/yyyy</span>
+				</div>
+				<div class="debajo">
+					<div class="area-qr">
+						<img id="crd_codigo" class="codigo-qr" src="../clubdeconsumidores/php/qr/0000000021.png" />
+					</div>
+					<div class="area-ico">
+						<img id="crd_imgift" class="img-gift" src="" />
+					</div>
+				</div>
+				<div class="pie" style="width: 100%; text-align: center; font-size: 60%">
+					<span>
+						Tarjeta generada por SGC Consultores C.A.: www.sgc-consultores.com.ve
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+ -->
+<!-- 	<div id="card_img" style="text-align: center; background: lightyellow;">
+		<canvas id="cnv_card" width="430" height="300" style="margin: auto;"></canvas>
+	</div>
+	<div id="2card_img" style="text-align: center; width: auto; height: 300px; background: lightblue;">
+		<img id="imgcrd" src="">
+	</div>
+ --></body>
+</html>

@@ -7,7 +7,7 @@ $query = "SELECT * from socios where id=".$_GET["idsocio"];
 $result = mysqli_query($link, $query);
 $respuesta = '{"socio":';
 if ($row = mysqli_fetch_array($result)) {
-	$respuesta .= '"'.trim($row["nombres"]).' '.trim($row["apellidos"]).'"';
+	$respuesta .= utf8_encode('"'.trim($row["nombres"]).' '.trim($row["apellidos"]).'"');
 }
 $respuesta .= ',';
 

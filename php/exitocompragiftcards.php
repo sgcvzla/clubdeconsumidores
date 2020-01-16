@@ -11,6 +11,47 @@ $nombres = $registro['nombres'];
 $apellidos = $registro['apellidos'];
 $email = $registro['email'];
 $moneda = $registro['moneda'];
+$idproveedor = $registro['idproveedor'];
+
+// Buscaar logo del proveedor
+$query = "select * from proveedores where id=".$idproveedor;
+$result = mysqli_query($link, $query);
+if ($row = mysqli_fetch_array($result)) {
+    $logo = trim($row["logo"]);
+} else {
+    $logo = '';
+}
+
+// Sección para mostrar la ventana de éxito
+echo '
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, scalable=yes"> -->
+        <title>Club de consumidores</title>
+        <link rel="stylesheet" href="./compra.css">
+        <script type="text/javascript" src="../js/funciones.js"></script>
+    </head>
+    <body">
+        <div id="container">
+            <div class="logo" align="center">
+                <img class="img-logo" id="logo" src="../img/'.$logo.'" alt="">
+            </div>
+            <h2 style="text-align: center; color: black;">Club de consumidores</h2>
+            <h3 align="center">Recargar tarjetas de regalo</h3>
+            <div id="div1" align="center">
+                <div class="logo" align="center">
+                    <img class="img-logo" id="check" src="../img/exito1.png" alt="">
+                </div>
+                <h3 align="center">Transacción registrada exitosamente!!!</h3>
+            </div>
+        </div>
+    </body>
+</html>';
+// Hasta aqui
 
 // Buscaar datos de la tarjeta
 $query = "select * from giftcards where email='".trim($email)."' and moneda='".trim($moneda)."'";

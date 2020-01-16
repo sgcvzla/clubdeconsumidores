@@ -13,6 +13,21 @@ if ($row = mysqli_fetch_array($result)) {
 	$tipopremio = $row["tipopremio"];
 	$montopremio = $row["montopremio"];
 	$descpremio = $row["descpremio"];
+} else {
+	$id_proveedor = 0;
+	$id_socio = 0;
+	$tipopremio = '';
+	$montopremio = 0.00;
+	$descpremio = '';
+}
+
+// Buscaar logo del proveedor
+$query = "select * from proveedores where id=".$id_proveedor;
+$result = mysqli_query($link, $query);
+if ($row = mysqli_fetch_array($result)) {
+    $logo = trim($row["logo"]);
+} else {
+    $logo = '';
 }
 
 /*
@@ -27,7 +42,7 @@ El hash se va a armar con los siguientes datos:
 - Descripción premio
 - Status cupón
 */
-$hash = hash("sha256",$_POST['cupon'].$_POST['id_proveedor'].$id_socio.$tipopremio.$montopremio.$descpremio."Generado");
+$hash = hash("sha256",$_POST['cupon'].$id_proveedor.$id_socio.$tipopremio.$montopremio.$descpremio."Generado");
 
 // codigo de barras
 $barras = 'https://www.clubdeconsumidores.com.ve/php/barcode.php?';
@@ -58,6 +73,6 @@ $codigoqr = $ruta.$dir.$_POST['cupon'].'.png';
 
 $mensaje .= '<p style="text-align:center;">'.$hash.'</p>';
 
-$respuesta = '{"exito":"SI","barras":"'.$barras.'","qr":"'.$codigoqr.'","hash":"'.$hash.'"}';
+$respuesta = '{"exito":"SI","logo":"'.$logo.'","barras":"'.$barras.'","qr":"'.$codigoqr.'","hash":"'.$hash.'"}';
 echo $respuesta;
 ?>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, scalable=yes"> -->
+		<title>POP CLIK</title>
+		<link rel="stylesheet" href="credito.css">
+		<script type="text/javascript" src="../js/funciones.js"></script>
+	</head>
+	<body onload="inicio()">
+		<div id="container">
+			<div class="logo" align="center">
+				<img id="logo" src="../img/popclik.png" alt="" />
+			</div>
+			<h2 align="center">Solicitud de credito</h2>
+			<div id="div1" align="center">
+				<h3 id="mensaje"></h3>
+				<form action="./creditRequest.php" method="POST" enctype="multipart/form-data">
+					<input id="tam" type="hidden" name="MAX_FILE_SIZE" value="10000000" />
+					<input id="producto" type="hidden" name="producto" value="" />
+					<input id="credito" type="hidden" name="credito" value="" />
+
+					<div class="cmps">
+						<span class="etiq">Nombres:</span>
+						<input id="nombres" name="nombres" class="campo" type="text" size="50" maxlength="100" title="" />
+					</div>
+					<div class="cmps">
+						<span class="etiq">Apellidos:</span>
+						<input id="apellidos" name="apellidos" class="campo" type="text" size="50" maxlength="100" title="" />
+					</div>
+					<div class="cmps">
+						<span class="etiq">Cédula o RIF:</span>
+						<input id="cedula" name="cedula" class="campo" type="text" size="50" maxlength="100" title="" />
+					</div>
+					<div class="cmps">
+						<span class="etiq">Soporte CI o RIF:</span>
+						<input id="doccedula" name="doccedula" class="campo" type="file" size="50" maxlength="100" title="" />
+					</div>
+					<div class="cmps">
+						<span class="etiq">Dirección:</span>
+						<input id="direccion" name="direccion" class="campo" type="text" size="50" maxlength="100" title="" />
+					</div>
+					<div class="cmps">
+						<span class="etiq">Teléfono:</span>
+						<input id="telefono" name="telefono" class="campo" type="text" size="50" maxlength="100" title="" />
+					</div>
+					<div class="cmps">
+						<span class="etiq">Correo electrónico:</span>
+						<input id="email" name="email" class="campo" type="email" size="50" maxlength="100" title="Debe introducir un formato de email válido (incluir el @ y al menos un . )" />
+					</div>
+					<div class="cmps">
+						<span class="etiq">Ingresos mensuales:</span>
+						<input id="ingresos" name="ingresos" class="campo" type="text" size="50" maxlength="100" title="Debe introducir un formato de número válido (del 0 al 9 y punto decimal)" style="text-align: right;" />
+					</div>
+					<div class="cmps">
+						<span class="etiq">Ceriticación de ingresos:</span>
+						<input id="certing" name="certing" class="campo" type="file" size="50" maxlength="100" title="" />
+					</div>
+					<br/>
+					<div style="text-align: left; padding-left: 0.5em;">
+						<span class="etiq"><u>Referencia comercial 1:</u></span>
+					</div>
+					<div class="cmps">
+						<span class="etiq">Nombre:</span>
+						<input id="refcom1" name="refcom1" class="campo" type="text" size="50" maxlength="100" title="" />
+					</div>
+					<div class="cmps">
+						<span class="etiq">telefono:</span>
+						<input id="telrefcom1" name="telrefcom1" class="campo" type="text" size="50" maxlength="100" title="" />
+					</div>
+					<div class="cmps">
+						<span class="etiq">Documento referencia:</span>
+						<input id="docrefcom1" name="docrefcom1" class="campo" type="file" size="50" maxlength="100" title="" />
+					</div>
+					<br/>
+					<div style="text-align: left; padding-left: 0.5em;">
+						<span class="etiq"><u>Referencia comercial 2:</u></span>
+					</div>
+					<div class="cmps">
+						<span class="etiq">Nombre:</span>
+						<input id="refcom2" name="refcom2" class="campo" type="text" size="50" maxlength="100" title="" />
+					</div>
+					<div class="cmps">
+						<span class="etiq">telefono:</span>
+						<input id="telrefcom2" name="telrefcom2" class="campo" type="text" size="50" maxlength="100" title="" />
+					</div>
+					<div class="cmps">
+						<span class="etiq">Documento referencia:</span>
+						<input id="docrefcom2" name="docrefcom2" class="campo" type="file" size="50" maxlength="100" title="" />
+					</div>
+					<br/>
+					<div style="text-align: left; padding-left: 0.5em;">
+						<span class="etiq"><u>Referencia personal 1:</u></span>
+					</div>
+					<div class="cmps">
+						<span class="etiq">Nombre:</span>
+						<input id="refper1" name="refper1" class="campo" type="text" size="50" maxlength="100" title="" />
+					</div>
+					<div class="cmps">
+						<span class="etiq">telefono:</span>
+						<input id="telrefper1" name="telrefper1" class="campo" type="text" size="50" maxlength="100" title="" />
+					</div>
+					<div class="cmps">
+						<span class="etiq">Documento referencia:</span>
+						<input id="docrefper1" name="docrefper1" class="campo" type="file" size="50" maxlength="100" title="" />
+					</div>
+					<br/>
+					<div style="text-align: left; padding-left: 0.5em;">
+						<span class="etiq"><u>Referencia personal 2:</u></span>
+					</div>
+					<div class="cmps">
+						<span class="etiq">Nombre:</span>
+						<input id="refper2" name="refper2" class="campo" type="text" size="50" maxlength="100" title="" />
+					</div>
+					<div class="cmps">
+						<span class="etiq">telefono:</span>
+						<input id="telrefper2" name="telrefper2" class="campo" type="text" size="50" maxlength="100" title="" />
+					</div>
+					<div class="cmps">
+						<span class="etiq">Documento referencia:</span>
+						<input id="docrefper2" name="docrefper2" class="campo" type="file" size="50" maxlength="100" title="" />
+					</div>
+					<!-- Linea de botones -->
+					<div class="btns">
+						<!-- <button id="btnenviar" onclick="enviar()" style="width: 7em;">Enviar</button> -->
+						<input type="submit" value="Enviar" style="width: 7em;">
+				</form>
+					<button id="limpiar" onclick="limpiar()" style="width: 7em;">Limpiar</button>
+				</div>
+			</div>
+			<br/>
+		</div>
+		<div align="right" style="width: 100%; position: fixed; padding-bottom: 0.25em; bottom: 0">
+			<pie style="font-size: 100%; margin-right: 1em;">
+				Desarrollado por <a href="https://www.sgc-consultores.com.ve"><b>SGC Consultores C.A.</b><img src="../img/sgc_icon.png" style="width: 2.5em" alt="SGC Consultores C.A." title="SGC Consultores C.A." /></a>
+			</pie>
+		</div>
+		<script>
+			function inicio() {
+				mensaje.innerHTML = 'Buscando datos...';
+				params = fparamurl(window.location.search.substr(1));
+				let respuesta, descripcion = "", xmlhttp = new XMLHttpRequest();
+				xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						respuesta = JSON.parse(this.responseText);
+						console.log(respuesta);
+						if (respuesta.exito == 'SI') {
+							descripcion = respuesta.producto.nombre;
+							mensaje.innerHTML = 'Usted está solicitando un credito por '+formatNumber.new(params.plazo*params.cuota)+' USD para la compra de:<br/>'+descripcion+'<br/>el cual será pagado en<br/>'+params.plazo+' cuotas de '+formatNumber.new(params.cuota)+' USD cada una.';
+							producto.value = descripcion;
+							credito.value = formatNumber.new(params.plazo*params.cuota);
+						} else {
+							alert("Ha ocurrido un error, por favor comuniquese con soporte técnico.");
+						}
+					}
+				};
+				xmlhttp.open("GET", "./buscaproducto.php?id="+params.id, true);
+				// xmlhttp.open("GET", "https://060d3f560e548b08d411633144ae09fb:44e7bd60350b8ad36bc0f899930ad51e@anatie.myshopify.com/admin/api/2019-10/orders.json?financial_status=pending", false);
+				// xmlhttp.setRequestHeader("Access-Control-Allow-Origin","*");
+				xmlhttp.send();
+			}
+
+			// function enviar(evt) {
+			// 	let respuesta = "", xmlhttp = new XMLHttpRequest(), datos = new FormData();
+			// 	datos.append("tam", tam.value);
+			// 	datos.append("nombres", nombres.value);
+			// 	datos.append("doccedula", doccedula.files[0]);
+
+			// 	xmlhttp.onreadystatechange = function() {
+			// 		if (this.readyState == 4 && this.status == 200) {
+			// 			respuesta = this.responseText;
+			// 			console.log(respuesta);
+			// 		}
+			// 	};
+			// 	xmlhttp.open("POST", "./creditRequest.php", true);
+			// 	xmlhttp.send(datos);
+			// }
+
+			function limpiar() { alert('limpiar') }
+		</script>
+	</body>
+</html>

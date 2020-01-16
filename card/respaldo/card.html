@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Card</title>
+	<style>
+		* {
+		  --ancho: 400px;
+		  --ancho-container: 100%;
+		  --alto-container: 500px;
+		}
+
+		.container {
+		  background: lightgray;
+		  height: var(--alto-container);
+		  padding-top: 5%;
+		}
+
+		.parrafo_centrado {
+		    padding: 1em 0 0.5em;
+			text-align: center;
+		}
+
+		.cmps {
+			width: 400px;
+		    display: inline;
+		    /* padding: 0 4em; */
+		}
+
+		.etiq {
+		    width: 35%;
+		    text-align: left;
+		}
+
+		.campo {
+		    width: 20%;
+		    /* margin-right: 4em; */
+		    text-align: right;
+		}
+
+		.btns_centrado {
+		    padding-top: 0.5em;
+		    text-align: center;
+		}
+
+		.clsboton {
+		    padding: 0.5em 0;
+			width: 10em;
+		}
+	</style>
+	<script type="text/javascript" src="./html2canvas.js"></script>
+	<script type="text/javascript" src="./classes.js"></script>
+	<script>
+		const card1 = new Card(
+			'mycard',
+			'../clubdeconsumidores/img/sgc_icon.png',
+			'prepago',
+			'1111222233334444',
+			'Juan de los palotes',
+			'12/2024',
+			'./0000000021.png'
+		);
+
+		// const card2 = new Card(
+		// 	'mycard2',
+		// 	'../clubdeconsumidores/img/sgc_icon.png',
+		// 	'giftcard',
+		// 	'1111222233334444',
+		// 	'Juan de los palotes',
+		// 	'12/2024',
+		// 	'./0000000021.png'
+		// );
+
+		function generacard() {
+			card1.dibuja('tarjetero');
+			// card2.dibuja('tarjetero');
+		}
+
+		function pulsar(mensaje){ card1.pulsar(mensaje) }
+	</script>
+</head>
+<body onload="generacard()">
+	<div class="container">
+		<div id="tarjetero">
+		</div>
+		<div class="parrafo_centrado">
+			<div class="cmps">
+				<span class="etiq">Monto a pagar:</span>
+				<input id="monto" class="campo" type="text" maxlength="15" />
+			</div>
+		</div>
+		<div class="btns_centrado">
+			<button id="usar" class="clsboton" onclick="pulsar('ampliar')">Mostrar QR</button>
+			<button id="usar" class="clsboton" onclick="pulsar('escanear')">Escanear QR</button>
+		</div>
+	</div>
+</body>
+</html>

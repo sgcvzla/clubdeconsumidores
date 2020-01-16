@@ -68,14 +68,11 @@
 			</div>
 			<div id="codigocupon" class="modal" align="center">
 				<br/>
+				<img id="logocupon" src="" style="width: 60%; height: auto;" />
 				<br/>
 				<img id="barracupon" src="" />
 				<br/>
-				<br/>
-				<br/>
 				<img id="qrcupon" src="" height="200" width="200" />
-				<br/>
-				<br/>
 				<br/>
 				<button id="cerrar" onclick="cerrarmodal()" style="margin: 10px;">Cerrar</button>
 <!-- 				<br/>
@@ -646,6 +643,7 @@
 						if (this.readyState == 4 && this.status == 200) {
 							respuesta = JSON.parse(this.responseText);
 							if (respuesta.exito == 'SI') {
+								document.getElementById("logocupon").src = '../img/'+respuesta.logo;
 								document.getElementById("barracupon").src = respuesta.barras;
 								document.getElementById("qrcupon").src = respuesta.qr;
 								// document.getElementById("hash").innerHTML = respuesta.hash;

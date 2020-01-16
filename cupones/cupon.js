@@ -13,8 +13,6 @@ function cargaforma() {
 		prov = sessionStorage.getItem("id_proveedor");
 	} else {
 		prov = params.id;
-		console.log(params);
-		console.log(params.btn);
 		sessionStorage.setItem("id_proveedor",params.id);
 		if (params.btn!=1) {
 	        document.getElementById("botonvolver").style.display = 'none';

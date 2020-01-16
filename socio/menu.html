@@ -9,7 +9,7 @@
 		<link rel="stylesheet" href="menu.css">
 		<script type="text/javascript" src="../js/funciones.js"></script>
 	</head>
-	<body>
+	<body onload="inicio()">
 		<div id="container">
 			<div class="logo" align="center">
 				<img class="img-logo" id="logo" src="../img/logoclub.png" alt="">
@@ -28,7 +28,7 @@
 							</div>
 						</div>
 					</a>
-					<a id="tarjetero" href="" onclick="alert('En construcción')">
+					<a id="tarjetero" href="../tarjetero" onclick="">
 						<div class="item" align="center">
 							<div class="imagen" align="center">
 								<!-- <img class="img_opcion" src="" title="Referidos" /> -->
@@ -64,7 +64,8 @@
 						</div>
 					</a>
  -->
-					<a id="lector" href="../lector/index.html?menu=socio" onclick="">
+					<!-- <a id="lector" href="../lector/index.html?menu=socio" onclick=""> -->
+					<a id="lector" href="../prbvideo/index.html?menu=socio" onclick="">
 						<div class="item" align="center">
 							<div class="imagen" align="center">
 								<!-- <img class="img_opcion" src="" title="Lector" /> -->
@@ -93,5 +94,11 @@
 				</div>
 			</div>
 		</div>
+		<script type="text/javascript">
+			// Inicializa la aplicación
+			function inicio() {
+				sessionStorage.setItem("url_back",window.location);
+			}
+		</script>
 	</body>
 </html>

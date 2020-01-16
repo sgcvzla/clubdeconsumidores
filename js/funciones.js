@@ -186,3 +186,10 @@ function SHA256(s){
 	s = Utf8Encode(s);
 	return binb2hex(core_sha256(str2binb(s), s.length * chrsz));
 }
+
+function fbaseURL (ruta) {
+	// let ruta1 = ruta.pathname.split('/'), ruta2 = ruta.protocol + '//';
+	let ruta1 = ruta.pathname.split('/'), ruta2 = ruta.origin + '/';
+	for (let i = 1; i < ruta1.length - 1; i++) { ruta2 += ruta1[i] + '/'; }
+	return ruta2;
+}

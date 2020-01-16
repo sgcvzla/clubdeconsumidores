@@ -17,27 +17,28 @@
 			<h2 style="text-align: center; color: black;">Club de consumidores</h2>
 			<h3 align="center">Recargar tarjetas prepagadas</h3>
 			<div id="div1" align="center">
-				<h3 align="center">Transacción registrada exitosamente.</h3>
-				<!-- Linea de botones -->
-				<div class="btns">
-					<button id="btnvolver" style="width: 10em; margin: 0.5em 0 0 0;">Volver</button>
+				<div class="logo" align="center">
+					<img class="img-logo" id="check" src="../img/exito1.png" alt="">
 				</div>
+				<h3 align="center">Transacción registrada exitosamente!!!</h3>
 			</div>
 		</div>	
 		<script>
-			function inicio() {
-				// // Mostrar mensaje de éxito cuando se pague con tarjeta de crédito
-				// params = fparamurl(window.location.search.substr(1));
-				// console.log(window.location.search.substr(1));
-				// console.log(params.mensaje);
-				// if (params.exito!=undefined) {
-				// 	exito = params.exito;
-				// 	if(exito=='si') { alert(fmensaje(JSON.parse(params.mensaje))); }
-				// }
-				// // Hasta aquí
+			var nombres="", apellidos="", telefono="", email="", monto="", idproveedor=sessionStorage.getItem("id_proveedor"), moneda='bs', datos = new FormData(), formadepago = "", tipo = 'efectivo';
 
-				document.getElementById("btnvolver").addEventListener('click', function(){
-					window.open(sessionStorage.getItem("url_back"), "_self") });
+			function inicio() {
+				// Mostrar mensaje de éxito cuando se pague con tarjeta de crédito
+				params = fparamurl(window.location.search.substr(1));
+				console.log(window.location.search.substr(1));
+				console.log(params.mensaje);
+				if (params.exito!=undefined) {
+					exito = params.exito;
+					if(exito=='si') { alert(fmensaje(JSON.parse(params.mensaje))); }
+				}
+				// Hasta aquí
+
+				// document.getElementById("btnvolver").addEventListener('click', function(){
+				// 	window.open(sessionStorage.getItem("url_back"), "_self") });
 				// cargar parámetros de la tabla
 				var xmlhttp = new XMLHttpRequest();
 				xmlhttp.onreadystatechange = function () {
@@ -56,7 +57,7 @@
 						}
 					}
 				};
-				xmlhttp.open("GET", "../php/proveedores.php?prov="+idproveedor, true);
+				xmlhttp.open("GET", "../php/proveedores.php?prov=1", true);
 				xmlhttp.send();
 			}
 		</script>
