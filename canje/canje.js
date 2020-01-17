@@ -10,10 +10,12 @@ function cargaforma() {
 		prov = params.id;
 	} else {
 		if (params.cJson!=undefined) {
+			document.getElementById("botonvolver").style.display = 'none';
 			params = JSON.parse(params.cJson);
 			prov = params.id_proveedor;
 		} else {
 			prov = 	sessionStorage.getItem("idproveedor");
+
 		}
 	}
 
@@ -163,4 +165,9 @@ function buscatitulo() {
 	};
 	xmlhttp.open("GET", "../php/parametros.php", false);
 	xmlhttp.send();
+}
+
+function volver() {
+	// console.log(sessionStorage);
+	window.open(sessionStorage.getItem("url_bck2"), "_self");
 }

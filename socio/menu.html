@@ -14,8 +14,8 @@
 			<div class="logo" align="center">
 				<img class="img-logo" id="logo" src="../img/logoclub.png" alt="">
 			</div>
-			<h2 style="text-align: center; color: black;">Servicios a los socios</h2>
-			<!-- <h5 style="text-align: center; color: black;"></h5> -->
+			<h2 style="text-align: center; color: black;">Servicios al socio</h2>
+			<h3 id="socio" style="text-align: center; color: black;"></h3>
 			<div id="div1" align="center">
 				<!-- <h3>Menú principal</h3> -->
 				<br/>
@@ -28,7 +28,8 @@
 							</div>
 						</div>
 					</a>
-					<a id="tarjetero" href="../tarjetero" onclick="">
+					<!-- <a id="tarjetero" href="../tarjetero" onclick=""> -->
+					<a id="tarjetero" href="" onclick="alert('En Construcción, escribe un email a sgcvzla@gmail.com\npara enterarte de la fecha de lanzamiento.')">
 						<div class="item" align="center">
 							<div class="imagen" align="center">
 								<!-- <img class="img_opcion" src="" title="Referidos" /> -->
@@ -36,14 +37,16 @@
 							</div>
 						</div>
 					</a>
+<!-- 
 					<a id="transacciones" href="./transacciones" onclick="">
 						<div class="item" align="center">
-							<div class="imagen" align="center">
+							<div class="imagen" align="center"> -->
 								<!-- <img class="img_opcion" src="" title="Referidos" /> -->
-								Aprobar transacciones
+							<!--	Aprobar transacciones
 							</div>
 						</div>
 					</a>
+-->
 <!--
 					<a id="giftcards" href="../giftcards" onclick="">
 						<div class="item" align="center">
@@ -65,7 +68,7 @@
 					</a>
  -->
 					<!-- <a id="lector" href="../lector/index.html?menu=socio" onclick=""> -->
-					<a id="lector" href="../prbvideo/index.html?menu=socio" onclick="">
+					<a id="lector" href="../lector/index.html?menu=socio" onclick="">
 						<div class="item" align="center">
 							<div class="imagen" align="center">
 								<!-- <img class="img_opcion" src="" title="Lector" /> -->
@@ -73,7 +76,7 @@
 							</div>
 						</div>
 					</a>
-					<a id="helpdesk" href="" onclick="alert('En construcción')">
+					<a id="helpdesk" href="" onclick="alert('En Construcción, escribe un email a sgcvzla@gmail.com\npara enterarte de la fecha de lanzamiento.')">
 						<div class="item" align="center">
 							<div class="imagen" align="center">
 								<!-- <img class="img_opcion" src="" title="Mesa de ayuda" /> -->
@@ -91,13 +94,37 @@
 						</div>
 					</a>
  -->
+					<a id="salir" href="" onclick="">
+						<div class="item" align="center">
+							<div class="imagen" align="center">
+								<!-- <img class="img_opcion" src="" title="Cuponera" /> -->
+								Salir de la aplicación
+							</div>
+						</div>
+					</a>
 				</div>
 			</div>
 		</div>
 		<script type="text/javascript">
 			// Inicializa la aplicación
 			function inicio() {
-				sessionStorage.setItem("url_back",window.location);
+				console.log(sessionStorage);
+				let idsocio = sessionStorage.getItem("idsocio");
+				salir.href = sessionStorage.getItem("url_back");
+				sessionStorage.setItem("url_bck2",window.location);
+
+				let xmlhttp = new XMLHttpRequest();
+				xmlhttp.onreadystatechange = function () {
+					if (this.readyState == 4 && this.status == 200) {
+						respuesta = JSON.parse(this.responseText);
+						if (respuesta.exito == 'SI') {
+							socio.innerHTML = respuesta.nombres+" "+respuesta.apellidos;
+						}
+					}
+				};
+				xmlhttp.open("GET", "../php/socios.php?idsocio="+idsocio, true);
+				xmlhttp.send();
+
 			}
 		</script>
 	</body>

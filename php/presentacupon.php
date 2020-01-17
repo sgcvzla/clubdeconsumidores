@@ -29,6 +29,7 @@ if ($row = mysqli_fetch_array($result)) {
 } else {
     $logo = '';
 }
+$logo = ($logo=='') ? 'sin_imagen.jpg' : $logo ;
 
 /*
 Hash para insertar en el blockchain

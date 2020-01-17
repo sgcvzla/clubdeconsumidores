@@ -49,10 +49,13 @@
 					<button id="cambiapass" onclick="restablecer()" style="width: 7em;">Restablecer</button>
 					<button id="limpiar" onclick="limpiar()" style="width: 7em;">Limpiar</button>
 				</div>
+				<div class="btns">
+					<button id="volver" style="width: 14.25em;">Ir a selección de comercios</button>
+				</div>
 			</div>
 		</div>
 		<script>
-			var respuesta, idproveedor;
+			var respuesta, idproveedor, logoprov, nombreprov;
 
 			var tipo = "comercio";
 
@@ -77,6 +80,11 @@
 				document.getElementById("registro").style.display = 'none';
 				document.getElementById("olvido").style.display = 'none';
 				document.getElementById("cambiapass").style.display = 'none';
+				sessionStorage.setItem("url_back",window.location);				
+				volver.addEventListener('click', function(){
+					sessionStorage.clear();
+					window.open("../index.html", "_self");
+				});
 			}
 
 			function buscar() {
@@ -98,6 +106,8 @@
 								respuesta = JSON.parse(this.responseText);
 								if (respuesta.exito == 'SI') {
 									idproveedor = respuesta.id;
+									logoprov = respuesta.logo;
+									nombreprov = respuesta.nombreprov;
 									document.getElementById("div2").style.display = 'flex';
 									document.getElementById("norecuerda").style.display = 'inline-block';
 									document.getElementById("buscar").style.display = 'none';
@@ -137,6 +147,8 @@
 				if (respuesta.hashp==hashp) {
 					sessionStorage.setItem("email", usuario);
 					sessionStorage.setItem("idproveedor", idproveedor);
+					sessionStorage.setItem("logoprov", logoprov);
+					sessionStorage.setItem("nombreprov", nombreprov);
 					window.location.replace("menu.html");
 				} else {
 					alert('no valido');

@@ -58,7 +58,6 @@ function filtrar(filtro) {
 
 function comercio(valor) {
 	sessionStorage.setItem("id_proveedor", valor);
-	console.log(sessionStorage);
 	// window.location.replace("menu.html?id_proveedor="+valor);
 }
 

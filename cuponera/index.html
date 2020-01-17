@@ -68,7 +68,7 @@
 			</div>
 			<div id="codigocupon" class="modal" align="center">
 				<br/>
-				<img id="logocupon" src="" style="width: 60%; height: auto;" />
+				<img id="logocupon" src="" style="width: 30%; height: auto;" />
 				<br/>
 				<img id="barracupon" src="" />
 				<br/>
@@ -78,6 +78,11 @@
 <!-- 				<br/>
 				<p id="hash" style="font-size: 60%;"></p>
  -->				<br/>
+			</div>
+
+			<!-- Linea de botones -->
+			<div class="btns" style="text-align: right;">
+				<button id="btnvolver" style="width: 7em; margin: 0.5em 0 0 0;">Volver</button>
 			</div>
 		</div>
 		<script>
@@ -137,6 +142,9 @@
 				};
 				xmlhttp.open("GET", "../php/buscacupones.php?idsocio="+idsocio, false);
 				xmlhttp.send();
+				document.getElementById("btnvolver").addEventListener('click', function(){
+					window.open(sessionStorage.getItem("url_bck2"), "_self") }
+				);
 			}
 
 			function pintarcupones() {
@@ -642,6 +650,7 @@
 					xmlhttp.onreadystatechange = function() {
 						if (this.readyState == 4 && this.status == 200) {
 							respuesta = JSON.parse(this.responseText);
+							console.log(respuesta);
 							if (respuesta.exito == 'SI') {
 								document.getElementById("logocupon").src = '../img/'+respuesta.logo;
 								document.getElementById("barracupon").src = respuesta.barras;

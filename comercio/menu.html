@@ -14,7 +14,7 @@
 			<div class="logo" align="center">
 				<img class="img-logo" id="logo" src="../img/logoclub.png" alt="">
 			</div>
-			<h2 style="text-align: center; color: black;">Servicios a los comercios</h2>
+			<h2 style="text-align: center; color: black;">Servicios al comercio</h2>
 			<!-- <h5 style="text-align: center; color: black;"></h5> -->
 			<div id="div1" align="center">
 				<!-- <h3>Menú principal</h3> -->
@@ -28,30 +28,32 @@
 							</div>
 						</div>
 					</a>
+<!-- 
 					<a id="cobro" href="" onclick="alert('En construcción')">
 						<div class="item" align="center">
-							<div class="imagen" align="center">
+							<div class="imagen" align="center"> -->
 								<!-- <img class="img_opcion" src="" title="Cuponera" /> -->
-								Recibir pagos (tarjetas prepagadas o de regalo)
+							<!--	Recibir pagos (tarjetas prepagadas o de regalo)
 							</div>
 						</div>
 					</a>
 					<a id="prepago" href="" onclick="alert('En construcción')">
 						<div class="item" align="center">
-							<div class="imagen" align="center">
+							<div class="imagen" align="center"> -->
 								<!-- <img class="img_opcion" src="" title="Cuponera" /> -->
-								Recargar tarjetas prepagadas
+							<!--	Recargar tarjetas prepagadas
 							</div>
 						</div>
 					</a>
 					<a id="giftcards" href="" onclick="alert('En construcción')">
 						<div class="item" align="center">
-							<div class="imagen" align="center">
+							<div class="imagen" align="center"> -->
 								<!-- <img class="img_opcion" src="" title="Cuponera" /> -->
-								Vender tarjetas de regalo
+							<!--	Vender tarjetas de regalo
 							</div>
 						</div>
 					</a>
+ -->
 <!-- 
 					<a id="cuponera" href="" onclick="alert('En construcción')">
 						<div class="item" align="center">
@@ -63,7 +65,7 @@
 					</a>
  -->					
 					<!-- <a id="lector" href="../lector/index.html?menu=comercio" onclick=""> -->
-					<a id="lector" href="../prbvideo/index.html?menu=comercio" onclick="">
+					<a id="lector" href="../lector/index.html?menu=comercio" onclick="">
 						<div class="item" align="center">
 							<div class="imagen" align="center">
 								<!-- <img class="img_opcion" src="" title="Lector" /> -->
@@ -71,14 +73,16 @@
 							</div>
 						</div>
 					</a>
-					<a id="cuponera" href="" onclick="alert('En construcción')">
+<!--
+					<a id="premios" href="" onclick="alert('En construcción')">
 						<div class="item" align="center">
-							<div class="imagen" align="center">
+							<div class="imagen" align="center"> -->
 								<!-- <img class="img_opcion" src="" title="Cuponera" /> -->
-								Administrar premios
+							<!--	Administrar premios
 							</div>
 						</div>
 					</a>
+-->
 <!-- 					
 					<a id="cuponera" href="" onclick="alert('En construcción')">
 						<div class="item" align="center">
@@ -109,8 +113,45 @@
 						</div>
 					</a>
  -->
+					<a id="salir" href="" onclick="">
+						<div class="item" align="center">
+							<div class="imagen" align="center">
+								<!-- <img class="img_opcion" src="" title="Cuponera" /> -->
+								Salir de la aplicación
+							</div>
+						</div>
+					</a>
 				</div>
 			</div>
 		</div>
+		<script>
+			function inicio() {
+				console.log(sessionStorage);
+				let idproveedor = sessionStorage.getItem("idproveedor");
+				logo.src = "../img/" + sessionStorage.getItem("logoprov");
+				logo.title = sessionStorage.getItem("nombreprov");
+				salir.href = sessionStorage.getItem("url_back");
+				sessionStorage.setItem("url_bck2",window.location);
+				// let xmlhttp = new XMLHttpRequest();
+				// xmlhttp.onreadystatechange = function () {
+				// 	if (this.readyState == 4 && this.status == 200) {
+				// 		respuesta = JSON.parse(this.responseText);
+				// 		if (respuesta.exito == 'SI') {
+				// 			// // document.title = 'Menú principal';
+				// 			// console.log(respuesta);
+				// 			// logo = respuesta.proveedor.logo;
+				// 			// if (logo!="") {
+				// 			// 	document.getElementById("logo").src = "../img/" + logo;
+				// 			// } else {
+				// 			// 	document.getElementById("logo").src = "../img/" + 'sin_imagen.jpg';
+				// 			// }
+				// 			document.getElementById("logo").title = respuesta.proveedor.nombre;
+				// 		}
+				// 	}
+				// };
+				// xmlhttp.open("GET", "../php/proveedores.php?prov="+idproveedor, true);
+				// xmlhttp.send();
+			}
+		</script>
 	</body>
 </html>

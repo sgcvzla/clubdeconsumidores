@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>SGC Consultores C.A. - Lector de QR</title>
+		<link rel="stylesheet" href="./lector.css">
+        <script type="text/javascript" src="../js/funciones.js"></script>
+		<script type="text/javascript" src="./instascan.min.js"></script>
+		<!-- <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script> -->
+	</head>
+	<body>
+		<div style="width: 100%; align-items: center;">
+			<h3 style="text-align: center; padding-top: 10px; color: black;">Club de consumidores</h3>
+			<h5 style="text-align: center; color: black;">Servicios a los socios</h5>
+			<h3 id="tituloformulario" align="center">LECTOR DE CÓDIGOS QR</h3>
+			<p align="center">Coloque el código en el siguiente recuadro, al ser leído se redireccionará su navegador a la sección que corresponda.</p>
+			<div class="framevideo" >
+				<video id="preview" class="vd"></video>
+				<div class="scanner-laser laser-rightBottom"></div>
+				<div class="scanner-laser laser-rightTop"></div>
+				<div class="scanner-laser laser-leftBottom"></div>
+				<div class="scanner-laser laser-leftTop"></div>
+			</div>
+		</div>
+		<div style="width: 100%; margin-top: 36%; text-align: center;">
+			<p id="mensaje" align="center"></p>
+			<br/>
+			<button id="volver" style="width: 60px; height: 30px; margin: auto;" onclick="volveralmenu()">Volver</button>
+			<audio id="beep" src="" />
+		</div>
+	    <script type="text/javascript">
+            let beep = '../lector/audio/beep.mp3';
+
+			let params = fparamurl(window.location.search.substr(1));
+            if (params.menu==undefined) {
+                document.getElementById("volver").style.display = 'none';
+            }
+
+			let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+
+			scanner.addListener('scan', function (content) {
+				console.log(content);
+				if (content) { 
+					console.log('x');
+					PlaySound(beep); }
+				window.location.replace(content);
+			});
+
+			Instascan.Camera.getCameras().then(function (cameras) {
+				back = 0;
+				for (i=0; i< cameras.length; i++) {
+					if (cameras[i].name.indexOf('back') >= 0) { back = i }
+				}
+				if (cameras.length > 0) {
+					scanner.mirror = false;
+					scanner.start(cameras[back]);
+				} else {
+					console.error('No cameras found.');
+				}
+			}).catch(function (e) {
+				console.error(e);
+			});
+
+            function volveralmenu() {
+                window.location.replace("../"+params.menu+"/menu.html")
+            }
+
+			function PlaySound(sonido) {
+				document.getElementById('beep').src = sonido;
+				let sound = document.getElementById('beep');
+				if (sound) { sound.play(); }
+			}
+		</script>
+	</body>
+</html>
+
+<!-- 
+<html>
+  <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba Instascan</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/3.3.3/adapter.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.10/vue.min.js"></script>
+    <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div class="sidebar">
+        <section class="cameras">
+          <h2>Cameras</h2>
+          <ul>
+            <li v-if="cameras.length === 0" class="empty">No cameras found</li>
+            <li v-for="camera in cameras">
+              <span v-if="camera.id == activeCameraId" :title="formatName(camera.name)" class="active">{{ formatName(camera.name) }}</span>
+              <span v-if="camera.id != activeCameraId" :title="formatName(camera.name)">
+                <a @click.stop="selectCamera(camera)">{{ formatName(camera.name) }}</a>
+              </span>
+            </li>
+          </ul>
+        </section>
+        <section class="scans">
+          <h2>Scans</h2>
+          <ul v-if="scans.length === 0">
+            <li class="empty">No scans yet</li>
+          </ul>
+          <transition-group name="scans" tag="ul">
+            <li v-for="scan in scans" :key="scan.date" :title="scan.content">{{ scan.content }}</li>
+          </transition-group>
+        </section>
+      </div>
+      <div class="preview-container">
+        <video id="preview"></video>
+      </div>
+    </div>
+    <script type="text/javascript" src="app.js"></script>
+  </body>
+</html>
+ -->

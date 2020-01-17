@@ -49,6 +49,9 @@
 					<button id="cambiapass" onclick="restablecer()" style="width: 7em;">Restablecer</button>
 					<button id="limpiar" onclick="limpiar()" style="width: 7em;">Limpiar</button>
 				</div>
+				<div class="btns">
+					<button id="volver" style="width: 14.25em;">Ir a selección de comercios</button>
+				</div>
 			</div>
 		</div>
 		<script>
@@ -77,6 +80,11 @@
 				document.getElementById("registro").style.display = 'none';
 				document.getElementById("olvido").style.display = 'none';
 				document.getElementById("cambiapass").style.display = 'none';
+				sessionStorage.setItem("url_back",window.location);				
+				volver.addEventListener('click', function(){
+					sessionStorage.clear();
+					window.open("../index.html", "_self");
+				});
 			}
 
 			function buscar() {
