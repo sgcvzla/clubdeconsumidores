@@ -33,8 +33,8 @@ include_once('../apis/pagoflash.api.client.php');
 
 $urlCallbacks = $urlcb;
 // Llaves de SGC ------------------ O J O
-$key_public = "XKA20Z8USB8BES5TYUQ1";
-$key_secret = "W1RNW52YCU715US6BHNIVVZB21BKT6";
+$key_public = $key_public_pf;
+$key_secret = $key_secret_pf;
 // ------------------ O J O
 $api = new apiPagoflash($key_public,$key_secret, $urlCallbacks, false);
 $cabeceraDeCompra = array(

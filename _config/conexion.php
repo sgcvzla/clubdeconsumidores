@@ -6,6 +6,11 @@ session_start();
 	$cuenta = "root";
 	$password = "rootmyapm";
 	$database = "clubdeconsumidores";
+
+	// Llaves de SGC en Pago Flash ------------------ O J O
+	$key_public_pf = "XKA20Z8USB8BES5TYUQ1";
+	$key_secret_pf = "W1RNW52YCU715US6BHNIVVZB21BKT6";
+
 // } else {
 // 	// produccion
 	// $servidor = "localhost:3306";
