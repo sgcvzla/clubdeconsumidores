@@ -1,9 +1,11 @@
 <?php
 header('Content-Type: application/json');
 include_once("../_config/conexion.php");
+include_once("../_config/configShopify.php");
+
 // Buscar transacción
 
-$url = 'https://060d3f560e548b08d411633144ae09fb:44e7bd60350b8ad36bc0f899930ad51e@anatie.myshopify.com/admin/api/2019-10/orders/'.trim($_POST["id"]).'/transactions.json';
+$url = $urlBuscarTransaccion.trim($_POST["id"]).'/transactions.json';
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL,$url );
@@ -19,7 +21,7 @@ $parent_id = $transaccion["transactions"][0]["id"];
 // Fin buscar transacción
 
 // Enviar transacción
-$ch = curl_init("https://060d3f560e548b08d411633144ae09fb:44e7bd60350b8ad36bc0f899930ad51e@anatie.myshopify.com/admin/api/2019-10/orders/".trim($_POST["id"])."/transactions.json");
+$ch = curl_init($url);
 
 $variant = array('transaction' =>
     array(

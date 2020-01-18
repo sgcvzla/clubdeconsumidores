@@ -1,0 +1,703 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0094)http://sandbox.grupozoom.com/proveedores/frontend/webservicesge/documentacion/ejemplo_guia.php -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script async="false"></script>
+<meta http-equiv="X-UA-Compatible" content="IE=8">
+<title>Ejemplo de Web Services EBL</title>
+<meta name="keywords" content="">
+<script type="text/javascript" src="./Ejemplo de Web Services EBL_files/jquery.js.descarga"></script>
+<script type="text/javascript" src="./Ejemplo de Web Services EBL_files/jquery.zoomwebservices.js.descarga"></script>
+<link rel="stylesheet" type="text/css" href="./Ejemplo de Web Services EBL_files/estilo.css">
+<link rel="stylesheet" type="text/css" href="./Ejemplo de Web Services EBL_files/estilo1.css">
+<link rel="stylesheet" type="text/css" href="./Ejemplo de Web Services EBL_files/estilo_form_guia.css">
+<style>
+div.myButton input {
+background:url(images/pdf.jpg) no-repeat;
+cursor:pointer;
+width: 64px;
+height: 64px;
+border: none;
+}
+</style>
+</head>
+<body onload="document.signup.codcliente.focus();" style="" cz-shortcut-listen="true"><div id="shifty-spritz" style="display: none;" tabindex="1"><div id="words-shifty"><div id="countdown-shifty" style="font-size: 30px; height: 55px; line-height: 55px; font-weight: bold; font-family: &quot;droid sans&quot;;"></div><div id="left-shifty" style="font-size: 30px; height: 55px; line-height: 55px; font-weight: bold; font-family: &quot;droid sans&quot;;"></div><div id="center-shifty" style="font-size: 30px; height: 55px; line-height: 55px; font-weight: bold; font-family: &quot;droid sans&quot;; color: rgb(250, 61, 61);"></div><div id="right-shifty" style="font-size: 30px; height: 55px; line-height: 55px; font-weight: bold; font-family: &quot;droid sans&quot;;"></div><span id="clear-shifty"></span></div><div id="controls-shifty"><i id="pause-play-shifty" class="fa fa-pause left-shifty"></i><i id="close-shifty" class="fa fa-times right-shifty"></i><div id="progress-bar-shifty"><div id="progress-shifty"></div><div id="seek-shifty"></div></div></div></div>
+<small><a href="http://sandbox.grupozoom.com/proveedores/frontend/webservicesge/documentacion/index.html">Volver al Indice</a></small>
+<table width="900px">
+	<thead>
+		<tr>
+			<th>Procesar Envío</th>
+		</tr>
+	</thead>
+</table>
+<br>
+	<form name="signup" id="signup">
+		<table>
+		<thead>
+			<tr>
+				<th width="900px" colspan="4">Datos de Validación</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><label for="codcliente" class="labelcell">Código de Cliente:</label></td>
+				<td> 
+					<input type="text" name="codcliente" id="codcliente" tabindex="1" class="fieldcellnum filedborder" size="35" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABHklEQVQ4EaVTO26DQBD1ohQWaS2lg9JybZ+AK7hNwx2oIoVf4UPQ0Lj1FdKktevIpel8AKNUkDcWMxpgSaIEaTVv3sx7uztiTdu2s/98DywOw3Dued4Who/M2aIx5lZV1aEsy0+qiwHELyi+Ytl0PQ69SxAxkWIA4RMRTdNsKE59juMcuZd6xIAFeZ6fGCdJ8kY4y7KAuTRNGd7jyEBXsdOPE3a0QGPsniOnnYMO67LgSQN9T41F2QGrQRRFCwyzoIF2qyBuKKbcOgPXdVeY9rMWgNsjf9ccYesJhk3f5dYT1HX9gR0LLQR30TnjkUEcx2uIuS4RnI+aj6sJR0AM8AaumPaM/rRehyWhXqbFAA9kh3/8/NvHxAYGAsZ/il8IalkCLBfNVAAAAABJRU5ErkJggg==&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
+				</td>
+				<td><label for="password" class="labelcell">Ingrese Clave:</label></td>
+				<td> 
+					<input type="password" name="password" id="password" tabindex="2" class="fieldcelltext filedborder" size="45" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACIUlEQVQ4EX2TOYhTURSG87IMihDsjGghBhFBmHFDHLWwSqcikk4RRKJgk0KL7C8bMpWpZtIqNkEUl1ZCgs0wOo0SxiLMDApWlgOPrH7/5b2QkYwX7jvn/uc//zl3edZ4PPbNGvF4fC4ajR5VrNvt/mo0Gr1ZPOtfgWw2e9Lv9+chX7cs64CS4Oxg3o9GI7tUKv0Q5o1dAiTfCgQCLwnOkfQOu+oSLyJ2A783HA7vIPLGxX0TgVwud4HKn0nc7Pf7N6vV6oZHkkX8FPG3uMfgXC0Wi2vCg/poUKGGcagQI3k7k8mcp5slcGswGDwpl8tfwGJg3xB6Dvey8vz6oH4C3iXcFYjbwiDeo1KafafkC3NjK7iL5ESFGQEUF7Sg+ifZdDp9GnMF/KGmfBdT2HCwZ7TwtrBPC7rQaav6Iv48rqZwg+F+p8hOMBj0IbxfMdMBrW5pAVGV/ztINByENkU0t5BIJEKRSOQ3Aj+Z57iFs1R5NK3EQS6HQqF1zmQdzpFWq3W42WwOTAf1er1PF2USFlC+qxMvFAr3HcexWX+QX6lUvsKpkTyPSEXJkw6MQ4S38Ljdbi8rmM/nY+CvgNcQqdH6U/xrYK9t244jZv6ByUOSiDdIfgBZ12U6dHEHu9TpdIr8F0OP692CtzaW/a6y3y0Wx5kbFHvGuXzkgf0xhKnPzA4UTyaTB8Ph8AvcHi3fnsrZ7Wore02YViqVOrRXXPhfqP8j6MYlawoAAAAASUVORK5CYII=&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="right">
+					<label for="certificado" class="labelcell">Ingrese Certificado:</label>
+				</td>
+				<td colspan="2">
+					<input type="text" name="certificado" id="certificado" tabindex="3" class="fieldcelltext filedborder" size="45">
+				</td>
+			</tr>
+		</tbody>
+		<thead>
+			<tr>
+				<th width="900px" colspan="4">Datos del Servicio</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td> 
+					<label for="servicio" class="labelcell">Seleccione Servicio: </label>
+				</td>
+				<td> 
+					<select name="servicio" id="servicio" tabindex="4" class="smallfieldcell" style="width: 300px"><option value="0">-</option><option value="0">El Usuario con el que esta ingresando no es valido. Para mayor informacion debe contactar a su usuario master o Asesor de ventas</option></select>
+				</td>
+				<td> 
+					<label for="servicio" class="labelcell">Consignacion: </label>
+				</td>
+				<td> 
+					<select name="consignacion" id="consignacion" tabindex="5" class="smallfieldcell">
+						<option value="f">-</option>
+						<option value="t">SI</option>
+					</select>
+				</td>
+			</tr>
+		</tbody>
+		<thead>
+			<tr>
+				<th width="450px" colspan="2">Datos del Remitente</th>
+				<th width="450px" colspan="2">Datos del Destinatario</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><label for="tipo" class="labelcell">Remitente:</label></td>
+				<td> 
+					<input type="text" name="contacto_ori" id="contacto_ori" tabindex="6" class="fieldcelltext filedborder" size="35">
+				</td>
+				<td><label for="tipo" class="labelcell">Retirar por Oficina:</label></td>
+				<td> 
+					<select name="retirarofi" id="retirarofi" tabindex="10" class="smallfieldcell">
+						<option value="0">-</option>
+						<option value="1">SI</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td><label for="tipo" class="labelcell">Ciudad Remitente:</label></td>
+				<td>
+					<select name="codciudadrem" id="codciudadrem" tabindex="11" class="smallfieldcell" style="width: 300px"><option value="0">-</option><option value="2">19 DE ABRIL</option><option value="3">ABEJALES</option><option value="4">ACANANA</option><option value="5">ACARIGUA</option><option value="6">ACEQUIAS</option><option value="7">ACHAGUAS</option><option value="8">ACURIGUA</option><option value="9">ADAURE</option><option value="10">ADICORA</option><option value="11">AGUA BLANCA</option><option value="12">AGUA CALIENTE</option><option value="18">AGUADA GRANDE</option><option value="13">AGUA LARGA</option><option value="14">AGUA LINDA</option><option value="15">AGUA NEGRA</option><option value="16">AGUA SANTA</option><option value="20">AGUASAY</option><option value="19">AGUAS CALIENTES</option><option value="17">AGUA VIVA</option><option value="21">ALBARICO</option><option value="22">ALMACEN</option><option value="25">ALTAGRACIA DE LA MONTANA</option><option value="26">ALTAGRACIA DE ORITUCO</option><option value="23">ALTAGRACIA (LARA)</option><option value="24">ALTAGRACIA (NUEVA ESPARTA)</option><option value="27">ALTAMIRA (BARINAS)</option><option value="29">ALTAMIRA DE CAUS</option><option value="28">ALTAMIRA (GUARICO)</option><option value="30">ANACO</option><option value="31">ANZOATEGUI</option><option value="32">APARICIO</option><option value="33">APARTADEROS</option><option value="34">APURITO</option><option value="35">ARACUA</option><option value="36">ARAGUA</option><option value="38">ARAGUABISI</option><option value="37">ARAGUA DE BARCELONA</option><option value="39">ARAGUAIMUJO</option><option value="40">ARAGUANEY</option><option value="41">ARAGUITA</option><option value="42">ARAIRA</option><option value="43">ARAPUEY</option><option value="44">ARAURE</option><option value="45">ARAURIMA</option><option value="46">ARAYA</option><option value="47">AREGUE</option><option value="48">ARENALES</option><option value="49">ARENAS</option><option value="50">AREO</option><option value="51">ARICAGUA (MERIDA)</option><option value="52">ARICAGUA (SUCRE)</option><option value="53">ARICHUNA</option><option value="54">ARIPAO</option><option value="55">ARISMENDI</option><option value="56">AROA</option><option value="57">ATAPIRIRE</option><option value="58">ATARIGUA</option><option value="59">BACHAQUERO</option><option value="60">BAILADORES</option><option value="61">BARAGUA</option><option value="62">BARAIVED</option><option value="63">BARBACOAS (ARAGUA)</option><option value="64">BARBACOAS (LARA)</option><option value="65">BARCELONA</option><option value="66">BARINAS</option><option value="67">BARINITAS</option><option value="68">BARIRO</option><option value="69">BARQUISIMETO</option><option value="70">BARRANCAS (BARINAS)</option><option value="71">BARRANCAS (MONAGAS)</option><option value="72">BARRANQUITAS</option><option value="73">BATATAL</option><option value="74">BEJUMA</option><option value="75">BELEN</option><option value="76">BELLA VISTA</option><option value="77">BERGANTIN</option><option value="78">BETIJOQUE</option><option value="79">BIRUACA</option><option value="80">BISCUCUY</option><option value="81">BOBARE</option><option value="82">BOBURES</option><option value="83">BOCA DE AROA</option><option value="84">BOCA DE CHAVEZ</option><option value="85">BOCA DE CUYUBINI</option><option value="86">BOCA DE GRITA</option><option value="89">BOCA DEL PAO</option><option value="90">BOCA DEL POZO</option><option value="91">BOCA DEL RIO</option><option value="87">BOCA DE TOCUYO</option><option value="88">BOCA DE UCHIRE</option><option value="94">BOCONOITO</option><option value="92">BOCONO (TACHIRA)</option><option value="93">BOCONO (TRUJILLO)</option><option value="95">BOLIVIA</option><option value="96">BORAURE</option><option value="97">BORBURATA</option><option value="98">BOROJO</option><option value="99">BOROTA</option><option value="100">BRAMON</option><option value="101">BRUZUAL</option><option value="102">BUENA VISTA (FALCON)</option><option value="103">BUENA VISTA (LARA)</option><option value="104">BUENA VISTA (TRUJILLO)</option><option value="105">BUM-BUM</option><option value="106">BURBUSAY</option><option value="107">BURERE</option><option value="108">CABIMAS</option><option value="109">CABIMBU</option><option value="110">CABRUTA</option><option value="111">CABUDARE</option><option value="112">CABURE</option><option value="113">CACHIPO (ANZOATEGUI)</option><option value="114">CACHIPO (MONAGAS)</option><option value="115">CACHIRI</option><option value="116">CACURI</option><option value="117">CACUTE</option><option value="118">CAGUA</option><option value="119">CAICARA</option><option value="120">CAICARA DEL ORINOCO</option><option value="121">CAIGUA</option><option value="122">CAIGUIRE</option><option value="123">CAJA SECA</option><option value="124">CALABOZO</option><option value="125">CALDERAS</option><option value="126">CAMAGUAN</option><option value="127">CAMANI</option><option value="128">CAMATAGUA</option><option value="129">CAMBURAL</option><option value="130">CAMPO ALEGRE</option><option value="131">CAMPO CLARO</option><option value="132">CAMPO ELIAS (MERIDA)</option><option value="133">CAMPO ELIAS (TRUJILLO)</option><option value="134">CAMPO ELIAS (YARACUY)</option><option value="135">CAMPO LARA</option><option value="136">CANA DE AZUCAR</option><option value="137">CANAGUA</option><option value="140">CANOABO</option><option value="138">CANO DELGADITO</option><option value="139">CANO TIGRE</option><option value="141">CANTAGALLO</option><option value="142">CANTAURA</option><option value="143">CAPACHO NUEVO</option><option value="144">CAPACHO VIEJO</option><option value="145">CAPADARE</option><option value="146">CAPATARIDA</option><option value="147">CAPAYA</option><option value="148">CAPITANEJO</option><option value="149">CAPURE</option><option value="150">CAPURI</option><option value="151">CARABALLEDA</option><option value="152">CARACAS</option><option value="153">CARACHE</option><option value="154">CARAPA</option><option value="155">CARAPAL DE GUARA</option><option value="156">CARAYACA</option><option value="157">CARIACO</option><option value="158">CARIPE</option><option value="159">CARIPITO</option><option value="160">CARMEN DE CURA</option><option value="161">CARORA</option><option value="162">CARRASQUERO</option><option value="163">CARRIZAL</option><option value="164">CARUPANO</option><option value="165">CARVAJAL</option><option value="166">CASA DE TABLA</option><option value="167">CASANAY</option><option value="168">CASIGUA</option><option value="169">CASIGUA EL CUBO</option><option value="170">CASIMIRO VASQUEZ</option><option value="171">CATIA LA MAR</option><option value="172">CATUARO</option><option value="173">CAUCAGUA</option><option value="174">CAZORLA</option><option value="175">CENTRAL TACARIGUA</option><option value="176">CEUTA</option><option value="177">CHACANTA</option><option value="178">CHACHOPO</option><option value="179">CHACOPATA</option><option value="180">CHAGUARAMAL</option><option value="181">CHAGUARAMAS (GUARICO)</option><option value="182">CHAGUARAMAS (MONAGAS)</option><option value="183">CHAMETA</option><option value="184">CHARALLAVE</option><option value="185">CHEJENDE</option><option value="186">CHICHIRIVICHE</option><option value="187">CHIGUARA</option><option value="188">CHIQUINQUIRA</option><option value="189">CHIRGUA</option><option value="190">CHIVACOA</option><option value="191">CHORONI</option><option value="192">CHUAO</option><option value="193">CHURUGUARA</option><option value="194">CIUDAD BOLIVAR</option><option value="195">CIUDAD BOLIVIA</option><option value="196">CIUDAD DE NUTRIAS</option><option value="197">CIUDAD GUAYANA</option><option value="198">CIUDAD OJEDA</option><option value="199">CIUDAD PIAR</option><option value="200">CLARINES</option><option value="201">COCOROTE</option><option value="202">COJEDES</option><option value="203">COJORO</option><option value="204">COLON</option><option value="205">COLONCITO</option><option value="206">COLONIA TUREN</option><option value="207">COMUNIDAD</option><option value="208">CONCEPCION</option><option value="209">CONCHA</option><option value="210">CORDERO</option><option value="211">CORDOBA</option><option value="996">CORO</option><option value="212">CUA</option><option value="213">CUARA</option><option value="214">CUATRO ESQUINAS</option><option value="215">CUBIRO</option><option value="216">CUICAS</option><option value="217">CUMANA</option><option value="218">CUMANACOA</option><option value="219">CUMBO</option><option value="220">CUPIRA</option><option value="221">CURARIGUA</option><option value="222">CURBATI</option><option value="223">CURIAPO</option><option value="224">CURIEPE</option><option value="225">CURIMACARE</option><option value="226">CURIMAGUA</option><option value="227">DABAJURO</option><option value="228">DELICIAS</option><option value="229">DOLORES</option><option value="230">DUACA</option><option value="231">EJIDO</option><option value="232">EL ALGARROBITO</option><option value="233">EL ALTO</option><option value="234">EL AMPARO (APURE)</option><option value="235">EL AMPARO (COJEDES)</option><option value="236">EL BAJO</option><option value="237">EL BANO</option><option value="238">EL BATEY</option><option value="239">EL BAUL</option><option value="240">EL CAFE</option><option value="241">EL CALLAO</option><option value="242">EL CALVARIO</option><option value="243">EL CANTON</option><option value="244">EL CARITO</option><option value="245">EL CARMELO</option><option value="246">EL CARMEN</option><option value="247">EL CARTANAL</option><option value="248">EL CENIZO</option><option value="249">EL CHAPARRO</option><option value="250">EL CHARAL</option><option value="251">EL CLAVO</option><option value="252">EL COBRE</option><option value="253">EL CONSEJO</option><option value="254">EL CONSEJO DE CIRUMA</option><option value="255">EL COROZO (BARINAS)</option><option value="256">EL COROZO (MONAGAS)</option><option value="257">EL COROZO (ZULIA)</option><option value="258">EL CRUCE</option><option value="259">EL DIVIDIVE</option><option value="260">EL DORADO</option><option value="261">EL EMPEDRADO</option><option value="262">EL ENEAL</option><option value="263">EL FURRIAL</option><option value="264">EL GALLO</option><option value="265">EL GUACHARO</option><option value="266">EL GUAMACHE</option><option value="267">EL GUANABANO</option><option value="268">EL GUAPO</option><option value="269">EL GUAYABO</option><option value="270">EL HATILLO</option><option value="271">EL HATO (FALCON)</option><option value="272">EL HATO (LARA)</option><option value="273">EL JABON</option><option value="274">EL JAGUITO</option><option value="275">EL JARILLO</option><option value="276">EL JUNKO</option><option value="277">EL LIMON</option><option value="278">EL MACO</option><option value="279">EL MANANTIAL (AGUA CLARA)</option><option value="280">EL MANTECO</option><option value="281">EL MECOCAL</option><option value="282">EL MENE</option><option value="283">EL MENE DE SAN LORENZO</option><option value="284">EL MIAMO</option><option value="285">EL MILAGRO (BOLIVAR)</option><option value="286">EL MILAGRO (TACHIRA)</option><option value="287">EL MOLINETE</option><option value="288">EL MOLINO</option><option value="289">EL MORALITO</option><option value="290">EL MORRO</option><option value="291">EL MORRO DE PUERTO SANTO</option><option value="292">EL MOYEPO</option><option value="293">EL NULA</option><option value="336">ELORZA</option><option value="294">EL PALMAR</option><option value="295">EL PAO</option><option value="296">EL PAO DE BARCELONA</option><option value="297">EL PAO DE EL HIERRO</option><option value="298">EL PARADERO (LARA)</option><option value="299">EL PARADERO (TRUJILLO)</option><option value="300">EL PARAISO</option><option value="301">EL PAUJI</option><option value="302">EL PAUJIL</option><option value="303">EL PILAR (ANZOATEGUI)</option><option value="305">EL PILAR (LOS ROBLES)</option><option value="304">EL PILAR (SUCRE)</option><option value="306">EL PINAR</option><option value="307">EL PINTO</option><option value="308">EL PLAYON</option><option value="309">EL PUEBLITO</option><option value="310">EL RASTRO</option><option value="311">EL REAL</option><option value="312">EL RECREO (APURE)</option><option value="313">EL RECREO (TACHIRA)</option><option value="314">EL REGALO</option><option value="315">EL RINCON</option><option value="316">EL ROSARIO</option><option value="317">EL SAMAN DE APURE</option><option value="318">EL SILENCIO</option><option value="319">EL SOCORRO</option><option value="320">EL SOMBRERO</option><option value="321">EL TEJERO</option><option value="322">EL TIGRE (ANZOATEGUI)</option><option value="323">EL TIGRE (ZULIA)</option><option value="324">EL TOCUYO</option><option value="325">EL TORO</option><option value="326">EL TRIUNFO</option><option value="327">EL TUPI</option><option value="328">EL VALLE</option><option value="329">EL VALLE DEL ESPIRITU SANTO</option><option value="330">EL VENADO</option><option value="331">EL VIENTO</option><option value="332">EL VIGIA</option><option value="333">EL VINCULO</option><option value="334">EL YAGUAL</option><option value="335">EL ZAPATERO</option><option value="337">ENCONTRADOS</option><option value="338">ESCUQUE</option><option value="339">ESPINO</option><option value="340">ESTANQUEZ</option><option value="341">FARRIAR</option><option value="342">FLOR DE PATRIA</option><option value="343">FRANCISCO DE MIRANDA</option><option value="344">GIBRALTAR</option><option value="345">GRANADOS</option><option value="346">GUACARA</option><option value="347">GUACHARA</option><option value="348">GUADARRAMA</option><option value="349">GUAIBACOA</option><option value="350">GUAITO</option><option value="351">GUAJIRO</option><option value="352">GUAMA</option><option value="353">GUANAGUANA</option><option value="354">GUANAPE</option><option value="355">GUANARE</option><option value="356">GUANARITO</option><option value="357">GUANTA</option><option value="358">GUARAMACAL</option><option value="359">GUARAQUE</option><option value="360">GUARATARO</option><option value="361">GUARAUNOS</option><option value="362">GUARDATINAJAS</option><option value="363">GUARENAS</option><option value="364">GUARICO</option><option value="365">GUARINUMA</option><option value="366">GUARIQUEN</option><option value="367">GUASDUALITO</option><option value="368">GUASIMAL</option><option value="369">GUASIPATI</option><option value="370">GUATIRE</option><option value="371">GUAYABAL</option><option value="372">GUAYABONES</option><option value="373">GUAYANA</option><option value="374">GUIGUE</option><option value="375">GUINIMA</option><option value="376">GUIRIA</option><option value="377">GUIRIPA</option><option value="378">HACIENDA DEL MEDIO</option><option value="379">HATO DE LA VIRGEN</option><option value="380">HERNANDEZ</option><option value="381">HIGUEROTE</option><option value="382">HUMOCARO ALTO</option><option value="383">HUMOCARO BAJO</option><option value="384">IKABARU</option><option value="385">INDEPENDENCIA</option><option value="386">IRAPA</option><option value="387">ISNOTU</option><option value="388">JACURA</option><option value="389">JADACAQUIVA</option><option value="390">JAJI</option><option value="391">JAJO</option><option value="392">JALISCO</option><option value="393">JOBO ALTO (KILOMETRO 25)</option><option value="394">JOSE GREGORIO MONAGAS</option><option value="396">JUANGRIEGO</option><option value="395">JUAN IGNACIO MONTILLA</option><option value="397">JUDIBANA</option><option value="398">JUNIN</option><option value="399">JUSEPIN</option><option value="400">KILOMETRO 48 [SANTO DOMINGO)</option><option value="401">LA AGUADITA</option><option value="402">LA APARICION</option><option value="403">LA ASUNCION</option><option value="404">LA AZULITA</option><option value="405">LA BEATRIZ</option><option value="406">LA BLANCA (12 DE OCTUBRE)</option><option value="407">LA BUCARITA</option><option value="408">LA CARAMUCA</option><option value="409">LA CAROLINA</option><option value="410">LA CEIBA (LARA)</option><option value="411">LA CEIBA (TRUJILLO)</option><option value="412">LA CEJITA</option><option value="413">LA CIENAGA</option><option value="414">LA COLONIA TOVAR</option><option value="415">LA CONCEPCION (PORTUGUESA)</option><option value="416">LA CONCEPCION (TRUJILLO)</option><option value="417">LA CONCEPCION (ZULIA)</option><option value="418">LA CRUZ DE TARATARA</option><option value="419">LA CUCHILLA</option><option value="420">LA DEMOCRACIA</option><option value="421">LA ENSENADA</option><option value="422">LA ESCALERA</option><option value="423">LA ESTACADA</option><option value="424">LA ESTACION</option><option value="425">LA FLORIDA</option><option value="426">LA FRIA</option><option value="427">LA FUNDACION</option><option value="428">LA GRITA</option><option value="429">LA GUAIRA</option><option value="430">LA GUANOTA</option><option value="431">LA GUARDIA</option><option value="474">LAGUNA DE GARCIA</option><option value="475">LAGUNILLAS (MERIDA)</option><option value="476">LAGUNILLAS (ZULIA)</option><option value="432">LA HORQUETA</option><option value="477">LAJA LISA</option><option value="433">LA LUZ</option><option value="434">LA MATA</option><option value="435">LA MESA</option><option value="436">LA MESA DE ESNUJAQUE</option><option value="437">LA MIEL</option><option value="438">LA MISION</option><option value="439">LA MULA</option><option value="440">LA NEGRITA</option><option value="441">LA PALMITA (MERIDA)</option><option value="442">LA PALMITA (TACHIRA)</option><option value="443">LA PARAGUA</option><option value="444">LA PASTORA (FALCON)</option><option value="445">LA PASTORA (LARA)</option><option value="446">LA PAZ</option><option value="447">LA PENA</option><option value="448">LA PICA (ARAGUA)</option><option value="449">LA PICA (MONAGAS)</option><option value="450">LA PLACITA</option><option value="451">LA PLAYA</option><option value="452">LA PLAZA DE PARAGUACHI</option><option value="453">LA PLAZUELA</option><option value="454">LA PUERTA</option><option value="455">LA QUEBRADA</option><option value="456">LA SABANA</option><option value="478">LAS ALHUACAS</option><option value="479">LAS BONITAS</option><option value="480">LAS BRISAS</option><option value="481">LAS CALDERAS</option><option value="482">LAS CLARITAS</option><option value="483">LAS CRUCES</option><option value="484">LAS DANTAS</option><option value="485">LAS GUACAMAYAS</option><option value="457">LA SIERRA</option><option value="458">LA SIERRITA</option><option value="486">LAS LLANADAS</option><option value="487">LAS MAJADAS</option><option value="488">LAS MALVINAS</option><option value="489">LAS MERCEDES (ARAGUA)</option><option value="490">LAS MERCEDES (GUARICO)</option><option value="491">LAS MESAS</option><option value="492">LAS MESETAS</option><option value="493">LAS MESITAS</option><option value="459">LA SOLEDAD</option><option value="494">LAS PARCELAS</option><option value="495">LAS PENITAS</option><option value="496">LAS PIEDRAS (MERIDA)</option><option value="497">LAS PIEDRAS (SUCRE)</option><option value="498">LAS PIEDRAS (ZULIA)</option><option value="499">LAS QUEBRADAS</option><option value="500">LAS RURALES</option><option value="501">LAS TEJERIAS</option><option value="502">LAS VEGAS</option><option value="503">LAS VEGAS DEL TUY</option><option value="504">LAS VIRTUDES</option><option value="460">LA TENDIDA</option><option value="461">LA TOMA</option><option value="462">LA TOSCANA</option><option value="463">LA TRAMPA</option><option value="464">LA TRINIDAD DE ORICHUNA</option><option value="465">LA UNION</option><option value="466">LA UNION DE CANUTO</option><option value="467">LA URBANA</option><option value="468">LA VELA DE CORO</option><option value="469">LA VENTA</option><option value="470">LA VICTORIA (APURE)</option><option value="471">LA VICTORIA (ARAGUA)</option><option value="472">LA VILLA DEL ROSARIO</option><option value="473">LA YUCA</option><option value="505">LECHERIAS</option><option value="506">LEZAMA</option><option value="507">LIBERTAD (BARINAS)</option><option value="508">LIBERTAD (COJEDES)</option><option value="509">LIBERTAD DE ORITUCO</option><option value="510">LIMON DE PARHUENA</option><option value="511">LOBATERA</option><option value="512">LOS ALTOS</option><option value="513">LOS ARROYOS</option><option value="514">LOS BAGRES</option><option value="515">LOS BARRANCOS DE FAJARDO</option><option value="516">LOS CAPRICHOS</option><option value="517">LOS CEDROS</option><option value="518">LOS CORTIJOS</option><option value="519">LOS GUASIMITOS</option><option value="520">LOS GUAYOS</option><option value="521">LOS MILLANES</option><option value="522">LOS NARANJOS (CARABOBO)</option><option value="523">LOS NARANJOS (MERIDA)</option><option value="524">LOS NARANJOS (ZULIA)</option><option value="525">LOS NEVADOS</option><option value="526">LOS PUERTOS DE ALTAGRACIA</option><option value="527">LOS PUERTOS DE SANTA FE</option><option value="528">LOS RASTROJOS</option><option value="529">LOS TEQUES</option><option value="530">MACANILLO</option><option value="531">MACAPO</option><option value="532">MACHIQUES</option><option value="533">MACHURUCUTO</option><option value="534">MACURO</option><option value="535">MACURUCO</option><option value="536">MACUTO</option><option value="537">MAGDALENO</option><option value="538">MAIQUETIA</option><option value="539">MAMPORAL</option><option value="540">MANICUARE</option><option value="541">MANOA</option><option value="542">MANRIQUE</option><option value="543">MANTECAL</option><option value="544">MANZANITA</option><option value="545">MAPARARI</option><option value="546">MAPIRE</option><option value="547">MAPORAL</option><option value="548">MARABAL</option><option value="549">MARACAIBO</option><option value="550">MARACAY</option><option value="551">MARIARA</option><option value="552">MARIGUITAR</option><option value="553">MARIN</option><option value="554">MARIPA</option><option value="555">MARIZAPA</option><option value="556">MARUETA</option><option value="557">MASPARRITO</option><option value="558">MATRIZ</option><option value="559">MATURIN</option><option value="560">MAVACA</option><option value="561">MENDOZA</option><option value="562">MENE DE MAUROA</option><option value="563">MENE GRANDE</option><option value="564">MERCEDES DIAZ</option><option value="565">MERIDA</option><option value="566">MESA BOLIVAR</option><option value="567">MESA DE CAVACAS</option><option value="568">MESA DE LAS PALMAS</option><option value="570">MESA DEL TIGRE</option><option value="569">MESA DE QUINTERO</option><option value="571">MICHELENA</option><option value="572">MIGUEL PENA</option><option value="573">MIJAGUAL</option><option value="574">MIJAGUITO</option><option value="575">MINAS</option><option value="576">MIRANDA</option><option value="577">MIRIMIRE</option><option value="578">MITARE</option><option value="579">MITON</option><option value="580">MOITACO</option><option value="581">MONAY</option><option value="582">MONTALBAN</option><option value="583">MONTE CARMELO</option><option value="584">MORICHALITO</option><option value="585">MORON</option><option value="586">MORRONES</option><option value="587">MORUCA</option><option value="588">MORUY</option><option value="589">MOSQUEY</option><option value="590">MOTATAN</option><option value="591">MUCUCHACHI</option><option value="592">MUCUCHIES</option><option value="593">MUCUJEPE</option><option value="594">MUCURA</option><option value="595">MUCURUBA</option><option value="596">MUCUTUY</option><option value="1">(MUELLE DE CARIACO)</option><option value="597">MUNDO NUEVO</option><option value="598">MUNDUAPO</option><option value="599">NAGUANAGUA</option><option value="600">NAIGUATA</option><option value="601">NARICUAL</option><option value="602">NIQUITAO</option><option value="603">NIRGUA</option><option value="604">NO APLICA</option><option value="605">NUEVA BOLIVIA</option><option value="606">NUEVA CUA</option><option value="607">NUEVA FLORIDA</option><option value="608">OBISPOS</option><option value="609">OCUMARE DE LA COSTA</option><option value="610">OCUMARE DEL TUY</option><option value="611">OLLAS DE CARAMACATE</option><option value="612">ONOTO</option><option value="613">OROPE</option><option value="614">ORTIZ</option><option value="615">OSPINO</option><option value="616">PALITO BLANCO</option><option value="617">PALMAREJO</option><option value="618">PALMARITO (APURE)</option><option value="619">PALMARITO (LARA)</option><option value="620">PALMARITO (MERIDA)</option><option value="621">PALMASOLA</option><option value="622">PALMIRA</option><option value="623">PALO GORDO</option><option value="625">PALOMA</option><option value="624">PALO NEGRO</option><option value="626">PALOTAL</option><option value="627">PAMPAN</option><option value="628">PAMPANITO</option><option value="629">PAMPANITO II</option><option value="630">PAMPATAR</option><option value="631">PANAQUIRE</option><option value="632">PAO DE ZARATE</option><option value="633">PAPARO</option><option value="634">PAPELON</option><option value="635">PARACOTOS</option><option value="636">PARAGUAIPOA</option><option value="637">PARAISO DE CHABASQUEN</option><option value="638">PARAPARA (GUARICO)</option><option value="640">PARAPARAL</option><option value="639">PARAPARA (LARA)</option><option value="641">PARIAGUAN</option><option value="642">PARIMABE</option><option value="643">PASO REAL DE MACAIRA</option><option value="644">PATANEMO</option><option value="645">PATIO REDONDO</option><option value="646">PAYARA</option><option value="647">PECAYA</option><option value="648">PEDERNALES</option><option value="649">PEDRAZA LA VIEJA</option><option value="650">PEDREGAL</option><option value="651">PEDRO GONZALEZ</option><option value="652">PENA BLANCA</option><option value="653">PENDARE</option><option value="654">PERIBECA</option><option value="655">PERTIGALETE</option><option value="656">PIACOA</option><option value="657">PICAPICA</option><option value="658">PIEDRA GRANDE</option><option value="659">PIMPINELA</option><option value="660">PINANGO</option><option value="661">PIRITU (ANZOATEGUI)</option><option value="662">PIRITU (FALCON)</option><option value="663">PIRITU (PORTUGUESA)</option><option value="664">PLATANILLAL</option><option value="665">PLAYA GRANDE</option><option value="666">PORLAMAR</option><option value="667">POTRERITOS</option><option value="668">POTRERO LA VIRGEN</option><option value="669">POZO VERDE</option><option value="670">POZUELOS</option><option value="671">PREGONERO</option><option value="672">PUEBLO CUMAREBO</option><option value="673">PUEBLO HONDO</option><option value="674">PUEBLO LLANO</option><option value="675">PUEBLO NUEVO (ANZOATEGUI)</option><option value="678">PUEBLO NUEVO DE LA SIERRA</option><option value="679">PUEBLO NUEVO DEL SUR</option><option value="680">PUEBLO NUEVO EL CHIVO</option><option value="676">PUEBLO NUEVO (FALCON)</option><option value="677">PUEBLO NUEVO (ZULIA)</option><option value="681">PUERTO AYACUCHO</option><option value="682">PUERTO CABELLO</option><option value="683">PUERTO CUMAREBO</option><option value="684">PUERTO DE NUTRIAS</option><option value="685">PUERTO LA CRUZ</option><option value="686">PUERTO MIRANDA</option><option value="687">PUERTO NUEVO</option><option value="992">PUERTO ORDAZ</option><option value="688">PUERTO PAEZ</option><option value="689">PUERTO PIRITU</option><option value="690">PUERTO SANTO</option><option value="691">PUERTO TETEO</option><option value="692">PUERTO VIVAS</option><option value="693">PUNTA CARDON</option><option value="694">PUNTA DE MATA</option><option value="695">PUNTA DE PIEDRA</option><option value="696">PUNTA DE PIEDRAS</option><option value="697">PUNTA GORDA</option><option value="698">PUNTO FIJO</option><option value="699">PURURECHE</option><option value="700">QUEBRADA ARRIBA</option><option value="701">QUEBRADA DE LA VIRGEN</option><option value="702">QUEBRADA SECA</option><option value="703">QUENIQUEA</option><option value="704">QUIBOR</option><option value="705">QUINTERO</option><option value="706">QUIRIQUIRE</option><option value="707">QUISIRO</option><option value="708">RIO ACARIGUA</option><option value="709">RIO CARIBE</option><option value="710">RIO CASANAY</option><option value="711">RIO CHICO</option><option value="712">RIO CHIQUITO</option><option value="713">RIO CLARO</option><option value="714">RIO NEGRO (MERIDA)</option><option value="715">RIO NEGRO (ZULIA)</option><option value="716">RIO SALADO</option><option value="717">RIO SECO (FALCON)</option><option value="718">RIO SECO (SUCRE)</option><option value="719">RIO TOCUYO</option><option value="720">ROSARIO DE PAYA</option><option value="721">RUBIO</option><option value="722">SABANA DE LA PLATA</option><option value="723">SABANA DE MENDOZA</option><option value="724">SABANA DE PARRA</option><option value="725">SABANA DE PIEDRA</option><option value="726">SABANA DE UCHIRE</option><option value="729">SABANA GRANDE DE ORITUCO</option><option value="727">SABANA GRANDE (TACHIRA)</option><option value="728">SABANA GRANDE (TRUJILLO)</option><option value="730">SABANA LIBRE</option><option value="731">SABANETA (BARINAS)</option><option value="733">SABANETA DE PALMAS</option><option value="732">SABANETA (FALCON)</option><option value="734">SALOM</option><option value="735">SAMARIAPO</option><option value="736">SAN AGUSTIN</option><option value="737">SAN ANTONIO (BARINAS)</option><option value="740">SAN ANTONIO DE IRAPA</option><option value="743">SAN ANTONIO DEL GOLFO</option><option value="741">SAN ANTONIO DE LOS ALTOS</option><option value="744">SAN ANTONIO DEL TACHIRA</option><option value="742">SAN ANTONIO DE YARE</option><option value="738">SAN ANTONIO (MONAGAS)</option><option value="739">SAN ANTONIO (ZULIA)</option><option value="843">SANARE</option><option value="745">SAN CARLOS (COJEDES)</option><option value="747">SAN CARLOS DEL ZULIA</option><option value="746">SAN CARLOS (ZULIA)</option><option value="748">SAN CASIMIRO</option><option value="749">SAN CRISTOBAL</option><option value="750">SAN CRISTOBAL DE TORONDOY</option><option value="751">SAN DIEGO (CARABOBO)</option><option value="753">SAN DIEGO DE CABRUTICA</option><option value="752">SAN DIEGO (MIRANDA)</option><option value="754">SAN FELIPE</option><option value="993">SAN FELIX (BOLIVAR)</option><option value="755">SAN FELIX (FALCON)</option><option value="756">SAN FELIX (MONAGAS)</option><option value="757">SAN FELIX (TACHIRA)</option><option value="758">SAN FERNANDO</option><option value="759">SAN FERNANDO DE APURE</option><option value="760">SAN FRANCISCO (ANZOATEGUI)</option><option value="761">SAN FRANCISCO (BOLIVAR)</option><option value="765">SAN FRANCISCO DE ASIS</option><option value="766">SAN FRANCISCO DE CARA</option><option value="767">SAN FRANCISCO DE GUAYO</option><option value="768">SAN FRANCISCO DE MACAIRA</option><option value="769">SAN FRANCISCO DE TIZNADOS</option><option value="770">SAN FRANCISCO DE YARE</option><option value="762">SAN FRANCISCO (LARA)</option><option value="763">SAN FRANCISCO (MONAGAS)</option><option value="764">SAN FRANCISCO (ZULIA)</option><option value="771">SAN IGNACIO</option><option value="772">SAN ISIDRO</option><option value="773">SAN JACINTO</option><option value="774">SAN JOAQUIN (ANZOATEGUI)</option><option value="775">SAN JOAQUIN (ARAGUA)</option><option value="776">SAN JOAQUIN (CARABOBO)</option><option value="777">SAN JOAQUIN DE NAVAY</option><option value="794">SAN JOSECITO</option><option value="780">SAN JOSE DE AEROCUAR</option><option value="781">SAN JOSE DE BARLOVENTO</option><option value="782">SAN JOSE DE BOLIVAR</option><option value="783">SAN JOSE DE BONGO</option><option value="784">SAN JOSE DE BRUZUAL</option><option value="785">SAN JOSE DE GUANIPA (EL TIGRITO)</option><option value="786">SAN JOSE DE GUARIBE</option><option value="787">SAN JOSE DE LA COSTA</option><option value="788">SAN JOSE DE LA MONTANA</option><option value="789">SAN JOSE DE PALMIRA</option><option value="790">SAN JOSE DE SAGUAZ</option><option value="791">SAN JOSE DE SEQUE</option><option value="792">SAN JOSE DE TIZNADOS</option><option value="793">SAN JOSE DE UNARE</option><option value="778">SAN JOSE (MERIDA)</option><option value="779">SAN JOSE (ZULIA)</option><option value="797">SAN JUAN BAUTISTA</option><option value="798">SAN JUAN DE LAS GALDONAS</option><option value="799">SAN JUAN DE LOS CAYOS</option><option value="800">SAN JUAN DE LOS MORROS</option><option value="801">SAN JUAN DE PAYARA</option><option value="802">SAN JUAN DE UNARE</option><option value="795">SAN JUAN (MERIDA)</option><option value="796">SAN JUAN (SUCRE)</option><option value="803">SAN LAZARO</option><option value="804">SAN LORENZO (SUCRE)</option><option value="805">SAN LORENZO (TACHIRA)</option><option value="806">SAN LUIS (FALCON)</option><option value="807">SAN LUIS (TRUJILLO)</option><option value="808">SAN MATEO (ANZOATEGUI)</option><option value="809">SAN MATEO (ARAGUA)</option><option value="810">SAN MIGUEL (ANZOATEGUI)</option><option value="813">SAN MIGUEL DE CUNAVICHE</option><option value="811">SAN MIGUEL (LARA)</option><option value="812">SAN MIGUEL (TRUJILLO)</option><option value="814">SAN NICOLAS</option><option value="815">SAN PABLO (ANZOATEGUI)</option><option value="816">SAN PABLO (TACHIRA)</option><option value="817">SAN PABLO (YARACUY)</option><option value="820">SAN PEDRO DE COCHE</option><option value="821">SAN PEDRO DEL ORINOCO</option><option value="822">SAN PEDRO DEL RIO</option><option value="818">SAN PEDRO (LARA)</option><option value="819">SAN PEDRO (MIRANDA)</option><option value="826">SAN RAFAEL DE ALCAZAR</option><option value="827">SAN RAFAEL DE ATAMAICA</option><option value="828">SAN RAFAEL DE CANAGUA</option><option value="829">SAN RAFAEL DE EL MOJAN</option><option value="830">SAN RAFAEL DE LAYA</option><option value="834">SAN RAFAEL DEL PINAL</option><option value="823">SAN RAFAEL (DELTA AMACURO)</option><option value="831">SAN RAFAEL DE ONOTO</option><option value="832">SAN RAFAEL DE ORITUCO</option><option value="833">SAN RAFAEL DE PALO ALZADO</option><option value="824">SAN RAFAEL (MERIDA)</option><option value="825">SAN RAFAEL (TRUJILLO)</option><option value="835">SAN SEBASTIAN</option><option value="836">SAN SILVESTRE</option><option value="837">SAN SIMON</option><option value="844">SANTA ANA (ANZOATEGUI)</option><option value="849">SANTA ANA DE CORO</option><option value="845">SANTA ANA (FALCON)</option><option value="846">SANTA ANA (NUEVA ESPARTA)</option><option value="847">SANTA ANA (TACHIRA)</option><option value="848">SANTA ANA (TRUJILLO)</option><option value="850">SANTA APOLONIA (MERIDA)</option><option value="851">SANTA APOLONIA (TRUJILLO)</option><option value="852">SANTA BARBARA (ANZOATEGUI)</option><option value="853">SANTA BARBARA (BARINAS)</option><option value="857">SANTA BARBARA DE CENTURION</option><option value="854">SANTA BARBARA (MIRANDA)</option><option value="855">SANTA BARBARA (MONAGAS)</option><option value="856">SANTA BARBARA (ZULIA)</option><option value="858">SANTA CATALINA (BARINAS)</option><option value="859">SANTA CATALINA (DELTA AMACURO)</option><option value="860">SANTA CLARA</option><option value="861">SANTA CRUZ (ARAGUA)</option><option value="864">SANTA CRUZ DE BUCARAL</option><option value="865">SANTA CRUZ DE GUACAS</option><option value="866">SANTA CRUZ DE LOS TAQUES</option><option value="870">SANTA CRUZ DEL ZULIA</option><option value="867">SANTA CRUZ DE MARA</option><option value="868">SANTA CRUZ DE MORA</option><option value="869">SANTA CRUZ DE ORINOCO</option><option value="862">SANTA CRUZ (PORTUGUESA)</option><option value="863">SANTA CRUZ (SUCRE)</option><option value="871">SANTA ELENA DE ARENALES</option><option value="872">SANTA ELENA DE UAIREN</option><option value="873">SANTA FE</option><option value="874">SANTA INES (ANZOATEGUI)</option><option value="875">SANTA INES (BARINAS)</option><option value="876">SANTA INES (LARA)</option><option value="877">SANTA ISABEL</option><option value="878">SANTA LUCIA (AMAZONAS)</option><option value="879">SANTA LUCIA (BARINAS)</option><option value="880">SANTA LUCIA (MIRANDA)</option><option value="883">SANTA MARIA DE CAPARO</option><option value="884">SANTA MARIA DE IPIRE</option><option value="881">SANTA MARIA (SUCRE)</option><option value="882">SANTA MARIA (ZULIA)</option><option value="885">SANTA RITA (ARAGUA)</option><option value="886">SANTA RITA (GUARICO)</option><option value="887">SANTA RITA (ZULIA)</option><option value="888">SANTA ROSA (ANZOATEGUI)</option><option value="889">SANTA ROSA (BARINAS)</option><option value="891">SANTA ROSALIA</option><option value="890">SANTA ROSA (TRUJILLO)</option><option value="892">SANTA TERESA DEL TUY</option><option value="893">SANTIAGO</option><option value="838">SAN TIMOTEO</option><option value="894">SANTO DOMINGO</option><option value="839">SAN VICENTE (APURE)</option><option value="842">SAN VICENTE DE LA REVANCHA</option><option value="840">SAN VICENTE (MONAGAS)</option><option value="841">SAN VICENTE (SUCRE)</option><option value="895">SARARE</option><option value="896">SEBORUCO</option><option value="897">SIERRA IMATACA</option><option value="898">SIERRA MAESTRA</option><option value="899">SINAMAICA</option><option value="900">SIQUISIQUE</option><option value="901">SOCOPO</option><option value="902">SOLANO</option><option value="903">SOLEDAD</option><option value="904">SORO</option><option value="905">SOSA</option><option value="906">SUCRE</option><option value="907">SUR AMERICA</option><option value="908">TABASCA</option><option value="909">TABAY</option><option value="910">TACARIGUA</option><option value="911">TACARIGUA DE LA LAGUNA</option><option value="912">TACARIGUA DE MAMPORAL</option><option value="913">TACATA</option><option value="914">TAGUAY</option><option value="915">TAGUAYA</option><option value="916">TAMARE</option><option value="917">TAPIPA</option><option value="918">TARIBA</option><option value="919">TEMBLADOR</option><option value="920">TEMERLA</option><option value="921">TERESEN</option><option value="922">TIA JUANA</option><option value="923">TIARA</option><option value="924">TIMOTES</option><option value="925">TINACO</option><option value="926">TINAQUILLO</option><option value="927">TINTORERO</option><option value="928">TOCOPERO</option><option value="929">TOCORON</option><option value="930">TOCUYITO</option><option value="931">TOCUYO DE LA COSTA</option><option value="932">TOKY-SHAMANANA</option><option value="933">TOROCOCO</option><option value="934">TORONDOY</option><option value="935">TORUNOS</option><option value="936">TOSTOS</option><option value="937">TOVAR</option><option value="938">TRES DE FEBRERO</option><option value="939">TRES ESQUINAS</option><option value="940">TRINIDAD DE LA CAPILLA</option><option value="995">TRUJILLO</option><option value="941">TUCACAS</option><option value="942">TUCANI</option><option value="943">TUCUPIDO</option><option value="944">TUCUPITA</option><option value="945">TUMEREMO</option><option value="946">TUNAME</option><option value="947">TUNAPUICITO</option><option value="948">TUNAPUY</option><option value="949">TUPURE</option><option value="950">TURMERO</option><option value="951">UMUQUENA</option><option value="952">UPATA</option><option value="953">URACHICHE</option><option value="954">URACOA</option><option value="955">URAMA</option><option value="956">URBANIZACION DELFIN MENDOZA</option><option value="957">URBANIZACION LEONARDO RUIZ PINEDA</option><option value="958">URENA</option><option value="959">URICA</option><option value="960">URUMACO</option><option value="961">UVERAL</option><option value="962">UVERITO (ANZOATEGUI)</option><option value="963">UVERITO (GUARICO)</option><option value="964">VALENCIA</option><option value="994">VALERA</option><option value="965">VALERITA</option><option value="966">VALLE DE GUANAPE</option><option value="967">VALLE DE LA PASCUA</option><option value="968">VALLE MORIN</option><option value="969">VALMORE RODRIGUEZ</option><option value="970">VEGA DE GUARAMACAL</option><option value="971">VEGUITAS</option><option value="972">VICTORINO</option><option value="973">VIENTO FRESCO</option><option value="974">VILLA BRUZUAL</option><option value="975">VILLA DE CURA</option><option value="978">VILLANUEVA</option><option value="976">VILLA ROSA (NUEVA ESPARTA)</option><option value="977">VILLA ROSA (PORTUGUESA)</option><option value="979">VILLARROEL (QUEBRADA SECA)</option><option value="980">YAGUA</option><option value="981">YAGUARAPARO</option><option value="982">YARACAL</option><option value="983">YARITAGUA</option><option value="984">YOCO</option><option value="985">YUMARE</option><option value="986">ZARAZA</option><option value="987">ZAZARIDA</option><option value="988">ZEA</option><option value="989">ZONA RICA</option><option value="990">ZUATA (ANZOATEGUI)</option><option value="991">ZUATA (ARAGUA)</option></select>
+				</td>
+				<td><label for="tipo" class="labelcell">Ciudad Destino:</label></td>
+				<td>
+					<select name="codciudaddes" id="codciudaddes" tabindex="11" class="smallfieldcell" style="width: 300px"><option value="0">-</option><option value="471">ABEJALES</option><option value="25">ACARIGUA</option><option value="45">ACHAGUAS</option><option value="569">ADICORA</option><option value="46">AEREOPUERTO CARACAS</option><option value="47">AEROPUERTO (35 KM)</option><option value="446">AEROPUERTO LAS FLORES</option><option value="48">AGUA BLANCA</option><option value="503">AGUA VIVA</option><option value="53">ALTAGRACIA DE ORITUCO</option><option value="55">AMUAY</option><option value="24">ANACO</option><option value="56">APARTADEROS (ESTADO MERIDA)</option><option value="57">APURITO</option><option value="58">ARAGUA DE BARCELONA</option><option value="60">ARAIRA</option><option value="502">ARAPUEY</option><option value="61">ARAURE</option><option value="586">AV. INTERCOMUNAL LAS CABILLAS</option><option value="64">BACHAQUERO</option><option value="65">BAHIA DE PLATA</option><option value="66">BAJO GRANDE</option><option value="68">BARCELONA</option><option value="33">BARINAS</option><option value="44">BARQUISIMETO</option><option value="72">BEJUMA</option><option value="73">BETIJOQUE</option><option value="74">BIRUACA</option><option value="75">BISCUCUY</option><option value="660">BOBURES</option><option value="76">BOCA DE AROA</option><option value="78">BOCA DEL RIO</option><option value="77">BOCA DE POZO</option><option value="79">BOCONO</option><option value="650">BOHORDAL</option><option value="81">BORAURE (AV. PRINCIPAL, MELINTON CAMBERO)</option><option value="473">BRAMON</option><option value="82">BRUZUAL</option><option value="571">BUCHUACO</option><option value="83">BUENA VISTA</option><option value="84">BURBUSAY</option><option value="100">CA\1\1O TIGRE</option><option value="29">CABIMAS</option><option value="7">CABUDARE</option><option value="666">CABURE</option><option value="86">CAGUA</option><option value="88">CAJA SECA</option><option value="2">CALABOZO</option><option value="90">CAMAGUAN</option><option value="91">CAMATAGUA</option><option value="97">CAMURI CHICO</option><option value="101">CANO ZANCUDO</option><option value="102">CANTAURA</option><option value="474">CAPACHO</option><option value="104">CAPITANEJO</option><option value="426">CARABALLEDA</option><option value="19">CARACAS</option><option value="107">CARBONERO</option><option value="42">CARORA</option><option value="664">CARRASQUERO</option><option value="113">CARRE PANAMERICANA DEL KM 8 AL 30</option><option value="585">CARRETERA N</option><option value="115">CARRIZAL</option><option value="20">CARUPANO</option><option value="116">CARVAJAL</option><option value="495">CASIGUA EL CUBO</option><option value="425">CATIA LA MAR</option><option value="118">CAUCAGUA (EXCEPTUANDO CAPAYA)</option><option value="120">CAUJARAO</option><option value="651">CENTRAL TACARIGUA</option><option value="26">CHARALLAVE</option><option value="123">CHARALLAVE (EDO.SUCRE)</option><option value="38">CHIVACOA</option><option value="593">CHUPARIN ABAJO</option><option value="475">CHURURU</option><option value="11">CIUDAD BOLIVAR</option><option value="128">CIUDAD BOLIVIA</option><option value="527">CIUDAD GUAYANA</option><option value="28">CIUDAD OJEDA</option><option value="130">COCOROTE</option><option value="476">COLON</option><option value="131">COLONCITO</option><option value="132">COLONIA DE TUREN</option><option value="477">CORDERO</option><option value="12">CORO</option><option value="134">CRIOGENICO JOSE</option><option value="135">CUA</option><option value="10">CUMANA</option><option value="138">CUMAREBO</option><option value="139">CUMBRE ROJA</option><option value="141">CURBATI</option><option value="466">DOS CAMINOS</option><option value="144">EJIDO</option><option value="501">EL AMPARO (TRUJILLO)</option><option value="145">EL CALLAO</option><option value="147">EL CARDON</option><option value="148">EL CARMELO</option><option value="479">EL COBRE</option><option value="150">EL CONSEJO</option><option value="535">EL COROZO</option><option value="151">EL DANTO</option><option value="489">EL DIVIDIVE</option><option value="564">EL DORADO</option><option value="553">EL GUAFAL</option><option value="153">EL GUAMACHE</option><option value="496">EL GUAYABO (EDO. ZULIA)</option><option value="587">EL JUNKO</option><option value="506">EL JUNQUITO</option><option value="643">EL LIMON</option><option value="155">EL MACO</option><option value="156">EL MENE</option><option value="157">EL MENITO</option><option value="158">EL MOJAN (LA GUAJIRA)</option><option value="499">EL MORALITO</option><option value="159">EL MORRO DE PUERTO</option><option value="162">EL PE\1\1ON</option><option value="163">EL PIACHE</option><option value="165">EL PINAL</option><option value="626">EL PLANETARIO (LA GUAJIRA)</option><option value="166">EL PLAYON</option><option value="167">EL PRADO</option><option value="562">EL RASTRO</option><option value="168">EL RETIRO</option><option value="170">EL ROSADO</option><option value="171">EL SAMAN</option><option value="173">EL SOMBRERO</option><option value="570">EL SUPI</option><option value="174">EL TAMBOR</option><option value="30">EL TIGRE</option><option value="176">EL TIGRITO</option><option value="177">EL TOCUYO</option><option value="411">EL VALLE DEL ESPIRITU SANTO</option><option value="558">EL VALLE (EDO. MERIDA)</option><option value="32">EL VIGIA</option><option value="179">EL YAQUE (AEROPUERTO)</option><option value="497">ENCONTRADOS</option><option value="181">ESCUQUE</option><option value="182">ESTACION DE SERVICIO CARORA</option><option value="183">FLOR DE PATRIA</option><option value="552">FLORES (CASERIO)</option><option value="589">FUERTE TIUNA</option><option value="186">GUACARA</option><option value="188">GUAMA (SOLO SECTOR CENTRO)</option><option value="189">GUANADITO</option><option value="43">GUANARE</option><option value="190">GUANARITO</option><option value="191">GUANTA</option><option value="8">GUARENAS</option><option value="194">GUASIPATI</option><option value="196">GUATIRE</option><option value="197">GUAYABAL</option><option value="198">GUAYABONES</option><option value="199">GUAYACAN DE LAS FLORES</option><option value="200">GUIGUE</option><option value="507">HIGUEROTE</option><option value="654">INDEPENDENCIA</option><option value="204">ISNOTU</option><option value="205">JUAN GRIEGO</option><option value="206">JUDIBANA</option><option value="565">KM. 88 VIA SANTA ELENA DE UAIREN</option><option value="563">LA APARICION DE OSPINO</option><option value="209">LA ASUNCION</option><option value="211">LA BEATRIZ</option><option value="212">LA CANADA DE URDANETA</option><option value="213">LA CEJITA</option><option value="214">LA CONCEPCION</option><option value="215">LA CONCEPCION(TRUJILLO)</option><option value="529">LA ENCRUCIJADA</option><option value="217">LA ENSENADA</option><option value="219">LA FRIA</option><option value="220">LA FUENTE</option><option value="221">LA GRITA</option><option value="222">LA GUAIRA</option><option value="223">LA GUARDIA</option><option value="245">LAGUNETICA</option><option value="468">LAGUNILLAS</option><option value="246">LAGUNILLAS (ZULIA)</option><option value="225">LA HOYADA</option><option value="448">LA MIEL</option><option value="456">LA MORITA (LARA)</option><option value="231">LA PALMITA</option><option value="481">LA PEDRERA</option><option value="234">LA PLAZUELA</option><option value="235">LA PUERTA</option><option value="590">LA RINCONADA</option><option value="238">LA SABANA DE GUACUCO</option><option value="240">LA SALINA</option><option value="247">LAS FLORES</option><option value="248">LAS GILES</option><option value="241">LA SIERRA</option><option value="588">LAS MAYAS</option><option value="595">LAS MESAS</option><option value="627">LAS MESAS DE ESNOJAQUE</option><option value="528">LAS PIEDRAS (EDO. FALCON)</option><option value="243">LA VELA DE CORO</option><option value="244">LA VICTORIA</option><option value="253">LECHERIAS</option><option value="493">LOBATERA</option><option value="625">LOMA LINDA (LA GUAJIRA)</option><option value="255">LOS BAGRES</option><option value="578">LOS GUAYOS</option><option value="256">LOS MILLANES</option><option value="461">LOS PUERTOS DE ALTAGRACIA</option><option value="257">LOS PUERTOS (EL TABLAZO)</option><option value="258">LOS ROBLES</option><option value="259">LOS TAQUES</option><option value="21">LOS TEQUES</option><option value="594">LOS VIDRIALES</option><option value="260">MACARAPANA</option><option value="261">MACHIQUES</option><option value="262">MAGDALENO</option><option value="23">MAIQUETIA</option><option value="264">MANZANILLO</option><option value="6">MARACAIBO</option><option value="3">MARACAY</option><option value="624">MAR BEACH (LA GUAJIRA)</option><option value="265">MARIARA</option><option value="268">MATARUCA</option><option value="22">MATURIN</option><option value="269">MENDOZA FRIA</option><option value="270">MENE GRANDE</option><option value="18">MERIDA</option><option value="271">MESA BOLIVAR</option><option value="273">MICHELENA</option><option value="274">MIRAFLORES</option><option value="275">MIRANDA (CARABOBO)</option><option value="536">MIRI</option><option value="276">MONTALBAN</option><option value="277">MORON</option><option value="572">MORUY</option><option value="629">MOSQUEY</option><option value="279">MOTATAN</option><option value="283">NUEVA BOLIVIA</option><option value="285">OCUMARE DEL TUY</option><option value="550">ORTIZ</option><option value="286">OSPINO</option><option value="288">PALMIRA</option><option value="289">PALO NEGRO</option><option value="292">PAMPATAR</option><option value="598">PANTO\1\1O</option><option value="294">PARACOTOS (ZONA INDUSTRIAL LA CUMACA)</option><option value="465">PARAPARA DE ORTIZ</option><option value="633">PAYARA</option><option value="296">PEDRAZA</option><option value="298">PEDREGALES</option><option value="299">PEQUIVEN</option><option value="300">PETROQUIMICA</option><option value="301">PIRITU</option><option value="302">PIRITU(EDO ANZOATEGUI)</option><option value="303">PLAYA EL ANGEL</option><option value="304">PLAYA GRANDE (EDO SUCRE)</option><option value="15">PORLAMAR</option><option value="484">PREGONERO</option><option value="305">PRIMERO DE MAYO</option><option value="568">PUEBLO NUEVO PARAGUANA</option><option value="35">PUERTO AYACUCHO</option><option value="31">PUERTO CABELLO</option><option value="463">PUERTO ESCONDIDO</option><option value="9">PUERTO LA CRUZ</option><option value="308">PUERTO NUTRIAS - CIUDAD NUTRIAS</option><option value="14">PUERTO ORDAZ</option><option value="310">PUERTO PIRITU</option><option value="311">PUNTA CARDON</option><option value="312">PUNTA DE LEIVA</option><option value="313">PUNTA DE MATA</option><option value="314">PUNTA DE PALMA</option><option value="315">PUNTA DE PIEDRAS</option><option value="316">PUNTA GORDA</option><option value="13">PUNTO FIJO</option><option value="319">QUIBOR</option><option value="321">QUIRIQUIRE</option><option value="323">RIO ACARIGUA</option><option value="513">RIO CHICO</option><option value="325">RUBIO</option><option value="326">SABANA DE LIBRE</option><option value="327">SABANA DE MENDOZA</option><option value="328">SABANA DE PARRA</option><option value="329">SABANETA (BARINAS)</option><option value="331">SAN ANTONIO DE LOS ALTOS</option><option value="16">SAN ANTONIO DEL TACHIRA</option><option value="334">SAN ANTONIO (PORLAMAR)</option><option value="549">SANARE (EDO. FALCON)</option><option value="1">SAN CARLOS</option><option value="335">SAN CARLOS DEL ZULIA</option><option value="336">SAN CASIMIRO</option><option value="17">SAN CRISTOBAL</option><option value="337">SAN DIEGO DE LOS ALTOS</option><option value="37">SAN FELIPE</option><option value="338">SAN FELIX</option><option value="36">SAN FERNANDO</option><option value="339">SAN FRANCISCO DE ASIS</option><option value="340">SAN FRANCISCO DE MACANAO</option><option value="343">SAN JOAQUIN</option><option value="345">SAN JOSE DE GUANIPA</option><option value="542">SAN JOSE DE GUARIBE</option><option value="346">SAN JOSE DE LOS ALTOS</option><option value="347">SAN JOSE DE PERIJA</option><option value="459">SAN JOSE (YARACUY)</option><option value="652">SAN JUAN BAUTISTA</option><option value="665">SAN JUAN DE COLON</option><option value="469">SAN JUAN DE LAGUNILLAS</option><option value="39">SAN JUAN DE LOS MORROS</option><option value="350">SAN JUAN DE PAYARA</option><option value="353">SAN MATEO</option><option value="354">SAN MIGUEL</option><option value="355">SAN PABLO</option><option value="356">SAN PEDRO DE LOS ALTOS</option><option value="4228">SAN RAFAEL DEL MOJAN</option><option value="4229">SAN RAFAEL DEL PI\1\1AL</option><option value="358">SAN SEBASTIAN</option><option value="359">SAN SEBASTIAN DE LOS REYES</option><option value="573">SANTA ANA DE PARAGUANA</option><option value="491">SANTA ANA (TACHIRA)</option><option value="365">SANTA ANA(TRUJILLO)</option><option value="367">SANTA BARBARA DE BARINAS</option><option value="366">SANTA BARBARA DEL ZULIA</option><option value="369">SANTA CRUZ DE ARAGUA</option><option value="548">SANTA CRUZ DEL ZULIA</option><option value="567">SANTA ELENA DE UAIREN</option><option value="372">SANTA LUCIA DEL TUY</option><option value="373">SANTA RITA</option><option value="642">SANTA RITA - ARAGUA</option><option value="27">SANTA TERESA DEL TUY</option><option value="361">SAN TOME</option><option value="363">SARARE</option><option value="492">SEBORUCO</option><option value="378">SOCOPO</option><option value="379">SOLEDAD</option><option value="381">SUPER OCTANOS</option><option value="383">TACARIGUA</option><option value="384">TAMARE</option><option value="385">TAPARITO</option><option value="386">TARATARA</option><option value="661">TARIBA NUEVA</option><option value="388">TARIBA VIEJA</option><option value="389">TEMBLADOR</option><option value="391">TIMOTES</option><option value="392">TINACO</option><option value="393">TINAQUILLO</option><option value="429">TOSTOS</option><option value="395">TOVAR</option><option value="41">TRUJILLO</option><option value="5">TUCACAS</option><option value="397">TUCANIZON</option><option value="399">TUCUPITA</option><option value="400">TUMEREMO</option><option value="402">TUREN</option><option value="403">TURIACAS</option><option value="404">TURMERO</option><option value="406">UPATA</option><option value="407">URACHICHE</option><option value="409">URENA</option><option value="4">VALENCIA</option><option value="34">VALERA</option><option value="40">VALLE DE LA PASCUA</option><option value="410">VALLE DE PEDRO GONZALEZ</option><option value="547">VALLE GUANAPE</option><option value="413">VALLE VERDE</option><option value="583">VALMORE RODRIGUEZ</option><option value="537">VEGUITAS</option><option value="414">VENEPAL</option><option value="415">VILLA DE CURA</option><option value="416">VILLA DEL ROSARIO</option><option value="417">VILLA ROSA</option><option value="584">VILLA TAMARE</option><option value="418">YAGUARAPARO</option><option value="419">YARACAL</option><option value="420">YARITAGUA</option></select>
+				</td>
+			</tr>
+			<tr>
+				<td><label for="tipo" class="labelcell">Municipio Remitente:</label></td>
+				<td>
+					<select name="municipiorem" id="municipiorem" tabindex="11" class="smallfieldcell" style="width: 300px"><option value="0">-</option><option value="0">Error. Codigo de Ciudad Invalido</option></select>
+				</td>
+				<td><label for="tipo" class="labelcell">Municipio Destino:</label></td>
+				<td>
+					<select name="municipiodes" id="municipiodes" tabindex="11" class="smallfieldcell" style="width: 300px"><option value="0">-</option><option value="0">Error. Codigo de Ciudad Invalido</option></select>
+				</td>
+			</tr>
+			<tr>
+				<td><label for="tipo" class="labelcell">Parroquia Remitente:</label></td>
+				<td>
+					<select name="parroquiarem" id="parroquiarem" tabindex="11" class="smallfieldcell" style="width: 300px"><option value="0">-</option><option value="0">Error. Codigo de Ciudad Invalido.</option></select>
+				</td>
+				<td><label for="tipo" class="labelcell">Parroquia Destino:</label></td>
+				<td>
+					<select name="parroquiades" id="parroquiades" tabindex="11" class="smallfieldcell" style="width: 300px"><option value="0">-</option><option value="0">Error. Codigo de Ciudad Invalido.</option></select>
+				</td>
+			</tr>
+			<tr>
+				<td><label for="tipo" class="labelcell">Zona Postal Remitente:</label></td>
+				<td>
+					<input type="text" name="zprem" id="zprem" tabindex="6" class="fieldcelltext filedborder" size="35" readonly="">
+				</td>
+				<td><label for="tipo" class="labelcell">Zona Postal Destino</label></td>
+				<td>
+					<input type="text" name="zpdes" id="zpdes" tabindex="6" class="fieldcelltext filedborder" size="35" readonly="">
+				</td>
+			</tr>
+			<tr>
+				<td><label for="tipo" class="labelcell">Teléfono Contacto:</label></td>
+				<td> 
+					<input type="text" name="tlf_ori" id="tlf_ori" tabindex="7" class="fieldcelltext filedborder" size="35">
+				</td>
+				<td><label for="tipo" class="labelcell">Oficina Destino:</label></td>
+				<td> 
+					<select name="oficinades" id="oficinades" tabindex="12" class="smallfieldcell" style="width: 300px"><option value="0">-</option><option value="0">NO HAY OFICINAS PARA MOSTRAR</option></select>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" rowspan="2" valign="top">
+					<label for="tipo" class="labelcell">Localidad Remitente:</label><br>
+					<textarea name="direccion_ori" id="direccion_ori" tabindex="8" class="estilotextarea" cols="30" rows="8"></textarea>
+				</td>
+				<td><label for="tipo" class="labelcell">Destinatario:</label></td>
+				<td> 
+					<input type="text" name="destinatario" id="destinatario" tabindex="13" class="fieldcelltext filedborder" size="35">
+				</td>
+			</tr>
+			<tr>
+				<td><label for="tipo" class="labelcell">Persona Contacto:</label></td>
+				<td> 
+					<input type="text" name="contactodes" id="contactodes" tabindex="14" class="fieldcelltext filedborder" size="35">
+				</td>
+			</tr>
+			<tr>
+			<td colspan="2" rowspan="5" valign="top">
+					<label for="tipo" class="labelcell">Inmueble Remitente:</label><br>
+					<textarea name="inmueble_ori" id="inmueble_ori" tabindex="9" class="estilotextarea" cols="30" rows="8"></textarea>
+				</td>
+				<td><label for="tipo" class="labelcell">R.I.F/C.I:</label></td>
+				<td> 
+					<input type="text" name="cedulades" id="cedulades" tabindex="15" class="fieldcelltext filedborder" size="35">
+				</td>
+			</tr>
+			<tr>
+				<td><label for="tipo" class="labelcell">Celular:</label></td>
+				<td> 
+					<input type="text" name="celular" id="celular" tabindex="16" class="fieldcelltext filedborder" size="35">
+				</td>
+			</tr>
+			<tr>
+				<td><label for="tipo" class="labelcell">Teléfono Contacto:</label></td>
+				<td> 
+					<input type="text" name="tlf_des" id="tlf_des" tabindex="16" class="fieldcelltext filedborder" size="35">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<label for="tipo" class="labelcell">Localidad Destinatario:</label><br>
+					<textarea name="direccion_des" id="direccion_des" tabindex="17" class="estilotextarea" cols="30" rows="8"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<label for="tipo" class="labelcell">Inmueble Destinatario:</label><br>
+					<textarea name="inmueble_des" id="inmueble_des" tabindex="18" class="estilotextarea" cols="30" rows="8"></textarea>
+				</td>
+			</tr>
+		</tbody>
+		<thead>
+			<tr>
+				<th width="900px" colspan="4">Casillero</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td colspan="2" align="center"> 
+					<label for="servicio" class="labelcell">Siglas Casillero: </label><input type="text" name="siglas" id="siglas" tabindex="19" class="fieldcelltext filedborder" size="45">
+				</td>
+				<td colspan="2" align="center"> 
+					<label for="servicio" class="labelcell">Número Casillero: </label><input type="text" name="codcasillero" id="codcasillero" tabindex="20" class="fieldcelltext filedborder" size="45">
+				</td>
+			</tr>
+		</tbody>
+		<thead>
+			<tr>
+				<th width="900px" colspan="4">Datos de Envío</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<!-- <td><label for="tipo" class="labelcell">Fecha:</label></td>
+				<td> 
+					<input type="text" name="fechaguia" id="fechaguia" tabindex="21" class="fieldcelltext filedborder" size="15"/>
+				</td> -->
+				<td><label for="tipo" class="labelcell">Referencia:</label></td>
+				<td> 
+					<input type="text" name="referencia" id="referencia" tabindex="23" class="fieldcelltext filedborder" size="35">
+				</td>
+				<td colspan="2">
+					<label for="tipo" class="labelcell">Descripción Contenido:</label><br>
+					<textarea name="descripcioncon" id="descripcioncon" tabindex="22" class="estilotextarea" cols="30" rows="8"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td><label for="tipo" class="labelcell">Cant. Piezas:</label></td>
+				<td> 
+					<input type="text" name="numpiezas" id="numpiezas" tabindex="24" class="fieldcellnum filedborder" size="11">
+				</td>
+				<td><label for="tipo" class="labelcell">Peso Bruto (Kg.):</label></td>
+				<td> 
+					<input type="text" name="pesobru" id="pesobru" tabindex="25" class="fieldcellnum filedborder" size="11">
+				</td>
+			</tr>
+			<tr>
+				<td><label for="tipo" class="labelcell">Tipo de Envío:</label></td>
+				<td>
+					<select name="tipoenvio" id="tipoenvio" tabindex="26" class="smallfieldcell" style="width: 110px;"><option value="0">-</option><option value="D">DOCUMENTO</option><option value="M">MERCANCIA</option></select>
+				</td>
+				<td><label for="tipo" class="labelcell">Valor Declarado (Bs.):</label></td>
+				<td> 
+					<input type="text" name="valordec" id="valordec" tabindex="27" class="fieldcellnum filedborder" size="11">
+				</td>
+			</tr>
+			<tr>
+				<td><label for="tipo" class="labelcell">Seguro</label></td>
+				<td>
+					<select name="seguro" id="seguro" tabindex="28" class="smallfieldcell" style="width: 110px;">
+					<option value="0">-</option>
+					<option value="SI">SI</option>
+					<option value="NO">NO</option>
+					</select>
+				</td>
+				<td><label for="tipo" class="labelcell">Valor Mercancia (Bs.):</label></td>
+				<td> 
+					<input type="text" name="valormer" id="valormer" tabindex="29" class="fieldcellnum filedborder" size="11">
+				</td>
+			</tr>
+			<tr>
+				<td><label for="tipo" class="labelcell">Modalidad:</label></td>
+				<td>
+					<select name="modalidad" id="modalidad" tabindex="30" class="smallfieldcell" style="width: 300px;"><option value="0">-</option><option value="1">COBRAR FLETE EN DESTINO</option><option value="2">COBRAR MERCANCIA EN DESTINO</option><option value="3">COBRAR FLETE + MERCANCIA EN DESTINO</option></select>
+				</td>
+			</tr>
+		</tbody>
+			<tbody><tr>
+				<td colspan="4" align="center"><input type="button" name="consultar" id="consultar" value="Procesar" tabindex="30" class="boton"></td>
+			</tr> 
+		</tbody></table>
+	</form>
+	<br>
+	
+	<div id="respuesta" style="display: none"></div>
+	<br>
+		<script type="text/javascript">
+	var urlServicio = 'http://sandbox.grupozoom.com/proveedores/frontend/webservicesge/';
+	var urlServicio2 = 'http://sandbox.grupozoom.com/internet/servicios/webservices/';
+	var $cod='sincod';
+
+	//CARGAR LAS CIUDADES
+	function BindCiudad($element,$tipo) {
+		$.ZoomWebServices( urlServicio2, { 	
+			service: 'getCiudades',
+			data: { 
+				filtro: $tipo
+			},
+			onSuccess: function(data) {
+				var $tabla = '';
+				var $total=data.length;
+				var opt = '<option value="0">-</option>';
+				if($total>0) {			
+					for(i=0; i<$total; i++) {
+						f = data[i];
+						opt += '<option value="' + f.codciudad + '">' + f.nombre_ciudad + '</option>';
+					}
+					
+				}else{
+					opt += '<option value="0">' + data.errormessage + '</option>';
+				}
+				$($element).html(opt);
+			}
+		});
+	}
+
+	//CARGAR LAS OFICINAS
+	function BindOficina($element,$codciudad,$retirarofi,$servicioenvio) {
+		$.ZoomWebServices( urlServicio2, { 	
+			service: 'getOficinasGE',
+			data: { 
+				codciudad: $codciudad,
+				retirarofi: $retirarofi,
+				servicioenvio: $servicioenvio
+			},
+			onSuccess: function(data) {
+				/*var opt = '<option value="0">-</option>';
+				for(var i in data) {
+					opt += '<option value="' + i + '">' + data[i] + '</option>';
+				}
+				$($element).html(opt);*/
+				var $tabla = '';
+				var $total=data.length;
+				var opt = '<option value="0">-</option>';
+				if($total>0) {			
+					for(i=0; i<$total; i++) {
+						f = data[i];
+						opt += '<option value="' + f.codoficina + '">' + f.nombre + '</option>';
+					}
+					
+				}else{
+					opt += '<option value="0">' + data.errormessage + '</option>';
+				}
+				$($element).html(opt);
+			}
+		});
+	}
+
+	//CARGAR LOS SERVICIOS
+	function BindServicio($element,$codcliente,$password) {
+		$.ZoomWebServices( urlServicio, { 	
+			service: 'getServiciosCliente',
+			data: { 
+				codcliente: $codcliente,
+				clave: $password
+			},
+			onSuccess: function(data) {
+				var $total=data.length;
+				var opt = '<option value="0">-</option>';
+				if($total>0) {			
+					for(i=0; i<$total; i++) {
+						f = data[i];
+						opt += '<option value="' + f.codservicio + '">' + f.nombre + '</option>';
+					}
+					
+				}else{
+					opt += '<option value="0">' + data.errormessage + '</option>';
+				}
+				$($element).html(opt);
+			}
+		});
+	}
+
+
+	//CARGAR LOS MUNICIPIOS
+	function BindMunicipios($element,$codciudad,$tipo) {
+		$.ZoomWebServices( urlServicio2, { 	
+			service: 'getMunicipios',
+			data: { 
+				codciudad: $codciudad,
+				remitente: $tipo
+			},
+			onSuccess: function(data) {
+				var $tabla = '';
+				var $total=data.length;
+				var opt = '<option value="0">-</option>';
+				if($total>0) {			
+					for(i=0; i<$total; i++) {
+						f = data[i];
+						opt += '<option value="' + f.codigo_municipio + '">' + f.nombre_municipio + '</option>';
+					}
+					
+				}else{
+					opt += '<option value="0">' + data.errormessage + '</option>';
+				}
+				$($element).html(opt);
+			}
+		});
+	}
+
+	//CARGAR LAS PARROQUIAS
+	function BindParroquias($element,$codciudad,$codmunicipio,$tipo) {
+		$.ZoomWebServices( urlServicio2, { 	
+			service: 'getParroquias',
+			data: { 
+				codciudad: $codciudad,
+				codmunicipio: $codmunicipio,
+				remitente: $tipo
+			},
+			onSuccess: function(data) {
+				var $tabla = '';
+				var $total=data.length;
+				var opt = '<option value="0">-</option>';
+				if($total>0) {			
+					for(i=0; i<$total; i++) {
+						f = data[i];
+						opt += '<option value="' + f.codigo_parroquia + '/' + f.codigo_postal + '">' + f.nombre_parroquia + '</option>';
+					}
+					
+				}else{
+					opt += '<option value="0">' + data.errormessage + '</option>';
+				}
+				$($element).html(opt);
+			}
+		});
+	}
+
+	//CARGA DE LAS CIUDADES DEL REMITENTE
+	BindCiudad("#codciudadrem","remitente");
+	BindMunicipios("#municipiorem",$("#codciudadrem").val(),'f');
+	BindParroquias("#parroquiarem",$("#codciudadrem").val(),$("#municipiorem").val(),'t');
+	
+	BindOficina("#oficinades",0,1,1);
+	BindCiudad("#codciudaddes","nacional");
+	BindMunicipios("#municipiodes",$("#codciudaddes").val(),'f');
+	BindParroquias("#parroquiades",$("#codciudaddes").val(),$("#municipiodes").val(),'f');
+
+	$("#codcliente").blur(function() {
+		BindServicio("#servicio",$("#codcliente").val(),$("#password").val());
+	});
+		
+	$("#password").blur(function() {
+		BindServicio("#servicio",$("#codcliente").val(),$("#password").val());
+	});
+
+	
+	$("#servicio").change(function() {
+		var $cod='nacional';
+		
+		if($(this).val()==1){ //SI EL SERVICIO ES COD LAS CIUDADES CAMBIAN
+			$cod='cod';
+			$("#modalidad").removeClass("smallfieldcellred");
+			$("#valormer").removeClass("smallfieldcellred");
+		}else{
+			$("#modalidad").addClass("smallfieldcellred");
+			$("#valormer").addClass("smallfieldcellred");
+		}
+		if($(this).val()==48){ //SI EL SERVICIO ES CASILLERO CAMBIO EL ESTILO DE LOS CAMPOS QUE NO SON REQUERIDOS.
+			$("#codciudadrem").addClass("smallfieldcellred");
+			$("#municipiorem").addClass("smallfieldcellred");
+			$("#parroquiarem").addClass("smallfieldcellred");
+			$("#zprem").addClass("smallfieldcellred");
+			$("#direccion_ori").addClass("estilotextareared");
+			$("#inmueble_ori").addClass("estilotextareared");
+			
+			$("#retirarofi").addClass("smallfieldcellred");
+			$("#codciudaddes").addClass("smallfieldcellred");
+			$("#municipiodes").addClass("smallfieldcellred");
+			$("#parroquiades").addClass("smallfieldcellred");
+			$("#zpdes").addClass("smallfieldcellred");
+			$("#oficinades").addClass("smallfieldcellred");
+			$("#contactodes").addClass("smallfieldcellred");
+			$("#cedulades").addClass("smallfieldcellred");
+			$("#tlf_des").addClass("smallfieldcellred");
+
+			$("#direccion_des").addClass("estilotextareared");
+			$("#inmueble_des").addClass("estilotextareared");
+
+			$("#siglas").removeClass("smallfieldcellred");
+			$("#codcasillero").removeClass("smallfieldcellred");
+
+		}else{
+			$("#codciudadrem").removeClass("smallfieldcellred");
+			$("#municipiorem").removeClass("smallfieldcellred");
+			$("#parroquiarem").removeClass("smallfieldcellred");
+			$("#zprem").removeClass("smallfieldcellred");
+			$("#direccion_ori").removeClass("estilotextareared");
+			$("#inmueble_ori").removeClass("estilotextareared");
+			
+			$("#retirarofi").removeClass("smallfieldcellred");
+			$("#codciudaddes").removeClass("smallfieldcellred");
+			$("#municipiodes").removeClass("smallfieldcellred");
+			$("#parroquiades").removeClass("smallfieldcellred");
+			$("#zpdes").removeClass("smallfieldcellred");
+			$("#oficinades").removeClass("smallfieldcellred");
+			$("#contactodes").removeClass("smallfieldcellred");
+			$("#cedulades").removeClass("smallfieldcellred");
+			$("#tlf_des").removeClass("smallfieldcellred");
+
+			$("#direccion_des").removeClass("estilotextareared");
+			$("#inmueble_des").removeClass("estilotextareared");
+			
+			$("#siglas").addClass("smallfieldcellred");
+			$("#codcasillero").addClass("smallfieldcellred");
+		}
+		
+		//BUSCAR EL CODIGO DE FAMILIA PARA INDICAR SI EL CAMPO CONSIGNACION ES REQUERIDO
+		$.ZoomWebServices( urlServicio, { 	
+			service: 'getServiciosCliente',
+			data: { 
+				codcliente: $("#codcliente").val(),
+				clave: $("#password").val()
+			},
+			onSuccess: function(data) {
+				var $codfamilia='';
+				var $total=data.length;
+				if($total>0) {			
+					for(i=0; i<$total; i++) {
+						f = data[i];
+						if(f.codservicio==$("#servicio").val()){
+							$codfamilia=f.codfamilia;
+						}
+					}
+				}
+				if($codfamilia!=55){
+					$("#consignacion").addClass("smallfieldcellred");
+				}else{
+					$("#consignacion").removeClass("smallfieldcellred");
+				}
+
+			}
+		});
+
+		BindCiudad("#codciudaddes",$cod);
+		BindOficina("#oficinades",0,$("#retirarofi").val(),$cod);
+	});
+
+	
+	$("#retirarofi").change(function() {
+		if($("#servicio").val()==1){ //SI EL SERVICIO ES COD NACIONAL LAS OFICINAS A RETIRAR CAMBIAN
+			//$cod='cod';
+			$cod=1;
+		}else{
+			$cod=2;
+		}
+		BindOficina("#oficinades",$("#codciudaddes").val(),$("#retirarofi").val(),$cod);
+	});
+	//DIRECCION POSTAL DESTINATARIO
+	$("#codciudaddes").change(function() {
+		BindOficina("#oficinades",$("#codciudaddes").val(),$("#retirarofi").val(),$cod);
+		BindMunicipios("#municipiodes",$("#codciudaddes").val(),'f');
+	});
+
+	$("#municipiodes").change(function() {
+		BindParroquias("#parroquiades",$("#codciudaddes").val(),$("#municipiodes").val(),'f');
+	});
+
+	$("#parroquiades").change(function() {
+		arrayprr = $("#parroquiades").val().split('/');
+		codpostal = arrayprr[1];
+		$("#zpdes").val(codpostal);
+	});
+
+	//DIRECCION POSTAL REMITENTE
+	$("#codciudadrem").change(function() {
+		BindMunicipios("#municipiorem",$("#codciudadrem").val(),'t');
+	});
+
+	$("#municipiorem").change(function() {
+		BindParroquias("#parroquiarem",$("#codciudadrem").val(),$("#municipiorem").val(),'t');
+	});
+
+	$("#parroquiarem").change(function() {
+		arrayprr = $("#parroquiarem").val().split('/');
+		codpostal = arrayprr[1];
+		$("#zprem").val(codpostal);
+	});
+	
+
+
+	$(function() {
+		// LLENAR EL SELECT DE TIPO ENVIO
+		$.ZoomWebServices( urlServicio, {	
+			service: 'getTipoEnvio',
+			onSuccess: function(data) {
+				var opt = '<option value="0">-</option>';
+				for(var i in data) {
+					opt += '<option value="' + i + '">' + data[i] + '</option>';
+				}
+				$('#tipoenvio').html(opt);
+			}
+		});
+		$.ZoomWebServices( urlServicio, {	
+			service: 'getModalidadCod',
+			onSuccess: function(data) {
+				var opt = '<option value="0">-</option>';
+				//var opt = '';
+				for(var i in data) {
+					opt += '<option value="' + i + '">' + data[i] + '</option>';
+				}
+				$('#modalidad').html(opt);
+			}
+		});
+		$("#consultar").click(function() {
+			var $codparroquiarem='';
+			arrayparroquiarem = $("#parroquiarem").val().split('/');
+			$codparroquiarem = arrayparroquiarem[0];
+
+			var $codparroquiades='';
+			arrayparroquiades = $("#parroquiades").val().split('/');
+			$codparroquiades = arrayparroquiades[0];
+
+			$.ZoomWebServices( urlServicio, {
+				service: 'createShipment',
+				data: {
+					"codcliente": $("#codcliente").val(),
+					"password": $("#password").val(),
+					"certificado": $("#certificado").val(),
+					"servicio": $("#servicio").val(),
+					"consignacion": $("#consignacion").val(),
+					"contacto_ori": $("#contacto_ori").val(),
+					"codciudadrem": $("#codciudadrem").val(),
+					"municipiorem": $("#municipiorem").val(),
+					"parroquiarem": $codparroquiarem,
+					"zona_rem": $("#zprem").val(),
+					"tlf_ori": $("#tlf_ori").val(),
+					"direccion_ori": $("#direccion_ori").val(),
+					"inmueble_ori": $("#inmueble_ori").val(),
+					"retirarofi": $("#retirarofi").val(),
+					"codciudaddes": $("#codciudaddes").val(),
+					"municipiodes": $("#municipiodes").val(),
+					"parroquiades": $codparroquiades,
+					"zona_des": $("#zpdes").val(),
+					"oficinades": $("#oficinades").val(),
+					"destinatario": $("#destinatario").val(),
+					"contactodes": $("#contactodes").val(),
+					"cedulades": $("#cedulades").val(),
+					"tlf_des": $("#tlf_des").val(),
+					"direccion_des": $("#direccion_des").val(),
+					"inmueble_des": $("#inmueble_des").val(),
+					"siglas": $("#siglas").val(),
+					"codcasillero": $("#codcasillero").val(),
+					//"fechaguia": $("#fechaguia").val(),
+					"descripcioncon": $("#descripcioncon").val(),
+					"referencia": $("#referencia").val(),
+					"numpiezas": $("#numpiezas").val(),
+					"pesobru": $("#pesobru").val(),
+					"tipoenvio": $("#tipoenvio").val(),
+					"valordec": $("#valordec").val(),
+					"modalidad": $("#modalidad").val(),
+					"valormer": $("#valormer").val(),
+					"seguro": $("#seguro").val(),
+					"celulardest": $("#celular").val()
+					
+				},
+				onSuccess: function(midata){		
+					var $tabla = '';
+					if(midata.errormessage==undefined){
+						$tabla = $tabla + '<p align=center><label for=id class=labelcell>Guia Generada Con Exito: ' + midata['numguia'] + '</label></p>';
+						$(document).ready(function(){
+							$.ZoomWebServices( urlServicio, {
+								service: 'generarPDF',
+								data: {
+								"codcliente": $("#codcliente").val(),
+								"password": $("#password").val(),
+								"numguia": midata['numguia']
+								},
+								onSuccess: function(datos){		
+									if(datos.errormessage==undefined){
+										var valor='data:application/pdf;base64,'+datos.objetopdf;
+										$tabla= $tabla + '<center><form method="POST" action="ejemplo_guia.php" id="the_form">';
+										$tabla= $tabla + '<input type="hidden" value="1" name="id">';
+										$tabla= $tabla + '<input type="hidden" value="'+datos.objetopdf+'" name="object">';
+										$tabla= $tabla + '<input type="hidden" value="'+midata['numguia']+'" name="numguia">';
+										$tabla= $tabla + '<div class="myButton"><input type="submit" name="" value=""></div></form></center>';
+									}else{
+										alert(datos.errormessage);		
+									}
+									$("#respuesta").html($tabla).show();
+								},
+								onError: function(mensaje) {
+									alert(mensaje);	
+								}
+							});
+						});
+					}
+					else{
+						alert(midata.errormessage);
+					}				
+					$("#respuesta").html($tabla).show();
+				},
+				onError: function(mensaje) {
+					alert(mensaje);	
+				}
+			});
+		});
+	});
+</script>
+
+</body></html>

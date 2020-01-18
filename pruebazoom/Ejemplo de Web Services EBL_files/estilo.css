@@ -1,0 +1,41 @@
+body {
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+}	
+h2,h3,h4 { color: #06C; }
+dl {
+    margin-bottom:50px;
+}
+ 
+dl dt {
+    background-color:#06C;
+    color: white;
+    float:left;
+    font-weight:bold;
+    margin-right:10px;
+    padding:5px;
+    width:150px;
+}
+ 
+dl dd {
+    margin:2px 0;
+    padding:5px 0;
+}
+dl dd ul li  strong {
+	color: #06C;	
+}
+a {
+	color:blue;
+	text-decoration:underline;	
+}
+font{
+	color: #06C;
+	font-weight: bold;
+}
+.boton {
+	text-align:center;
+	padding:3px;
+	border-bottom:1px solid black;
+	border-right:1px solid black;
+	border-top:1px solid #666;
+	border-left:1px solid #666;
+}

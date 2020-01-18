@@ -1,5 +1,7 @@
 <?php
-$ch = curl_init("https://060d3f560e548b08d411633144ae09fb:44e7bd60350b8ad36bc0f899930ad51e@anatie.myshopify.com/admin/api/2019-10/orders/1839940239434/transactions.json");
+include_once("../_config/configShopify.php");
+
+$url = $urlTransaccionesUnaOrden;
 
 $variant = array('transaction' => 
     array(

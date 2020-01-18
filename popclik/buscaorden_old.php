@@ -8,19 +8,13 @@ require("../php-shopify/lib/HttpRequestJson.php");
 require("../php-shopify/lib/ShopifyResource.php");
 require("../php-shopify/lib/ShopifySDK.php");
 require("../php-shopify/lib/order.php");
+include_once("../_config/configShopify.php");
 
-// $config = array(
-//     'ShopUrl' => 'anatie.myshopify.com',
-//     'ApiKey' => '060d3f560e548b08d411633144ae09fb',
-//     'Password' => '44e7bd60350b8ad36bc0f899930ad51e',
-// );
-// 
-// PHPShopify\ShopifySDK::config($config);
 
 $config = array(
-    'ShopUrl' => 'anatie.myshopify.com',
-    'ApiKey' => '060d3f560e548b08d411633144ae09fb',
-    'SharedSecret' => '9eab1dc9805a64405c3ce49c56ff5e62',
+    'ShopUrl' => $urlTienda,
+    'ApiKey' => $KeyTienda,
+    'SharedSecret' => $SecretTienda,
 );
 
 //your_authorize_url.php
@@ -47,7 +41,6 @@ $params = array(
 
 // echo $orders;
 
-// // $url = 'https://060d3f560e548b08d411633144ae09fb:44e7bd60350b8ad36bc0f899930ad51e@anatie.myshopify.com/admin/api/2019-10/orders.json';
 
 // // $ch = curl_init();
 // // curl_setopt($ch, CURLOPT_URL,$url );

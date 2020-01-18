@@ -1,4 +1,6 @@
 <?php
+include_once("../_config/configShopify.php");
+
 // require("../php-shopify/lib/AuthHelper.php");
 // require("../php-shopify/lib/Exception/SdkException.php");
 // require("../php-shopify/lib/Exception/CurlException.php");
@@ -8,22 +10,6 @@
 // require("../php-shopify/lib/ShopifyResource.php");
 // require("../php-shopify/lib/ShopifySDK.php");
 // require("../php-shopify/lib/order.php");
-
-// $config = array(
-//     'ShopUrl' => 'anatie.myshopify.com',
-//     'ApiKey' => '060d3f560e548b08d411633144ae09fb',
-//     'Password' => '44e7bd60350b8ad36bc0f899930ad51e',
-// );
-
-// PHPShopify\ShopifySDK::config($config);
-
-// $config = array(
-//     'ShopUrl' => 'anatie.myshopify.com',
-//     'ApiKey' => '060d3f560e548b08d411633144ae09fb',
-//     'SharedSecret' => '9eab1dc9805a64405c3ce49c56ff5e62',
-// );
-
-// PHPShopify\ShopifySDK::config($config);
 
 // //your_authorize_url.php
 // $scopes = 'read_orders,write_orders';
@@ -50,7 +36,7 @@
 
 // echo $orders;
 
-$url = 'https://060d3f560e548b08d411633144ae09fb:44e7bd60350b8ad36bc0f899930ad51e@anatie.myshopify.com/admin/api/2019-10/orders.json?financial_status=pending';
+$url = $urlOrdenesPendientes;
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL,$url );
@@ -91,7 +77,7 @@ if (isset($result)) {
 }
 
 if ($notfound) {
-    $url = 'https://060d3f560e548b08d411633144ae09fb:44e7bd60350b8ad36bc0f899930ad51e@anatie.myshopify.com/admin/api/2019-10/orders.json?financial_status=partially_paid';
+    $url = $urlOrdenesParcialmentePagadas;
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL,$url );
@@ -105,7 +91,7 @@ if ($notfound) {
         $ordenes=json_decode($result,true);
         foreach ($ordenes["orders"] as $lista => $orden) {
             if ($_GET["orden"]==$orden["order_number"]) {
-                $url = 'https://060d3f560e548b08d411633144ae09fb:44e7bd60350b8ad36bc0f899930ad51e@anatie.myshopify.com/admin/api/2019-10/orders/'.trim($orden["id"]).'/transactions.json';
+                $url = $urlBuscarTransaccion.trim($orden["id"]).'/transactions.json';
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL,$url );
                 curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);// set optional params

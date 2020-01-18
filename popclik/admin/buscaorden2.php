@@ -1,5 +1,7 @@
 <?php
-$url = 'https://060d3f560e548b08d411633144ae09fb:44e7bd60350b8ad36bc0f899930ad51e@anatie.myshopify.com/admin/api/2019-10/orders.json?financial_status=paid';
+include_once("../../_config/configShopify.php");
+
+$url = $urlOrdenesPagadas;
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL,$url );
