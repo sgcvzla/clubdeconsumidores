@@ -1,5 +1,5 @@
 // Variables públicas, constantes y función de transformación de números.
-var ruta = "img/";
+var ruta = "../img/";
 var opcfiltro = 'Todas';
 
 function cargadatos() {
@@ -24,9 +24,9 @@ function cargadatos() {
 				lista = '';
 				if (datos.registros != undefined) {
 					for (var i = 0; i < datos.registros.length; i++) {
+						lista += '<a id="' + datos.registros[i].id + '" href="./menu.html?id=' + datos.registros[i].id + '" onclick="sesionprov(this.id)">';
 						lista += '<div class="item ' + datos.registros[i].categoria + '" align="center">';
 						lista += '<div class="imagen" align="center">';
-						lista += '<a id="' + datos.registros[i].id + '" href="cupones/cupon.html?id=' + datos.registros[i].id + '" onclick="sesionprov(this.id)">';
 						if (fexisteUrl(ruta + datos.registros[i].imagen)) {
 							if (datos.registros[i].imagen == "") {
 								lista += '<img class="img_comercio" src="' + ruta + 'sin_imagen.jpg' + '" title="' + datos.registros[i].nombre + '" />';
@@ -40,9 +40,9 @@ function cargadatos() {
 								lista += '<img class="img_comercio" src="' + ruta + datos.registros[i].imagen + '" title="' + datos.registros[i].nombre + '" />';
 							}
 						}
+						lista += '</div>';
+						lista += '</div>';
 						lista += '</a>';
-						lista += '</div>';
-						lista += '</div>';
 					}
 					document.getElementById("comercios").innerHTML = lista;
 				}
@@ -50,7 +50,7 @@ function cargadatos() {
 		}
 	}
 
-	xmlhttp.open("GET", "php/buscacomercios.php", true);
+	xmlhttp.open("GET", "../php/buscacomercios.php", true);
 	xmlhttp.send();
 }
 

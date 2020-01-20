@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, scalable=yes"> -->
+		<title></title>
+		<link rel="stylesheet" href="premios.css">
+		<script type="text/javascript" src="../js/funciones.js"></script>
+	</head>
+	<body onload="inicio()">
+		<div id="container">
+			<div class="logo" align="center">
+				<img class="img-logo" id="logo" src="" alt="">
+			</div>
+			<h2 style="text-align: center; color: black;">Módulo administrativo</h2>
+			<h3 align="center">Premios</h3>
+			<div id="div1" align="center">
+				<!-- Clave anterior -->
+				<div class="cmps">
+					<span class="etiq">Clave anterior:</span>
+					<input id="cmpanterior" class="campo" type="password" size="50" maxlength="100" />
+				</div>
+				<!-- Clave nueva -->
+				<div class="cmps">
+					<span class="etiq">Clave nueva:</span>
+					<input id="cmpnueva" class="campo" type="password" size="50" maxlength="100" />
+				</div>
+				<!-- Confirmar clave nueva -->
+				<div class="cmps">
+					<span class="etiq">Confirmar clave nueva:</span>
+					<input id="cmpconfirmacion" class="campo" type="password" size="50" maxlength="100" />
+				</div>
+				<!-- Linea de botones -->
+				<div id="botones" class="btns">
+					<button id="btnenviar" onclick="enviar()" style="width: 7em;">Enviar</button>
+					<button id="limpiar" onclick="limpiar()" style="width: 7em;">Limpiar</button>
+				</div>
+				<div class="btns">
+					<button id="btnvolver" style="width: 7em; margin: 0.5em 0 0 0;">Volver</button>
+				</div>
+			</div>
+		</div>
+		<div align="right" style="width: 100%; position: fixed; padding-bottom: 0.25em; bottom: 0">
+			<pie style="font-size: 100%; margin-right: 1em;">
+				Desarrollado por <a href="https://www.sgc-consultores.com.ve"><b>SGC Consultores C.A.</b><img src="../img/sgc_icon.png" style="width: 2.5em" alt="SGC Consultores C.A." title="SGC Consultores C.A." /></a>
+			</pie>
+		</div>
+		<script>
+			let anterior = "", nueva = "", confirmacion = "", hash = "";
+			let datos = new FormData();
+			let idp = sessionStorage.getItem("id_proveedor");
+
+			function inicio() {
+				limpiar();
+				document.getElementById("btnvolver").addEventListener('click', function(){
+					window.open(sessionStorage.getItem("url_back"), "_self");
+				});
+
+				let xmlhttp = new XMLHttpRequest();
+				xmlhttp.onreadystatechange = function () {
+					if (this.readyState == 4 && this.status == 200) {
+						respuesta = JSON.parse(this.responseText);
+						if (respuesta.exito == 'SI') {
+							hash = respuesta.proveedor.hash;
+							document.title = "Club de consumidores - Módulo administrativo";
+							logo = respuesta.proveedor.logo;
+							if (logo!="") {
+								document.getElementById("logo").src = "../img/" + logo;
+							} else {
+								document.getElementById("logo").src = "../img/" + 'sin_imagen.jpg';
+							}
+							document.getElementById("logo").title = respuesta.proveedor.nombre;
+						}
+					}
+				};
+				xmlhttp.open("GET", "../php/proveedores.php?prov=" + idp, false);
+				xmlhttp.send();
+			}
+
+			// limpia el formulario
+			function limpiar() {
+				anterior="";
+				nueva="";
+				confirmacion="";
+
+				datos = new FormData()
+
+				cmpanterior.value = anterior;
+				cmpnueva.value = nueva;
+				cmpconfirmacion.value = confirmacion;
+			}
+
+			function enviar() {
+				anterior = cmpanterior.value;
+				nueva = cmpnueva.value;
+				confirmacion = cmpconfirmacion.value;
+
+				let seguir = 0;
+				seguir += (anterior=='') ? 0 : 1 ;
+				seguir += (nueva=='') ? 0 : 1 ;
+				seguir += (confirmacion=='') ? 0 : 1 ;
+
+				if (seguir==3) {
+					if (nueva==confirmacion) {
+						datos.append("idproveedor", idp);
+						datos.append("anterior", anterior);
+						datos.append("clave", nueva);
+
+						let xmlhttp = new XMLHttpRequest();
+						xmlhttp.onreadystatechange = function() {
+							if (this.readyState == 4 && this.status == 200) {
+								respuesta = JSON.parse(this.responseText);
+								if (respuesta.exito == 'SI') {
+									alert(respuesta.mensaje);
+									limpiar();
+								} else {
+									alert(respuesta.mensaje);
+								}
+							}
+						};
+						xmlhttp.open("POST", "../php/enviaclave.php", true);
+						xmlhttp.send(datos);
+					} else {
+						alert("La clave y la confirmación no coinciden.");
+					}
+				} else {
+					alert("Faltan datos.");
+				}
+			}
+		</script>
+	</body>
+</html>

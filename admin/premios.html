@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, scalable=yes"> -->
+		<title></title>
+		<link rel="stylesheet" href="premios.css">
+		<script type="text/javascript" src="../js/funciones.js"></script>
+	</head>
+	<body onload="inicio()">
+		<div id="container">
+			<div class="logo" align="center">
+				<img class="img-logo" id="logo" src="" alt="">
+			</div>
+			<h2 style="text-align: center; color: black;">Módulo administrativo</h2>
+			<h3 align="center">Premios</h3>
+			<div id="div1" align="center">
+				<!-- Clase de premio -->
+				<div class="cmps">
+					<span class="etiq">Clase de premio:</span>
+					<select id="cmpclasepremio" class="campo" onchange="buscar(this.value)">
+						<option value="ninguno" selected>Seleccione una clase de premio</option>
+						<option value="bienvenida">Premios de Bienvenida</option>
+						<option value="consumo">Premios por Consumo</option>
+						<option value="encuesta">Premios por llenar encuestas</option>
+						<option value="promocion">Premios para Promoción</option>
+						<option value="especial">Premios especiales</option>
+					</select>
+				</div>
+				<!-- Tipo de premio -->
+				<div id="divtipopremio" class="cmps">
+					<span class="etiq">Tipo de premio (%, monto o prod.):</span>
+					<select id="cmptipopremio" class="campo" onchange="ftipopremio(this.value)">
+						<option value="ninguno" selected>Seleccione un tipo de premio</option>
+						<option value="porcentaje">Porcentaje de descuento</option>
+						<option value="monto">Monto fijo para compra</option>
+						<option value="producto">Producto del comercio</option>
+					</select>
+				</div>
+				<!-- Monto premio -->
+				<div id="divcantidad" class="cmps">
+					<span id="etq_cantidad" class="etiq">Cantidad premio:</span>
+					<input id="cmpcantidad" class="campo" type="text" size="50" maxlength="" style="text-align: right;"/>
+				</div>
+				<!-- descripcion -->
+				<div id="divdescripcion" class="cmps">
+					<span class="etiq">Descripción:</span>
+					<input id="cmpdescripcion" class="campo" type="text" size="50" maxlength="100" />
+				</div>
+				<!-- Días de validez -->
+				<div id="divvalidez" class="cmps">
+					<span class="etiq">Días de validez:</span>
+					<input id="cmpvalidez" class="campo" type="number" size="50" maxlength="100" style="text-align: right;" />
+				</div>
+				<!-- Activo -->
+				<div id="divactivo" class="cmps">
+					<span class="etiq">Activo:</span>
+					<input id="cmpactivo" class="campo" type="checkbox" />
+				</div>
+
+				<!-- Linea de botones -->
+				<div id="botones" class="btns">
+					<button id="btnenviar" onclick="enviar()" style="width: 7em;">Enviar</button>
+					<button id="limpiar" onclick="limpiar()" style="width: 7em;">Limpiar</button>
+				</div>
+				<div class="btns">
+					<button id="btnvolver" style="width: 7em; margin: 0.5em 0 0 0;">Volver</button>
+				</div>
+			</div>
+		</div>
+		<div align="right" style="width: 100%; position: fixed; padding-bottom: 0.25em; bottom: 0">
+			<pie style="font-size: 100%; margin-right: 1em;">
+				Desarrollado por <a href="https://www.sgc-consultores.com.ve"><b>SGC Consultores C.A.</b><img src="../img/sgc_icon.png" style="width: 2.5em" alt="SGC Consultores C.A." title="SGC Consultores C.A." /></a>
+			</pie>
+		</div>
+		<script>
+			let clasepremio = "", tipopremio = "", cantidad="", descripcion="", validez=30, activo=true;
+			let datos = new FormData();
+			let idp = sessionStorage.getItem("id_proveedor");
+
+			function inicio() {
+				limpiar();
+				document.getElementById("btnvolver").addEventListener('click', function(){
+					window.open(sessionStorage.getItem("url_back"), "_self");
+				});
+
+				let xmlhttp = new XMLHttpRequest();
+				xmlhttp.onreadystatechange = function () {
+					if (this.readyState == 4 && this.status == 200) {
+						respuesta = JSON.parse(this.responseText);
+						if (respuesta.exito == 'SI') {
+							document.title = "Club de consumidores - Módulo administrativo";
+							logo = respuesta.proveedor.logo;
+							if (logo!="") {
+								document.getElementById("logo").src = "../img/" + logo;
+							} else {
+								document.getElementById("logo").src = "../img/" + 'sin_imagen.jpg';
+							}
+							document.getElementById("logo").title = respuesta.proveedor.nombre;
+						}
+					}
+				};
+				xmlhttp.open("GET", "../php/proveedores.php?prov=" + idp, false);
+				xmlhttp.send();
+			}
+
+			// limpia el formulario
+			function limpiar() {
+				clasepremio = "ninguno";
+				tipopremio = "ninguno";
+				cantidad="";
+				descripcion="";
+				validez=30;
+				activo=true;
+				datos = new FormData()
+
+				cmpclasepremio.value = clasepremio;
+				cmptipopremio.value = tipopremio;
+				cmpcantidad.value = cantidad;
+				cmpdescripcion.value = descripcion;
+				cmpvalidez.value = validez;
+				cmpactivo.value = activo;
+				divtipopremio.style.display = 'none';
+				divcantidad.style.display = 'none';
+				divdescripcion.style.display = 'none';
+				divvalidez.style.display = 'none';
+				divactivo.style.display = 'none';
+				botones.style.display = 'none';
+			}
+
+			function buscar(clase) {
+				tipopremio = "ninguno";
+				cantidad="";
+				descripcion="";
+				validez=30;
+				activo=false;
+
+				let respuesta, xmlhttp = new XMLHttpRequest();
+				xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						divtipopremio.style.display = (clase=="ninguno") ? 'none' : 'flex' ;
+						respuesta = JSON.parse(this.responseText);
+						console.log(respuesta);
+						if (respuesta.exito == 'SI') {
+							cmpclasepremio.value = respuesta.clasepremio;
+							cmptipopremio.value = respuesta.tipopremio;
+							cmpcantidad.value = respuesta.cantidad;
+							cmpdescripcion.value = respuesta.descripcion;
+							cmpvalidez.value = respuesta.validez;
+							cmpactivo.checked = (respuesta.activo) ? true: false ;
+
+							switch (respuesta.tipopremio) {
+								case "ninguno":
+									divcantidad.style.display = 'none';
+									divdescripcion.style.display = 'none';
+									divvalidez.style.display = 'none';
+									divactivo.style.display = 'none';
+									botones.style.display = 'none';
+									break;
+								case "porcentaje":
+									divcantidad.style.display = 'flex';
+									divdescripcion.style.display = 'none';
+									divvalidez.style.display = 'flex';
+									divactivo.style.display = 'flex';
+									botones.style.display = 'block';
+									etq_cantidad.innerHTML = 'Porcentaje de descuento:';
+									break;
+								case "monto":
+									divcantidad.style.display = 'flex';
+									divdescripcion.style.display = 'none';
+									divvalidez.style.display = 'flex';
+									divactivo.style.display = 'flex';
+									botones.style.display = 'block';
+									etq_cantidad.innerHTML = 'Monto para compra:';
+									break;
+								case "producto":
+									divcantidad.style.display = 'none';
+									divdescripcion.style.display = 'flex';
+									divvalidez.style.display = 'flex';
+									divactivo.style.display = 'flex';
+									botones.style.display = 'block';
+									break;
+								default:
+									divcantidad.style.display = 'none';
+									divdescripcion.style.display = 'none';
+									divvalidez.style.display = 'none';
+									divactivo.style.display = 'none';
+									botones.style.display = 'none';
+									break;
+							}							
+						} else {
+							if (clase == "ninguno") {
+								divtipopremio.style.display = 'none';
+								divcantidad.style.display = 'none';
+								divdescripcion.style.display = 'none';
+								divvalidez.style.display = 'none';
+								divactivo.style.display = 'none';
+								botones.style.display = 'none';
+
+								cmpcantidad.value = "";
+								cmpdescripcion.value = "";
+								cmpvalidez.value = 30;
+								cmpactivo.checked = false ;
+							} else {
+								alert("Premio no existe");
+								divtipopremio.style.display = 'flex';
+								divcantidad.style.display = 'none';
+								divdescripcion.style.display = 'none';
+								divvalidez.style.display = 'none';
+								divactivo.style.display = 'none';
+								botones.style.display = 'none';
+
+								cmptipopremio.value = "ninguno";
+								cmpcantidad.value = "";
+								cmpdescripcion.value = "";
+								cmpvalidez.value = 30;
+								cmpactivo.checked = false ;
+							}
+						}
+					}
+				};
+				xmlhttp.open("GET", "../php/premios.php?prov="+idp+"&clase="+clase, true);
+				xmlhttp.send();
+			}
+
+			function ftipopremio(tipo) {
+				switch (tipo) {
+					case "ninguno":
+						divcantidad.style.display = 'none';
+						divdescripcion.style.display = 'none';
+						divvalidez.style.display = 'none';
+						divactivo.style.display = 'none';
+						botones.style.display = 'none';
+						break;
+					case "porcentaje":
+						divcantidad.style.display = 'flex';
+						divdescripcion.style.display = 'none';
+						divvalidez.style.display = 'flex';
+						divactivo.style.display = 'flex';
+						botones.style.display = 'block';
+						etq_cantidad.innerHTML = 'Porcentaje de descuento:';
+						break;
+					case "monto":
+						divcantidad.style.display = 'flex';
+						divdescripcion.style.display = 'none';
+						divvalidez.style.display = 'flex';
+						divactivo.style.display = 'flex';
+						botones.style.display = 'block';
+						etq_cantidad.innerHTML = 'Monto para compra:';
+						break;
+					case "producto":
+						divcantidad.style.display = 'none';
+						divdescripcion.style.display = 'flex';
+						divvalidez.style.display = 'flex';
+						divactivo.style.display = 'flex';
+						botones.style.display = 'block';
+						break;
+					default:
+						divcantidad.style.display = 'none';
+						divdescripcion.style.display = 'none';
+						divvalidez.style.display = 'none';
+						divactivo.style.display = 'none';
+						botones.style.display = 'none';
+						break;
+				}
+			}
+
+			function enviar() {
+				clasepremio = cmpclasepremio.value;
+				let seguir = (clasepremio=='ninguno') ? 0 : 1 ;
+
+				tipopremio = cmptipopremio.value;
+				switch (tipopremio) {
+					case "ninguno":
+						break;
+					case "porcentaje":
+						cantidad = (cmpcantidad.value=="") ? 0 : cmpcantidad.value;
+						descripcion = "";
+						seguir += (cantidad == 0) ? 0 : 1 ;
+						break;
+					case "monto":
+						cantidad = (cmpcantidad.value=="") ? 0 : cmpcantidad.value;
+						descripcion = "";
+						seguir += (cantidad == 0) ? 0 : 1 ;
+						break;
+					case "producto":
+						cantidad = 0;
+						descripcion = cmpdescripcion.value;
+						seguir += (descripcion == "") ? 0 : 1 ;
+						break;
+					default:
+						break;
+				}
+				validez = cmpvalidez.value;
+				seguir += (validez == 0) ? 0 : 1 ;
+
+				if (seguir==3) {
+					activo = (cmpactivo.checked) ? true : false ;
+
+					datos.append("idproveedor", idp);
+					datos.append("clasepremio", clasepremio);
+					datos.append("tipopremio", tipopremio);
+					datos.append("cantidad", cantidad);
+					datos.append("descripcion", descripcion);
+					datos.append("validez", validez);
+					datos.append("activo", activo);
+
+					var xmlhttp = new XMLHttpRequest();
+					xmlhttp.onreadystatechange = function() {
+						if (this.readyState == 4 && this.status == 200) {
+							respuesta = JSON.parse(this.responseText);
+							if (respuesta.exito == 'SI') {
+								alert(respuesta.mensaje);
+								limpiar();
+							} else {
+								alert(respuesta.mensaje);
+							}
+						}
+					};
+					xmlhttp.open("POST", "../php/enviapremio.php", true);
+					xmlhttp.send(datos);
+				} else {
+					alert("Faltan datos.");
+				}
+			}
+		</script>
+	</body>
+</html>
