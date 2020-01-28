@@ -39,7 +39,7 @@ include_once("../_config/configShopify.php");
 $url = $urlOrdenesPendientes;
 
 $ch = curl_init();
-curl_setopt($ch, CURLOPT_URL,$url );
+curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);// set optional params
 curl_setopt($ch,CURLOPT_HEADER, false);
 
@@ -61,6 +61,7 @@ $respuesta .= '"montoorden":0}';
 $respuesta .= '}';
 if (isset($result)) {
     $ordenes=json_decode($result,true);
+    var_dump($ordenes);
     foreach ($ordenes["orders"] as $lista => $orden) {
         if ($_GET["orden"]==$orden["order_number"]) {
             $notfound = false;

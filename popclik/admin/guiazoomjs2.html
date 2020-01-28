@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- <link rel="stylesheet" type="text/css" href="style/estilo.css"> -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Ejemplo con Javascript</title>
+<meta name="keywords" content="Desarrollado por Carlos De Oliveira cardeol@gmail.com para Zoom International Services." />
+<script type="text/javascript" src="./jquery.js"></script>
+<script type="text/javascript" src="./jquery.zoomwebservices.js"></script>
+<style type="text/css">
+	fieldset span {
+		width: 500px;
+		margin:20px;
+		color:red;	
+	}
+	#error, #ok {
+		border:1px solid black;
+		padding:20px;
+		background-color: #FF9;
+	}
+	#error { color: red; }
+	#ok { color: green; }
+</style>
+</head>
+<body>
+	<p>Ejemplo de llamada a trav&eacute;s del proxy javascript de zoom. La funcion genera aleatoriamente un error o una respuesta v&aacute;lida.</p>
+	<input type="button" id="calldummy" value="Invocar a la funcion Dummy" />
+	<br />
+	<script type="text/javascript">
+		const url = "https://sandbox.grupozoom.com/baaszoom/public/guiaelectronica/createShipment";
+		const cod_clte = "1";
+		const cod_pass = "456789";
+		const fraseprivada = "RH0sVTL9za7O6gutqI43";
+		const servicio = 'createShipment';
+
+		const codcliente="1"
+		const clave="456789"
+		const certificado="$1$RH0sVTL9$Vwrq9vN7c0ltZ1Xt5yeW61"
+		const codservicio="2"
+		const consignacion="0"
+		const contacto_remitente="DENIS RAMIREZ"
+		const codciudadrem="19"
+		const codmunicipiorem="507"
+		const codparroquiarem="10107"
+		const zona_postal_remitente="1010"
+		const telefono_remitente="04125887034"
+		const direccion_remitente="CALLE 3A URBANIZACIÓN LA URBINA"
+		const inmueble_remitente="EDIFICIO DON PASQUALES, PISO PB, APTO 1080"
+		const retira_oficina="0"
+		const codciudaddes="19"
+		const codmunicipiodes="507"
+		const codparroquiades="10107"
+		const zona_postal_destino="2001"
+		const codoficinades="136"
+		const destinatario="JOHAN FRANCO"
+		const contacto_destino="JOHAN FRANCO"
+		const cirif_destinatario="V-20175579"
+		const celular="04125887034"
+		const telefono_destino="02412410789"
+		const direccion_destino="AV BOLIVAR DE LA CANDELARIA"
+		const inmueble_destino="CASA N°10-10 URBANIZACIÓN LA CANDELERIA"
+		const siglas_casillero="BRM"
+		const descripcion_contenido="ROPA Y CALZADO"
+		const referencia="CREANDO GUIA N° 1"
+		const numero_piezas="1"
+		const peso_bruto="1.75"
+		const tipo_envio="D"
+		const valor_declarado="150000"
+		const seguro="1"
+		const valor_mercancia="100"
+		const modalidad_cod="1"
+		const codoficinaori="44"
+
+		let rsp_token = "", respuesta = "", xmlhttp = new XMLHttpRequest(), datos = new FormData();
+
+		// var urlServicio = "http://www.grupozoom.com/servicios/webservices/";
+		// var urlServicio = "http://sandbox.grupozoom.com/proveedores/frontend/webservicesge/";
+		$(function() {
+			$("#calldummy").click(function() {
+				$.ZoomWebServices( url , { 	
+					service: servicio,
+					data: {
+						"codcliente": "1",
+						"clave": "456789",
+						"certificado": "$1$RH0sVTL9$Vwrq9vN7c0ltZ1Xt5yeW61",
+						"codservicio": "2",
+						"consignacion": "0",
+						"contacto_remitente": "DENIS RAMIREZ",
+						"codciudadrem": "19",
+						"codmunicipiorem": "507",
+						"codparroquiarem": "10107",
+						"zona_postal_remitente": "1010",
+						"telefono_remitente": "04125887034",
+						"direccion_remitente": "CALLE 3A URBANIZACIÓN LA URBINA",
+						"inmueble_remitente": "EDIFICIO DON PASQUALES, PISO PB, APTO 1080",
+						"retira_oficina": "0",
+						"codciudaddes": "19",
+						"codmunicipiodes": "507",
+						"codparroquiades": "10107",
+						"zona_postal_destino": "2001",
+						"codoficinades": "136",
+						"destinatario": "JOHAN FRANCO",
+						"contacto_destino": "JOHAN FRANCO",
+						"cirif_destinatario": "V-20175579",
+						"celular": "04125887034",
+						"telefono_destino": "02412410789",
+						"direccion_destino": "AV BOLIVAR DE LA CANDELARIA",
+						"inmueble_destino": "CASA N°10-10 URBANIZACIÓN LA CANDELERIA",
+						"siglas_casillero": "BRM",
+						"descripcion_contenido": "ROPA Y CALZADO",
+						"referencia": "CREANDO GUIA N° 1",
+						"numero_piezas": "1",
+						"peso_bruto": "1.75",
+						"tipo_envio": "D",
+						"valor_declarado": "150000",
+						"seguro": "1",
+						"valor_mercancia": "100",
+						"modalidad_cod": "1",
+						"codoficinaori": "44"
+					},
+					onSuccess: function(rsp) {
+						if(rsp.errormessage==undefined){
+							console.log(rsp.token);
+
+							$("#ok").html("Respuesta: " + rsp);	
+							$("#error").html("");
+							$("#ok").hide().show("fast");
+
+							rsp_token = "rsp.token";
+							datos.append("codcliente", cod_clte);
+							datos.append("password", cod_pass);
+							datos.append("token", rsp_token);
+							datos.append("fraseprivada", fraseprivada);
+							xmlhttp.onreadystatechange = function() {
+								if (this.readyState == 4 && this.status == 200) {
+									respuesta = this.responseText;
+									console.log(respuesta);
+									ok.innerHTML = respuesta;
+								}
+							};
+							xmlhttp.open("POST", "./certificado.php", true);
+							xmlhttp.send(datos);
+						}
+						else{
+							$("#error").html(rsp.errormessage);
+							$("#ok").html("");
+							$("#error").hide().show("fast");
+						}
+					}	
+				});	
+			});
+		});
+
+	</script>
+	<br />
+
+	Evento onSuccess (ocurre cuando los datos se obtuvieron exitosamente)
+	<div id="ok"></div>
+	<br />
+
+	Evento onError (se dispara cuando ocurre un error)
+	<div id="error"></div>
+	<br />
+</body>
+</html>

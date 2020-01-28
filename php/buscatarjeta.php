@@ -9,9 +9,19 @@ $result = mysqli_query($link, $query);
 if ($row = mysqli_fetch_array($result)) {
 	$idproveedor = $row["id_proveedor"];
 	$tipo = 'prepago';
-	$nombres = utf8_decode(trim($row["nombres"])." ".trim($row["apellidos"]));
+	$nombres = trim($row["nombres"])." ".trim($row["apellidos"]);
 	$vencimiento = '12/2020';
 	$qr = '';
+} else {
+	$query = "SELECT * from giftcards where card=".$_GET["t"];
+	$result = mysqli_query($link, $query);
+	if ($row = mysqli_fetch_array($result)) {
+		$idproveedor = $row["id_proveedor"];
+		$tipo = 'giftcard';
+		$nombres = trim($row["nombres"])." ".trim($row["apellidos"]);
+		$vencimiento = '12/2020';
+		$qr = '';
+	}
 }
 
 // Buscar proveedor

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- <link rel="stylesheet" type="text/css" href="style/estilo.css"> -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Ejemplo con Javascript</title>
+<meta name="keywords" content="Desarrollado por Carlos De Oliveira cardeol@gmail.com para Zoom International Services." />
+<script type="text/javascript" src="./jquery.js"></script>
+<script type="text/javascript" src="./jquery.zoomwebservices.js"></script>
+<style type="text/css">
+	fieldset span {
+		width: 500px;
+		margin:20px;
+		color:red;	
+	}
+	#error, #ok {
+		border:1px solid black;
+		padding:20px;
+		background-color: #FF9;
+	}
+	#error { color: red; }
+	#ok { color: green; }
+</style>
+</head>
+<body>
+<p>Ejemplo de llamada a trav&eacute;s del proxy javascript de zoom. La funcion genera aleatoriamente un error o una respuesta v&aacute;lida.</p>
+<input type="button" id="calldummy" value="Invocar a la funcion Dummy" onclick="llamaservicio()" />
+<br />
+<script type="text/javascript">
+	const url = "http://sandbox.grupozoom.com/baaszoom/public/guiaelectronica/generarToken";
+	const cod_clte = "1";
+	const cod_pass = "456789";
+	const fraseprivada = "RH0sVTL9za7O6gutqI43";
+	const servicio = 'generarToken';
+
+	let rsp_token = "", respuesta = "", xmlhttp = new XMLHttpRequest(), datos = new FormData();
+
+	// var urlServicio = "http://www.grupozoom.com/servicios/webservices/";
+	// var urlServicio = "http://sandbox.grupozoom.com/proveedores/frontend/webservicesge/";
+	function llamaservicio() {
+		let datos = new FormData();
+		datos.append("codcliente", cod_clte);
+		datos.append("clave", cod_pass);
+
+		let xmlhttp = new XMLHttpRequest();
+		xmlhttp.onreadystatechange = function () {
+			if (this.readyState == 4 && this.status == 200) {
+				respuesta = JSON.parse(this.responseText);
+				ok.innerHTML = respuesta;
+			}
+		};
+		// xmlhttp.open("GET", url+"?codcliente="+cod_clte+"&clave="+cod_pass, true);
+		// xmlhttp.setRequestHeader('Access-Control-Allow-Origin', '*');
+		// xmlhttp.send();
+		xmlhttp.open("POST", url, true);
+		xmlhttp.setRequestHeader('Access-Control-Allow-Origin', '*');
+		xmlhttp.send(datos);
+	}
+</script>
+<br/>
+
+	Evento onSuccess (ocurre cuando los datos se obtuvieron exitosamente)
+<div id="ok"></div>
+\</body>
+</html>

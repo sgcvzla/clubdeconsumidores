@@ -5,45 +5,144 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, scalable=yes"> -->
-		<title>Club de consumidores</title>
-		<link rel="stylesheet" href="tarjetero.css">
-		<!-- <link rel="manifest" href="./manifest.json"> -->
+		<title>POP CLIK</title>
+		<link rel="stylesheet" href="./tarjetero.css">
 		<script type="text/javascript" src="../js/funciones.js"></script>
-		<script type="text/javascript" src="tarjetero.js"></script>
 	</head>
 	<body onload="inicio()">
-		<!-- <button id="instalar">Instalar</button> -->
-		<!-- <body> -->
 		<div id="container">
 			<div class="logo" align="center">
-				<img class="img-logo" id="logo" src="../img/logoclub.png" alt="">
+				<img class="img-logo" id="logo" src="../img/popclik.png" alt="">
 			</div>
-			<h3 id="titulosocio" style="text-align: center; color: blue;"></h3>
-			<h2 style="text-align: center; color: black;">Mis tarjetas</h2>
+			<h2 style="text-align: center; color: black;">Tarjetero</h2>
+			<h3 align="center"></h3>
+			<h3 id="menu" align="center">Luis Rodríguez</h3>
 			<br/>
-			<div class="filtros" align="center">
-				<!-- Tarjetas -->
-				<div id="div0" class="cmps">
-					<span class="etiq">Filtrar por tarjeta</span>
-					<select id="filtrotarjeta">
-						<option value="todas">Todas mis tarjetas</option>
-						<option value="prepago">Tarjetas prepagadas</option>
-						<option value="giftcard">Tarjetas de regalo</option>
-					</select>
-				</div>
-				<!-- Comercios -->
-				<div id="div0" class="cmps">
-					<span class="etiq">Filtrar por comercio</span>
-					<select  id="filtrocomercio">
-						<option value="0">Todos los comercios</option>
-						<option value="3">Bati2 Diverti2</option>
-						<option value="2">Mr. Falafel</option>
-						<option value="1">Pop Clik</option>
-					</select>
+			<div id="tabla" class="tabla">
+				<div id="f-t" class="fila titulo">
+					<div id="" class="columna1">
+						Tipo de tarjeta
+					</div>
+					<div id="" class="columna2">
+						Moneda
+					</div>
+					<div id="" class="columna3">
+						Número de tarjeta
+					</div>
+					<div id="" class="columna4">
+						Saldo disponible
+					</div>
+					<div id="" class="columna5">
+						Vencimiento
+					</div>
+					<div id="" class="columna6">
+						Status
+					</div>
 				</div>
 			</div>
-			<div id="cards" class="catalogo">
+
+			<!-- Linea de botones -->
+			<div class="btns">
+				<button id="btnvolver" style="width: 7em; margin: 0.5em 0 0 0;">Volver</button>
 			</div>
+
 		</div>
+		<script>
+			let respuesta, tarjetas, paroimpar, idsocio = sessionStorage.getItem("idsocio");
+
+			// Inicializa la aplicación
+			function inicio() {
+				let xmlhttp = new XMLHttpRequest();
+				xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						respuesta = JSON.parse(this.responseText);
+						if (respuesta.exito=="SI") {
+							tarjetas = respuesta.tarjetas;
+							// Rellena la lista de tarjetas
+							pintartarjetas(tarjetas);
+						} else {
+							alert("No hay tarjetas asociadas a este socio.");
+						}
+					}
+				};
+				xmlhttp.open("GET", "../php/tarjetas.php?idsocio="+idsocio, true);
+				xmlhttp.send();
+				document.getElementById("btnvolver").addEventListener('click', function(){
+					window.open(sessionStorage.getItem("url_bck2"), "_self") });
+			}
+
+			// Rellena la tabla
+			function pintartarjetas(tarjetas) {
+				par = true;
+				for (var i = 0; i < tarjetas.length; i++) {
+					// nombre en la columna 1
+					txtTipo = document.createTextNode(tarjetas[i].tipo.substr(0,1).toUpperCase()+tarjetas[i].tipo.substr(1));
+					// txtTipo = document.createTextNode(tarjetas[i].tipo);
+					cl1 = document.createElement("div");
+					cl1.classList.add("columna1");
+					cl1.appendChild(txtTipo);
+
+					// moneda en la columna 2
+					txtMoneda = document.createTextNode(tarjetas[i].moneda.substr(0,1).toUpperCase()+tarjetas[i].moneda.substr(1));
+					// txtMoneda = document.createTextNode(tarjetas[i].moneda);
+					cl2 = document.createElement("div");
+					cl2.classList.add("columna2");
+					cl2.appendChild(txtMoneda);
+
+					// tarjeta en la columna 3
+					numtarjeta = tarjetas[i].tarjeta.substr(0,4)+' '+tarjetas[i].tarjeta.substr(4,4)+' '+tarjetas[i].tarjeta.substr(8,4)+' '+tarjetas[i].tarjeta.substr(12,4);
+					txtTarjeta = document.createTextNode(numtarjeta);
+					cl3 = document.createElement("div");
+					cl3.classList.add("columna3");
+					cl3.appendChild(txtTarjeta);
+
+					// saldo en la columna 4
+					txtSaldo = document.createTextNode(formatNumber.new(tarjetas[i].saldo));
+					cl4 = document.createElement("div");
+					cl4.classList.add("columna4");
+					cl4.appendChild(txtSaldo);
+
+					// vencimiento en la columna 5
+					txtValidez = document.createTextNode(tarjetas[i].validez);
+					cl5 = document.createElement("div");
+					cl5.classList.add("columna5");
+					cl5.appendChild(txtValidez);
+
+					// vencimiento en la columna 5
+					txtStatus = document.createTextNode(tarjetas[i].status);
+					cl6 = document.createElement("div");
+					cl6.classList.add("columna6");
+					cl6.appendChild(txtStatus);
+
+					// Crear fila para la transacción
+					fila = document.createElement("div");
+					fila.id = 'fila-'+tarjetas[i].tarjeta;
+					fila.classList.add("fila");
+					// Agregar la clase para definir el comportamiento del css
+					if (par) {
+						fila.classList.add("par");
+						paroimpar = "par";
+						par = false;
+					} else {
+						fila.classList.add("impar");
+						paroimpar = "impar";
+						par = true;
+					}
+					// Agregar las columnas a la fila
+					fila.appendChild(cl1);
+					fila.appendChild(cl2);
+					fila.appendChild(cl3);
+					fila.appendChild(cl4);
+					fila.appendChild(cl5);
+					fila.appendChild(cl6);
+
+					// Agregar la fila a la tabla
+					document.getElementById("tabla").appendChild(fila);
+					document.getElementById(fila.id).addEventListener('click', function(){
+						window.open("../card/index.html?card="+this.id.substr(5), "_blank");
+					});
+				}
+			}
+		</script>
 	</body>
 </html>

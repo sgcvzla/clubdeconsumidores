@@ -95,14 +95,16 @@
 	</style>
 	<!--
 	margin: auto; <script type="text/javascript" src="./html2canvas.js"></script> -->
+	<script type="text/javascript" src="../js/funciones.js"></script>
 	<script type="text/javascript" src="./classes.js"></script>
 	<script>
-		const tarjeta = '4404501155154662';
+		let tarjeta, params = fparamurl(window.location.search.substr(1));
+
+		tarjeta = (params==undefined) ? '1111222233334444' : params.card ;
 
 		let card1;
 
 		function generacard() {
-
 			var xmlhttp = new XMLHttpRequest();
 			xmlhttp.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {

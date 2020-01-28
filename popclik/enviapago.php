@@ -28,7 +28,8 @@ $variant = array('transaction' =>
         'currency' =>  'USD',
         'amount' => trim($_POST["monto"]),
         'kind' => 'capture',
-        'parent_id' => trim($parent_id)
+        'parent_id' => trim($parent_id),
+        'message' => '10'
     )
 );
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
@@ -37,6 +38,33 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $response = curl_exec($ch);
 curl_close($ch);
+
+if (isset($response)) {
+  $trx=json_decode($response,true);
+  $recibo = $trx["transaction"]["id"];
+}
+// Escribir el metafield con el punto de recaudación y el recibo
+$url = $urlOrdenMetafields.trim($_POST["id"]).'/metafields.json';
+
+$variant = array('metafield' => 
+    array(
+        'namespace' =>  'cobro_punto',
+        'key' => 'punto-'.$_POST["punto"],
+        'value' => $recibo, 
+        'value_type' => 'string'
+    )
+);
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL,$url );
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($variant)); 
+curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response2 = curl_exec($ch);
+curl_close($ch);
+
+///////////////////////////////////////////////////////////////////////////////
 
 $respuesta = '{';
 $respuesta .= '"exito":"NO",';
