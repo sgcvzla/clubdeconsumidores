@@ -10,7 +10,7 @@ idproveedor = (idproveedor==undefined) ? 2 : idproveedor;
 function inicio() {
 	limpiar();
 	document.getElementById("btnvolver").addEventListener('click', function(){
-		window.open(sessionStorage.getItem("url_back"), "_self") });
+		window.open(sessionStorage.getItem("url_bck2"), "_self") });
 	// cargar parámetros de la tabla
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function () {

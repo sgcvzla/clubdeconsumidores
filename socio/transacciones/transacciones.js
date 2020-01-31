@@ -17,7 +17,7 @@ function inicio() {
 	xmlhttp.open("GET", "../../php/transac_socio.php?idsocio="+idsocio, true);
 	xmlhttp.send();
 	document.getElementById("btnvolver").addEventListener('click', function(){
-		window.open(sessionStorage.getItem("url_back"), "_self") }
+		window.open(sessionStorage.getItem("url_bck2"), "_self") }
 	);
 }
 
