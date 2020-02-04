@@ -127,9 +127,9 @@
 					console.log(valor1);
 					console.log(valor2);
 					console.log(parcial);
-					if (valor1 > valor2) {
+					if (valor1 != valor2) {
 						continuar = false;
-						alert("El campo monto a pagar no puede ser mayor que el saldo de la orden");
+						alert("El campo monto a pagar no puede ser diferente al saldo de la orden");
 						document.getElementById("montopago").focus();
 					} else {
 						monto = document.getElementById("montopago").value;

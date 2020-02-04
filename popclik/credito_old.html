@@ -35,6 +35,10 @@
 						<input id="cedula" name="cedula" class="campo" type="text" size="50" maxlength="100" title="" />
 					</div>
 					<div class="cmps">
+						<span class="etiq">Soporte CI o RIF:</span>
+						<input id="doccedula" name="doccedula" class="campo" type="file" size="50" maxlength="100" title="" />
+					</div>
+					<div class="cmps">
 						<span class="etiq">Dirección:</span>
 						<input id="direccion" name="direccion" class="campo" type="text" size="50" maxlength="100" title="" />
 					</div>
@@ -50,6 +54,11 @@
 						<span class="etiq">Ingresos mensuales:</span>
 						<input id="ingresos" name="ingresos" class="campo" type="text" size="50" maxlength="100" title="Debe introducir un formato de número válido (del 0 al 9 y punto decimal)" style="text-align: right;" />
 					</div>
+					<div class="cmps">
+						<span class="etiq">Certificación de ingresos:</span>
+						<input id="certing" name="certing" class="campo" type="file" size="50" maxlength="100" title="" />
+					</div>
+					<br/>
 					<div style="text-align: left; padding-left: 0.5em;">
 						<span class="etiq"><u>Referencia comercial 1:</u></span>
 					</div>
@@ -61,6 +70,11 @@
 						<span class="etiq">telefono:</span>
 						<input id="telrefcom1" name="telrefcom1" class="campo" type="text" size="50" maxlength="100" title="" />
 					</div>
+					<div class="cmps">
+						<span class="etiq">Documento referencia:</span>
+						<input id="docrefcom1" name="docrefcom1" class="campo" type="file" size="50" maxlength="100" title="" />
+					</div>
+					<br/>
 					<div style="text-align: left; padding-left: 0.5em;">
 						<span class="etiq"><u>Referencia comercial 2:</u></span>
 					</div>
@@ -72,6 +86,11 @@
 						<span class="etiq">telefono:</span>
 						<input id="telrefcom2" name="telrefcom2" class="campo" type="text" size="50" maxlength="100" title="" />
 					</div>
+					<div class="cmps">
+						<span class="etiq">Documento referencia:</span>
+						<input id="docrefcom2" name="docrefcom2" class="campo" type="file" size="50" maxlength="100" title="" />
+					</div>
+					<br/>
 					<div style="text-align: left; padding-left: 0.5em;">
 						<span class="etiq"><u>Referencia personal 1:</u></span>
 					</div>
@@ -83,6 +102,11 @@
 						<span class="etiq">telefono:</span>
 						<input id="telrefper1" name="telrefper1" class="campo" type="text" size="50" maxlength="100" title="" />
 					</div>
+					<div class="cmps">
+						<span class="etiq">Documento referencia:</span>
+						<input id="docrefper1" name="docrefper1" class="campo" type="file" size="50" maxlength="100" title="" />
+					</div>
+					<br/>
 					<div style="text-align: left; padding-left: 0.5em;">
 						<span class="etiq"><u>Referencia personal 2:</u></span>
 					</div>
@@ -94,51 +118,16 @@
 						<span class="etiq">telefono:</span>
 						<input id="telrefper2" name="telrefper2" class="campo" type="text" size="50" maxlength="100" title="" />
 					</div>
-					<br/>
-
-					<hr/>
-					<br/>
-					<h4 align="center">En la siguiente sección deberá anexar copia escaneada de los documentos solicitados</h4>
-					<br/>
-					<hr/>
-
-					<br/>
 					<div class="cmps">
-						<span class="etiq">Cédula de Identidad o RIF:</span>
-						<input id="doccedula" name="doccedula" class="campo" type="file" size="50" maxlength="100" title="" />
-					</div>
-					<br/>
-					<div class="cmps">
-						<span class="etiq">Certificación de ingresos:</span>
-						<input id="certing" name="certing" class="campo" type="file" size="50" maxlength="100" title="" />
-					</div>
-					<br/>
-					<div class="cmps">
-						<span class="etiq">Referencia comercial 1:</span>
-						<input id="docrefcom1" name="docrefcom1" class="campo" type="file" size="50" maxlength="100" title="" />
-					</div>
-					<br/>
-					<div class="cmps">
-						<span class="etiq">Referencia comercial 2:</span>
-						<input id="docrefcom2" name="docrefcom2" class="campo" type="file" size="50" maxlength="100" title="" />
-					</div>
-					<br/>
-					<div class="cmps">
-						<span class="etiq">Referencia peresonal 1:</span>
-						<input id="docrefper1" name="docrefper1" class="campo" type="file" size="50" maxlength="100" title="" />
-					</div>
-					<br/>
-					<div class="cmps">
-						<span class="etiq">Referencia peresonal 2:</span>
+						<span class="etiq">Documento referencia:</span>
 						<input id="docrefper2" name="docrefper2" class="campo" type="file" size="50" maxlength="100" title="" />
 					</div>
-					<br/>
 					<!-- Linea de botones -->
 					<div class="btns">
 						<!-- <button id="btnenviar" onclick="enviar()" style="width: 7em;">Enviar</button> -->
 						<input type="submit" value="Enviar" style="width: 7em;">
 				</form>
-					<button id="limpiar" onclick="limpiar(event)" style="width: 7em;">Limpiar</button>
+					<button id="limpiar" onclick="limpiar()" style="width: 7em;">Limpiar</button>
 				</div>
 			</div>
 			<br/>
@@ -187,12 +176,7 @@
 			// 	xmlhttp.send(datos);
 			// }
 
-			function limpiar(event) {
-				event.preventDefault();
-				event.stopPropagation();
-				alert('limpiar');
-				window.open(window.location, "_self");
-			}
+			function limpiar() { alert('limpiar') }
 		</script>
 	</body>
 </html>

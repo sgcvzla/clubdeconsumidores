@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, scalable=yes"> -->
+		<title>POP CLIK</title>
+		<link rel="stylesheet" href="cobro.css">
+		<script type="text/javascript" src="../js/funciones.js"></script>
+	</head>
+	<body onload="inicio()">
+		<div id="container">
+			<div class="logo" align="center">
+				<img class="img-logo" id="logo" src="../img/popclik.png" alt="">
+			</div>
+			<h2 style="text-align: center; color: black;">Reporte de pago por transferencia</h2>
+			<h3 id="mensaje" align="center"></h3>
+			<div id="div1" align="center">
+
+				<div id="div2" class="cmps">
+					<span class="etiq">Número de órden:</span>
+					<input id="ordenpago" class="campo" type="text" size="50" maxlength="100" style="background: yellow;" readonly />
+				</div>
+
+				<div id="div2" class="cmps">
+					<span class="etiq">Cliente:</span>
+					<input id="clientepago" class="campo" type="text" size="50" maxlength="100" style="background: yellow;" readonly />
+				</div>
+
+				<div id="div2" class="cmps">
+					<span class="etiq">Monto de la orden:</span>
+					<input id="saldopago" class="campo" type="text" size="50" maxlength="100" style="background: yellow; text-align: right;" readonly />
+				</div>
+
+				<div id="div2" class="cmps">
+					<span class="etiq">Origen de los fondos:</span>
+					<input id="origenpago" class="campo" type="text" size="50" maxlength="100" />
+				</div>
+
+				<div id="div2" class="cmps">
+					<span class="etiq">fecha del pago:</span>
+					<input id="fechapago" class="campo" type="date" size="50" maxlength="100" />
+				</div>
+
+				<div id="div2" class="cmps">
+					<span class="etiq">Referencia:</span>
+					<input id="referenciapago" class="campo" type="text" size="50" maxlength="100" />
+				</div>
+
+				<div class="cmps">
+					<span class="etiq">Monto de la transacción:</span>
+					<input id="montopago" class="campo" type="text" size="50" maxlength="100" style="text-align: right;" />
+				</div>
+				<!-- Linea de botones -->
+				<div class="btns">
+					<button id="btnenviar" onclick="enviar()" style="width: 7em;">Enviar</button>
+					<button id="limpiar" onclick="limpiar()" style="width: 7em;">Limpiar</button>
+				</div>
+			</div>
+		</div>
+		<br/>
+		<div align="right" style="width: 100%; position: fixed; padding-bottom: 0.25em; bottom: 0">
+			<pie style="font-size: 100%; margin-right: 1em;">
+				Desarrollado por <a href="https://www.sgc-consultores.com.ve"><b>SGC Consultores C.A.</b><img src="../img/sgc_icon.png" style="width: 2.5em" alt="SGC Consultores C.A." title="SGC Consultores C.A." /></a>
+			</pie>
+		</div>
+		<script>
+			let idorden="", orden="",cliente="", email = "", saldo="",origen="",fecha="",referencia="",monto="", datos = new FormData();
+
+			function inicio() {
+				mensaje.innerHTML = 'Buscando datos...';
+				params = fparamurl(window.location.search.substr(1));
+				let respuesta, xmlhttp = new XMLHttpRequest();
+				xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						limpiar();
+						respuesta = JSON.parse(this.responseText);
+						console.log(respuesta);
+						mensaje.innerHTML = '';
+						if (respuesta.exito == 'SI') {
+							idorden = params.orden;
+							orden = respuesta.orden.numero;
+							cliente = respuesta.orden.nombres;
+							email = respuesta.orden.email;
+							saldo = respuesta.orden.saldo;
+
+							ordenpago.value = respuesta.orden.numero;
+							clientepago.value = respuesta.orden.nombres;
+							saldopago.value = formatNumber.new(respuesta.orden.saldo);
+						} else {
+							alert("Ha ocurrido un error, por favor comuniquese con soporte técnico.");
+						}
+					}
+				};
+				xmlhttp.open("GET", "./buscaordenpago.php?orden="+params.orden, true);
+				xmlhttp.send();
+			}
+
+			// limpia el formulario
+			function limpiar() {
+				origen = "";
+				fecha = "";
+				referencia = "";
+				monto = "";
+				document.getElementById("origenpago").value = "";
+				document.getElementById("fechapago").value = "";
+				document.getElementById("referenciapago").value = "";
+				document.getElementById("montopago").value = "";
+
+				document.getElementById("origenpago").focus();
+			}
+
+			// valida la entrada de los datos de la orden
+			function validaciones() {
+				var continuar = true, vacios = 0, campo = "";
+				if (document.getElementById("origenpago").value=="" || document.getElementById("origenpago").value==undefined) {
+					alert("El campo origen de la transacción no puede quedar en blanco");
+					vacios++;
+					campo = "origenpago";
+					continuar = false;
+				}
+				if ((document.getElementById("fechapago").value=="" || document.getElementById("fechapago").value==undefined) && vacios == 0) {
+					alert("El campo fecha de la transacción no puede quedar en blanco");
+					vacios++;
+					campo = "fechapago";
+				}
+				if ((document.getElementById("referenciapago").value=="" || document.getElementById("referenciapago").value==undefined) && vacios == 0) {
+					alert("El campo referencia no puede quedar en blanco");
+					vacios++;
+					campo = "referenciapago";
+				}
+				if ((document.getElementById("montopago").value=="" || document.getElementById("montopago").value==undefined) && vacios == 0) {
+					alert("El campo monto de la transacción no puede quedar en blanco");
+					vacios++;
+					campo = "montopago";
+				}
+				if (vacios>0) { continuar = false; }
+				if (continuar) {
+					origen = document.getElementById("origenpago").value;
+					fecha = document.getElementById("fechapago").value;
+					referencia = document.getElementById("referenciapago").value;
+					monto = document.getElementById("montopago").value;
+				} else {
+					document.getElementById(campo).focus();
+				}
+				return continuar;
+			}
+
+			function enviar() {
+				if (validaciones()) {
+					datos.append("idorden", idorden);
+					datos.append("orden", orden);
+					datos.append("cliente", cliente);
+					datos.append("email", email);
+					datos.append("saldo", saldo);
+					datos.append("origen", origen);
+					datos.append("fecha", fecha);
+					datos.append("referencia", referencia);
+					datos.append("monto", monto);
+
+					var xmlhttp = new XMLHttpRequest();
+					xmlhttp.onreadystatechange = function() {
+						console.log('readystate '+this.readyState);
+						console.log('status '+this.status);
+						if (this.readyState == 4 && this.status == 200) {
+							console.log('response '+this.responseText);
+							respuesta = JSON.parse(this.responseText);
+							if (respuesta.exito == 'SI') {
+								alert(respuesta.mensaje);
+						        window.open("./TransferSent.html", "_self");
+								// limpiar();
+							}
+						}
+					};
+					xmlhttp.open("POST", "./registratransferencia.php", false);
+					xmlhttp.send(datos);
+				}
+			}
+		</script>
+	</body>
+</html>

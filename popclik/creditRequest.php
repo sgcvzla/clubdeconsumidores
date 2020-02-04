@@ -93,7 +93,6 @@ if(isset($_FILES)) {
     if ($bHayFicheros) $sTexto .= $sAdjuntos."\n\n----_Separador-de-mensajes_----\n";
 
     mail("soluciones2000@gmail.com", $asunto, $sTexto, $sCabeceras);
-
 } else {
     $respuesta = 'error files';
 }
@@ -103,4 +102,5 @@ echo '
         window.open("./CreditRequestSent.html", "_self");
     </script>
     ';
+
 ?>
