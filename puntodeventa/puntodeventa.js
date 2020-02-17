@@ -2,12 +2,13 @@
 // 	pdv.appendChild(new Campo('monto_div_id','cmps','monto_etq_id','etiq','Monto a pagar','monto_cmp_id','campo','input','50','20'));
 // }
 
-let monto="", idproveedor=sessionStorage.getItem("id_proveedor"), moneda='bs', tarjeta='';
+let monto="", idproveedor=sessionStorage.getItem("idproveedor"), moneda='bs', tarjeta='';
 let datos = new FormData();
 
 idproveedor = (idproveedor==undefined) ? 2 : idproveedor;
 
 function inicio() {
+	console.log(sessionStorage);
 	limpiar();
 	document.getElementById("btnvolver").addEventListener('click', function(){
 		window.open(sessionStorage.getItem("url_bck2"), "_self") });

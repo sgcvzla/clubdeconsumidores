@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, scalable=yes"> -->
+		<title>POP CLIK</title>
+	</head>
+	<body onload="inicio()">
+		<div>
+			<p id="mensaje1"></p>
+			<p id="mensaje2"></p>
+			<p id="mensaje3"></p>
+		</div>
+		<script>
+			function inicio() {
+				let user = '1', pass = '456789', token = '', priv_key = 'RH0sVTL9za7O6gutqI43';
+
+				let respuesta, xmlhttp = new XMLHttpRequest(), datos = new FormData();
+
+				datos.append("login", user);
+				datos.append("clave", pass);
+				xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						respuesta = JSON.parse(this.responseText);
+						token = respuesta.entidadRespuesta[0].token;
+						mensaje1.innerHTML = token;
+						certificado(user,pass,token,priv_key);
+					}
+				};
+				xmlhttp.open("POST", './generatoken.php', true);
+				xmlhttp.send(datos);
+
+			}
+
+			function certificado(user,pass,token,priv_key) {
+				let respuesta, xmlhttp = new XMLHttpRequest(), datos = new FormData();
+
+				datos.append("login", user);
+				datos.append("clave", pass);
+				datos.append("token", token);
+				datos.append("frase_privada", priv_key);
+				xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						respuesta = JSON.parse(this.responseText);
+						certificado = respuesta.entidadRespuesta[0].certificado;
+						mensaje2.innerHTML = certificado;
+						guia(user,pass,certificado);
+					}
+				};
+				xmlhttp.open("POST", './generacertificado.php', true);
+				xmlhttp.send(datos);
+
+			}
+
+			function guia(user,pass,certificado) {
+				let respuesta, xmlhttp = new XMLHttpRequest(), datos = new FormData();
+
+				datos.append("codcliente", user);
+				datos.append("clave", pass);
+				datos.append("certificado", certificado);
+				xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						respuesta = JSON.parse(this.responseText);
+						console.log(respuesta);
+						numguia = respuesta.entidadRespuesta[0].numguia;
+						mensaje3.innerHTML = numguia;
+					}
+				};
+				xmlhttp.open("POST", './generaguia.php', true);
+				xmlhttp.send(datos);
+			}
+		</script>
+	</body>
+</html>

@@ -67,37 +67,44 @@
 .columna1 {
     width: 15%;
     text-align: center;
+    align-self: center;
 }
 
 .columna2 {
     width: 10%;
     text-align: center;
+    align-self: center;
 }
 
 .columna3 {
     width: 20%;
     text-align: center;
+    align-self: center;
 }
 
 .columna4 {
     width: 20%;
     text-align: right;
+    align-self: center;
     padding-right: 1em;
 }
 
 .columna5 {
     width: 15%;
+    align-self: center;
     text-align: center;
 }
 
 .columna6 {
     width: 20%;
+    align-self: center;
     text-align: center;
 }
 
 .btns {
     padding-top: 0.5em;
     text-align: right;
+    margin-bottom: 2em;
 }
 
 @media only screen and (max-width: 780px) {
@@ -118,6 +125,12 @@
         height: auto;
         justify-content: space-around;
         font-size: 90%;
+    }
+    .par {
+        font-size: 80%;
+    }
+    .impar {
+        font-size: 80%;
     }
     .columna1 {
         display: none;

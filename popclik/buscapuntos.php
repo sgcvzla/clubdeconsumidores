@@ -14,6 +14,10 @@ if ($row = mysqli_fetch_array($result)) {
     $respuesta .= '"hashr":"' . $row["hashr"] . '",';
     $respuesta .= '"nombrepunto":"' . utf8_encode($row["nombre"]) . '",';
     $respuesta .= '"operador":"' . utf8_encode($row["usuario"]) . '",';
+    $respuesta .= '"lineadecredito":' . $row["lineadecredito"] . ',';
+    $respuesta .= '"saldolineadecredito":' . $row["saldolineadecredito"] . ',';
+    $respuesta .= '"diasdecredito":' . $row["diasdecredito"] . ',';
+    $respuesta .= '"proximopago":"' . $row["proximopago"] . '",';
     $respuesta .= '"mensaje":"exito"}';
 } else {
     $respuesta = '{"exito":"NO",';

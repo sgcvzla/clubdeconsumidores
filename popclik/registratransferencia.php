@@ -70,13 +70,14 @@ $mensaje =
               </p>
               <p>Estimado, <b>'.trim($nombres).'</b></p>
 
-              <p>El día '.$fecha1.' se ha registrado un reporte de pago en la orden <b style="font-size: 150%;">No. '.trim($orden).'.</b></p>
+              <p>El día '.$fecha1.' hemos recibido el siguiente reporte de pago para la orden <b style="font-size: 150%;">No. '.trim($orden).'.</b></p>
 
-              <p>Por la cantidad de <b>USD '.number_format($monto,2,',','.').'</b></p>
+              <p>Método de pago: <b>'.$origen.'</b></p>
+              <p>Numero de referencia: <b>'.$referencia.'</b></p>
+              <p>Monto: <b>USD '.number_format($monto,2,',','.').'</b></p>
+              <p>Fecha de la transacción: <b>'.$fecha2.'</b></p>
 
-              <p>Realizado por medio de <b>'.$origen.'</b> con el número de referencia <b>'.$referencia.'</b> en la fecha <b>'.$fecha2.'</b></p>
-
-              <p><b>Una vez verificada esta información, se le informará por esta vía y se procederá al despacho de la mercancía.</b></p>
+              <p><b>Una vez verificado el pago, recibirá un correo electrónico de confirmación.</b></p>
 
               <p><i>¡Gracias por comprar en POPClik!</i></p>
 

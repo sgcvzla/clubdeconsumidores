@@ -38,7 +38,13 @@
 					<span class="etiq">Monto:</span>
 					<input id="monto" class="campo" type="text" size="50" maxlength="12" title="Debe introducir sólo números o el . como separador decimal" style="text-align: right;"/>
 				</div>
-				<!-- Referencia -->
+				<!-- Botones para enviar la transacción directa -->
+				<div class="btns">
+					<button id="qr-show" onclick="mostrarQR()">Mostrar QR</button>
+					<button id="qr-read" onclick="scanearQR()">Escanear QR</button>
+				</div>
+				<!-- Tarjeta -->
+				<h5 style="text-align: left; padding-top: 1em;"><u>Si desea introducir datos manualmente:</u></h5>
 				<div id="div10" class="cmps">
 					<span class="etiq">Número de tarjeta:</span>
 					<input id="tarjeta" class="campo" type="text" size="50" maxlength="16" title="Debe introducir sólo números" />

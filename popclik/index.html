@@ -104,13 +104,29 @@
 								idpunto = respuesta.id;
 								nombrepunto = respuesta.nombrepunto;
 								operador = respuesta.operador;
+								proximopago = respuesta.proximopago;
+								fch = new Date();
+								year = fch.getFullYear();
+								month = fch.getMonth()+1;
+								day = fch.getDate();
+								tmonth = (month<10) ? "0"+month : month ;
+								tday = (day<10) ? "0"+day : day ;
+								hoy = year+"-"+tmonth+"-"+tday;
+								lineadecredito = respuesta.lineadecredito;
+								saldolineadecredito = respuesta.saldolineadecredito;
+								// lineadecredito = parseFloat(respuesta.lineadecredito);
+								// saldolineadecredito = parseFloat(respuesta.saldolineadecredito);
 								if (respuesta.exito == 'SI') {
-									document.getElementById("div2").style.display = 'flex';
-									document.getElementById("norecuerda").style.display = 'inline-block';
-									document.getElementById("buscar").style.display = 'none';
-									document.getElementById("login").style.display = 'inline-block';
-									document.getElementById("registro").style.display = 'none';
-									document.getElementById("olvido").style.display = 'none';
+									if (saldolineadecredito < lineadecredito && proximopago > hoy) {
+										document.getElementById("div2").style.display = 'flex';
+										document.getElementById("norecuerda").style.display = 'inline-block';
+										document.getElementById("buscar").style.display = 'none';
+										document.getElementById("login").style.display = 'inline-block';
+										document.getElementById("registro").style.display = 'none';
+										document.getElementById("olvido").style.display = 'none';
+									} else {
+										alert('Punto de recaudación bloqueado, comuniquese con el área administrativa.');
+									}
 								} else {
 									document.getElementById("div2").style.display = 'flex';
 									document.getElementById("div3").style.display = 'flex';

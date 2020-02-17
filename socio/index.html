@@ -143,7 +143,6 @@
 				clave = document.getElementById("clave").value.toLowerCase();
 				hashp = SHA256(usuario.trim()+clave.trim());
 				if (respuesta.hashp==hashp) {
-					console.log(idsocio);
 					sessionStorage.setItem("email", usuario);
 					sessionStorage.setItem("idsocio", idsocio);
 					window.location.replace("menu.html");

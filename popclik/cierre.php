@@ -26,7 +26,7 @@ $respuesta = '{';
 $respuesta .= '"exito":"SI",';
 $respuesta .= '"cantidad":'.$cantidad.',';
 $respuesta .= '"recaudado":'.$recaudado.',';
-$respuesta .= '"lineadecredito":'.$lineadecredito;
+$respuesta .= '"saldolineadecredito":'.$saldolineadecredito;
 $respuesta .= '}';
 echo $respuesta;
 ?>

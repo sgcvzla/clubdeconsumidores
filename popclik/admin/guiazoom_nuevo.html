@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, scalable=yes"> -->
+		<title>POP CLIK</title>
+	</head>
+	<body onload="inicio()">
+		<div>
+			<p id="mensaje"></p>
+			<p id="mensaje2"></p>
+		</div>
+		<script>
+			function inicio() {
+				let user = '1', pass = '456789', token = '', priv_key = 'RH0sVTL9za7O6gutqI43';
+				let urlServicio = 'http://sandbox.grupozoom.com/baaszoom/public/guiaelectronica/generarToken?login='+user+'&clave='+pass;
+
+				// '?login='+user+'&clave='+pass
+
+				let respuesta, xmlhttp = new XMLHttpRequest(), datos = new FormData();
+				// datos.append("login", user);
+				// datos.append("clave", pass);
+				xmlhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						respuesta = JSON.parse(this.responseText);
+						console.log(respuesta);
+						mensaje1.innerHTML = respuesta;
+					}
+				};
+				xmlhttp.open("POST", urlServicio, true);
+				// xmlhttp.setRequestHeader('Access-Control-Allow-Origin', 'http://sandbox.grupozoom.com/baaszoom/public/guiaelectronica/');
+				xmlhttp.setRequestHeader('Access-Control-Allow-Origin', 'http://localhost');
+
+				// xmlhttp.setRequestHeader("Access-Control-Allow-Origin", "*");
+				xmlhttp.send(datos);
+
+			}
+		</script>
+	</body>
+</html>

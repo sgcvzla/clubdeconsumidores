@@ -1,209 +1,215 @@
 <?php
+header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json');
 include_once("../../_config/conexion.php");
 include_once("../../_config/configShopify.php");
-// Buscar transacción
 
 
-// $ch = curl_init();
-// curl_setopt($ch, CURLOPT_URL,$url );
-// curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);// set optional params
-// curl_setopt($ch,CURLOPT_HEADER, false);
+// Buscar orden para generar guía
+$url = $urlUnaOrden.trim($_POST["orden_id"]).".json";
+// $url = $urlUnaOrden."2153289089098.json";
 
-// $result=curl_exec($ch);
-// curl_close($ch);
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL,$url );
+curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);// set optional params
+curl_setopt($ch,CURLOPT_HEADER, false);
 
-// $transaccion=json_decode($result,true);
+$result=curl_exec($ch);
 
-// $parent_id = $transaccion["transactions"][0]["id"];
-// // Fin buscar transacción
+$aux=json_decode($result,true);
+$orden = $aux["order"];
 
-// // Enviar transacción
-
-// $variant = array('transaction' =>
-//     array(
-//         'currency' =>  'USD',
-//         'amount' => trim($_POST["monto"]),
-//         'kind' => 'capture',
-//         'parent_id' => trim($parent_id)
-//     )
-// );
-// curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-// curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($variant));
-// curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
-// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-// $response = curl_exec($ch);
-// curl_close($ch);
-
-// $respuesta = '{';
-// $respuesta .= '"exito":"NO",';
-// $respuesta .= '"mensaje":"' . utf8_encode('Pago no enviado') . '",';
-// $respuesta .= '"response":' . $response;
-// $respuesta .= '}';
-// if (isset($response)) {
-//     $exito = (strpos($response,'transaction')==false) ? false : true;
-//     $si = 'NO';
-//     $mensaje = 'Error interno en la tienda en línea';
-//     if ($exito) {
-//       $pago=json_decode($response,true);
-
-//       $si = 'SI';
-//       $fechapago = date('Y-m-d');
-//       $banco = 'Cobro en efectivo';
-//       $referencia = $pago["transaction"]["id"];
-//       $orden = $_POST["orden"];
-//       $tipo = '51'; // Recarga
-//       $signo = '-';
-//       $status = 'Confirmada';
-
-//       $query  = 'INSERT INTO recaudo_transacciones (punto, fecha, banco, referencia, orden, tipo, signo, monto, status, usuario, detalle) ';
-//       $query .= 'VALUES ('.$_POST["punto"].',"'.$fechapago.'","'.$banco.'","'.$referencia.'","'.$orden.'",';
-//       $query .= '"'.$tipo.'","'.$signo.'",'.$_POST["monto"].',"'.$status.'",'.$_POST["usuario"].',"'.$_POST["nombres"].'")';
-//       if($result = mysqli_query($link, $query)) {
-//         $quer2 = 'SELECT * FROM puntosderecaudacion where id='.$_POST["punto"];
-//         $resul2 = mysqli_query($link, $quer2);
-//         if ($ro2 = mysqli_fetch_array($resul2)) {
-//           $nombrepunto = $ro2['nombre'];
-//           $emailpunto = $ro2['email'];
-//           $lineadecredito = $ro2['lineadecredito'];
-//           $lineadecredito -= $_POST["monto"];
-
-//           $quer3 = 'UPDATE puntosderecaudacion SET lineadecredito='.$lineadecredito.' WHERE id='.$_POST["punto"];
-//           if ($resul3 = mysqli_query($link, $quer3)){
-//             $si = 'SI';
-//             $mensaje = 'Pago enviado exitosamente';
-//             enviaremail($_POST["email"],$nombrepunto,$_POST["nombres"],$_POST["monto"],$_POST["parcial"],$orden,$emailpunto,$referencia);
-//           } else {
-//             $si = 'NO';
-//             $mensaje = 'No se actualizó el saldo de la línea de crédito';
-//           }
-//         } else {
-//           $si = 'NO';
-//           $mensaje = 'Error en la identificación del punto de recaudación';
-//         }
-//       } else {
-//         $si = 'NO';
-//         $mensaje = 'Ocurrió un error en el registro de la transacción';
-//       }
-//     }
-//     $respuesta = '{';
-//     $respuesta .= '"exito":"'.$si.'",';
-//     $respuesta .= '"mensaje":"' . $mensaje . '",';
-//     $respuesta .= '"response":' . $response;
-//     $respuesta .= '}';
-// }
-
-$respuesta = '{"exito":"SI","mensaje":"Éxito","response":""}';
-echo $respuesta;
+curl_close($ch);
 
 
-function enviaremail($correo,$nombrepunto,$nombres,$monto,$parcial,$orden,$emailpunto,$referencia) {
-$mensaje = 
-  '<!DOCTYPE html>
-  <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Recibo</title>
-    <link rel="stylesheet" href="">
-    <style>
-      @font-face {
-        font-family: recibo;
-        src: url("https://www.clubdeconsumidores.com.ve/popclik/MyriadWebPro.ttf") format("truetype");
-      }
-    </style>
-  </head>
-  <body>
-    <table width="400" height="auto">
-      <tbody>
-        <tr>
-          <td>
-            <div style="padding: 10px; border: solid 12.5px gray; text-align: center;font-family: Arial; color: gray;">
-              <p><img src="https://www.clubdeconsumidores.com.ve/img/popclikhoriz.png" width="120" height="27.39" /></p>
-              <p>
-                <img src="https://www.clubdeconsumidores.com.ve/img/icono-03.png" width="60" height="60.41" /><br/>
-                <span style="font-size: 150%; color: #00770b;">
-                  <b>¡Pago recibido!</b>
-                </span>
-              </p>
-              <p>Comprobante de pago #'.trim($referencia).'</p>
-              <p>Estimado, <b>'.trim($nombres).'</b></p>
-              <p>El aliado comercial ZOOM ('.trim($nombrepunto).') ha recibido la cantidad de:</p>
-              <h1><b>USD '.number_format($monto,2,',','.').'</b></h1>
-              <p>Por concepto de pago ';
-                if ($parcial=='si') {
-                  $mensaje .= utf8_decode('parcial ');
-                } else {
-                  $mensaje .= utf8_decode('total ');
-                }
-                $mensaje .= 'de la orden <br/>
-                <b style="font-size: 150%;">No. '.trim($orden).'.</b>
-              </p>
-                <p><i>¡Gracias por comprar en POPClik!</i></p>
-                <p style="font-size: 80%;"><b>Para revisar el estado de tu pedido, ingresa a tu cuenta de usuario en <a href="http://www.popclik.com">www.popclik.com</a></b></p>
-                <p style="font-size: 80%;"><b>Si tienes alguna pregunta o comentario, contáctanos a través de <a href="mailto:info@popclik.com">info@popclik.com</a></b></p>
-              </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </body>
-  </html>';
+// Extracción de los códigos de ciudad, municipio y parroquia
+$cadena0 = substr($orden["shipping_address"]["address2"],15);
+$codciud = substr($cadena0,0,strpos($cadena0,"."));
 
-$asunto = utf8_decode('Recibo de cobro de la orden No. '.$orden.'.');
-// $cabeceras = 'Content-type: text/html'.'\r\n';
+$cadena1 = substr($cadena0,strpos($cadena0,".")+1);
+$codmunc = substr($cadena1,0,strpos($cadena1,"."));
 
-$cabeceras = 'Content-type: text/html; charset=utf-8'."\r\n";
-$cabeceras .= 'From: '.utf8_decode('POP CLIK - Sistema de Recaudación <'.trim($emailpunto).'>');
+$codparr = substr($cadena1,strpos($cadena1,".")+1);
 
-// if (strpos($_SERVER["SERVER_NAME"],'localhost')===FALSE) {              
-  // mail($correo,$asunto,$mensaje,$cabeceras,'-f '.trim($emailpunto));
-  mail($correo,$asunto,$mensaje,$cabeceras);
-// }
 
-$a = fopen('log.html','w+');
-fwrite($a,$asunto);
-fwrite($a,'-');
-fwrite($a,$mensaje);
+// Cálculo de la cantidad, peso y monto de la órden
+$cantidad = 0;
+$largo = count($orden["line_items"]);
+for ($i=0; $i < $largo; $i++) { 
+  $cantidad += $orden["line_items"][$i]["quantity"];
 }
 
-/*
-function enviaremail($correo,$nombrepunto,$nombres,$monto,$parcial,$orden,$emailpunto,$referencia) {
-    $mensaje = 
-    '<div style="width: auto;">
-      <p><img src="https://www.clubdeconsumidores.com.ve/img/popclikhoriz.png" width="237" height="54.1096" /></p>
-      <p>Comprobante de pago #'.trim($referencia).'</p>
-      <h2><b>¡Pago recibido!</b></h2>
-      <p>Estimado, <b>'.trim($nombres).'</b></p>
-      <p>El aliado comercial ZOOM ('.trim($nombrepunto).') ha recibido la cantidad de:</p>
-      <h2><b>USD '.number_format($monto,2,',','.').'</b></h2>
-      <p>Por concepto de pago ';
-    if ($parcial=='si') {
-      $mensaje .= utf8_decode('parcial ');
-    } else {
-      $mensaje .= utf8_decode('total ');
+$pesoenKg = $orden["total_weight"]/1000;
+$valorenDolares = $orden["total_price"]*78000;
+
+$idcliente = $orden["customer"]["id"];
+$zip = $orden["shipping_address"]["zip"];
+$nombrecliente = $orden["shipping_address"]["first_name"]." ".$orden["shipping_address"]["last_name"];
+$phone = $orden["shipping_address"]["phone"];
+$address = $orden["shipping_address"]["address1"];
+$numorden = $orden["order_number"];
+
+
+// Generar token
+$url = "http://sandbox.grupozoom.com/baaszoom/public/guiaelectronica/generarToken";
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL,$url );
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, "login=".$user_zoom."&clave=".$pass_zoom);
+curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);// set optional params
+curl_setopt($ch,CURLOPT_HEADER, false);
+
+$result=curl_exec($ch);
+$aux=json_decode($result,true);
+$token = $aux["entidadRespuesta"][0]["token"];
+
+curl_close($ch);
+
+
+// Genera certificado
+$url = "http://sandbox.grupozoom.com/baaszoom/public/guiaelectronica/zoomCert";
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL,$url );
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, "login=".$user_zoom."&password=".$pass_zoom."&token=".$token."&frase_privada=".$priv_zoom);
+curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);// set optional params
+curl_setopt($ch,CURLOPT_HEADER, false);
+
+$result=curl_exec($ch);
+$aux=json_decode($result,true);
+$certificado = $aux["entidadRespuesta"][0]["certificado"];
+
+curl_close($ch);
+
+
+// Genera codigo oficina destino
+$url = "http://sandbox.grupozoom.com/baaszoom/public/canguroazul/getOficinasGE?codigo_ciudad_destino=".$codciud;
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL,$url );
+curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);// set optional params
+curl_setopt($ch,CURLOPT_HEADER, false);
+
+$result=curl_exec($ch);
+$aux=json_decode($result,true);
+$codoficinadestino = $aux["entidadRespuesta"][0]["codoficina"];
+
+curl_close($ch);
+
+
+// Buscar cédula o rif del cliente
+$url = $urlUnCustomer.trim($idcliente)."/metafields.json";
+// $url = $urlUnaOrden."2153289089098.json";
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL,$url );
+curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);// set optional params
+curl_setopt($ch,CURLOPT_HEADER, false);
+
+$result=curl_exec($ch);
+if (isset($result)) {
+    $metafields=json_decode($result,true);
+    $cedularif = "0";
+    foreach ($metafields as $lista => $orden) {
+        if ($lista["key"]=="cedula") {
+            $cedularif = (isset($lista["value"]) ? $lista["value"] : "0");
+        }
     }
-    $mensaje .= 'de la orden <b>No. '.trim($orden).'.</b></p>
-      <p>¡Gracias por comprar en POPClik!</p>
-      <p>Para revisar el estado de tu pedido, ingresa a tu cuenta de usuario en <a href="http://www.popclik.com">www.popclik.com</a></p>
-      <p>Si tienes alguna pregunta o comentario, contáctanos a través de <a href="mailto:info@popclik.com">info@popclik.com</a></p>
-    </div>';
-
-    $asunto = utf8_decode('Recibo de cobro de la orden No. '.$orden.'.');
-    // $cabeceras = 'Content-type: text/html'.'\r\n';
-
-    $cabeceras = 'Content-type: text/html; charset=utf-8'."\r\n";
-    $cabeceras .= 'From: '.utf8_decode('POP CLIK - Sistema de Recaudación <'.trim($emailpunto).'>');
-
-   // if (strpos($_SERVER["SERVER_NAME"],'localhost')===FALSE) {              
-      // mail($correo,$asunto,$mensaje,$cabeceras,'-f '.trim($emailpunto));
-      mail($correo,$asunto,$mensaje,$cabeceras);
-   // }
-
-    $a = fopen('log.html','w+');
-    fwrite($a,$asunto);
-    fwrite($a,'-');
-    fwrite($a,$mensaje);
 }
-*/
+
+curl_close($ch);
+
+
+// Genera guía
+$campos =  "login=".$user_zoom;
+$campos .= "&clave=".$pass_zoom;
+$campos .= "&certificado=".$certificado;
+$campos .= "&codservicio="."71"; // Codigo de servicio de envío nacional 10KG
+$campos .= "&consignacion="."0"; // Default, solo aplica para envíos prepagados, el "1" es consignación
+$campos .= "&contacto_remitente="."POP CLIK";
+$campos .= "&codciudadrem="."4"; // "4" es Valencia
+$campos .= "&codmunicipiorem="."814"; // "814" es Valencia
+$campos .= "&codparroquiarem="."81407"; // "81407" es San José
+$campos .= "&zona_postal_remitente="."2001"; // Valencia
+$campos .= "&telefono_remitente="."02418427724";
+$campos .= "&direccion_remitente="."Paseo Cabriales, Torre Movilnet";
+$campos .= "&inmueble_remitente="."mezzanina local 2-3";
+$campos .= "&retira_oficina="."0"; // Por default no se aceptará retiro en oficina
+$campos .= "&codciudaddes=".$codciud;
+$campos .= "&codmunicipiodes=".$codmunc;
+$campos .= "&codparroquiades=".$codparr;
+$campos .= "&zona_postal_destino=".$zip;
+$campos .= "&codoficinades=".$codoficinadestino;
+$campos .= "&destinatario=".$nombrecliente;
+$campos .= "&contacto_destino=".$nombrecliente;
+$campos .= "&cirif_destinatario=".$cedularif;
+
+$campos .= "&celular="."584244178584";
+
+$campos .= "&telefono_destino=".$phone;
+$campos .= "&direccion_destino=".$address;
+$campos .= "&inmueble_destino=".$address;
+// $campos .= "&siglas_casillero=".BRM
+$campos .= "&descripcion_contenido="."MERCANCIA";
+$campos .= "&referencia="."Orden No. ".$numorden;
+$campos .= "&numero_piezas=".$cantidad;
+$campos .= "&peso_bruto=".$pesoenKg;
+$campos .= "&tipo_envio="."M";   // "M" para mercancía
+$campos .= "&valor_declarado=".$valorenDolares;
+$campos .= "&seguro="."1";    // "1" para seguro
+$campos .= "&valor_mercancia=".$valorenDolares;
+$campos .= "&modalidad_cod="."1";   // Default
+$campos .= "&codoficinaori="."136"; // Principal Valencia
+
+// echo $campos;
+$url = "http://sandbox.grupozoom.com/baaszoom/public/guiaelectronica/createShipment";
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL,$url);
+curl_setopt($ch, CURLOPT_POST, false);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $campos);
+curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);// set optional params
+curl_setopt($ch,CURLOPT_HEADER, false);
+
+$result=curl_exec($ch);
+$aux=json_decode($result,true);
+$numguia = 0;
+$numguia = $aux["entidadRespuesta"][0]["numguia"];
+
+curl_close($ch);
+
+// Respuesta
+$respuesta = '{"exito":"SI","mensaje":"Registro exitoso, número de guía: '.$numguia.'","numguia": '.$numguia.', "response":'.$result.'}';
+
+// Buscar orden para generar guía
+$url = $urlUnaOrden.trim($_POST["orden_id"])."/fulfillments.json";
+// $url = $urlUnaOrden."2153289089098.json";
+
+$ch = curl_init();
+$variant = array('fulfillment' =>
+    array(
+        'location_id' =>  33406189642,  // Este número corresponde al warehouse
+        'tracking_number' => $numguia,
+        'tracking_urls' => array('www.zoomenvios.com'),
+        'notify_customer' => true,
+        'tracking_company' => 'Zoom Envíos'
+    )
+);
+
+curl_setopt($ch, CURLOPT_URL,$url);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($variant));
+curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$result=curl_exec($ch);
+
+$status = curl_error($ch);
+
+curl_close($ch);
+
+
+echo $respuesta;
 ?>

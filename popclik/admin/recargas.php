@@ -14,9 +14,15 @@ if($result = mysqli_query($link, $query)) {
     $query = 'SELECT * FROM puntosderecaudacion where id='.$_POST["punto"];
     $result = mysqli_query($link, $query);
     if ($row = mysqli_fetch_array($result)) {
-    	$lineadecredito = $row['lineadecredito'];
-		$lineadecredito += $_POST["monto"];
-		$query = 'UPDATE puntosderecaudacion SET lineadecredito='.$lineadecredito.' WHERE id='.$_POST["punto"];
+        $ultimopago = $row['proximopago'];
+        $diasdecredito = $row['diasdecredito'];
+        // Fecha de vecnimiento (1 año)
+        $proximopago = strtotime('+'.$diasdecredito.' days', strtotime ($ultimopago));
+        $proximopago = date('Y-m-d', $proximopago);
+
+    	$saldolineadecredito = $row['saldolineadecredito'];
+		$saldolineadecredito -= $_POST["monto"];
+		$query = 'UPDATE puntosderecaudacion SET saldolineadecredito='.$saldolineadecredito.', proximopago="'.$proximopago.'" WHERE id='.$_POST["punto"];
 		if ($result = mysqli_query($link, $query)){
 			$respuesta = '{';
 			$respuesta .= '"exito":"SI",';

@@ -16,7 +16,9 @@ if ($result = mysqli_query($link, $query)) {
         }
         $respuesta .= $coma.'{';
         $respuesta .= '"id":'.$row['id'].',';
-        $respuesta .= '"nombre":"' . utf8_encode($row["nombre"]) . '"';
+        $respuesta .= '"nombre":"' . utf8_encode($row["nombre"]) . '",';
+        $respuesta .= '"lineadecredito":"' . utf8_encode($row["lineadecredito"]) . '",';
+        $respuesta .= '"diasdecredito":"' . utf8_encode($row["diasdecredito"]) . '"';
         $respuesta .= '}';
     }
     $respuesta .= ']}';

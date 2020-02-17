@@ -1,5 +1,5 @@
 <?php
-	include("./zoomcert.php");
+	include("./zoomcert_def.php");
 
 	$codcliente = $_POST["codcliente"];
 	$password = $_POST["password"];

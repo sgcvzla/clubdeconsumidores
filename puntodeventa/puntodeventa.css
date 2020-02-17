@@ -113,21 +113,26 @@ button {
 .columna1 {
     width: 30%;
     text-align: center;
+    align-self: center;
 }
 
 .columna2 {
     width: 25%;
     text-align: center;
+    align-self: center;
+    display: block;
 }
 
 .columna3 {
     width: 20%;
     text-align: right;
+    align-self: center;
     padding-right: 1em;
 }
 
 .columna4 {
     width: 25%;
+    align-self: center;
     text-align: center;
 }
 
@@ -180,17 +185,30 @@ button {
     button {
         margin-top: 0.5em;
     }
+    .titulo {
+        font-size: 75%;
+    }
+    .par {
+        font-size: 65%;
+    }
+    .impar {
+        font-size: 65%;
+    }
     .columna1 {
-        font-size: 100%;
+        font-size: 105%;
+        width: 45%;
+        /* font-size: 90%; */
     }
     .columna2 {
-        font-size: 100%;
+        /* font-size: 90%; */
+        display:  none;
     }
     .columna3 {
-        font-size: 100%;
+        width: 25%;
+        /* font-size: 90%; */
     }
     .columna4 {
-        font-size: 100%;
+        /* font-size: 90%; */
     }
 }
 

@@ -34,7 +34,8 @@ class Card {
     card.style.flexDirection = 'column';
     card.style.justifyContent = 'space-between';
     card.style.background = (this.tipocrd=='prepago') ? 'black' : 'white' ;
-    card.style.color = (this.tipocrd=='prepago') ? '#7A7A7A' : 'black' ;
+    // card.style.color = (this.tipocrd=='prepago') ? '#7A7A7A' : 'black' ;
+    card.style.color = (this.tipocrd=='prepago') ? 'white' : 'black' ;
     card.style.border = (this.tipocrd=='prepago') ? 'solid 2px white' : 'solid 2px black' ;
 
         // Crear borde de la tarjeta

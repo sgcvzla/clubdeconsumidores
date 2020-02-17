@@ -38,6 +38,12 @@ img {
     flex-direction: row;
 }
 
+.campo2 {
+    background: yellow;
+    height: 5em;
+    width: 51.2%;
+}
+
 .etiq {
     width: 37.5%;
     padding-left: 0.5em;
@@ -125,6 +131,9 @@ img {
     }
     .cmps {
         padding: 0 0 2.25em 0;
+    }
+    .campo2 {
+        width: 90%;
     }
 }
 

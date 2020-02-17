@@ -21,9 +21,9 @@
 }
 
 .logo {
-    margin: 10px auto;
+    margin: 0 auto;
     height: auto;
-    width: 8em;
+    width: 12em;
     text-align: center;
 }
 
@@ -65,45 +65,52 @@
 }
 
 .columna1 {
-    width: 10%;
+    width: 18%;
     text-align: center;
+    align-self: center;
 }
 
 .columna2 {
-    width: 32%;
+    width: 30%;
     text-align: center;
+    align-self: center;
 }
 
 .columna3 {
-    width: 19%;
+    width: 15%;
     text-align: center;
+    align-self: center;
     display: block;
 }
 
 .columna4 {
-    width: 15%;
+    width: 13%;
     text-align: right;
+    align-self: center;
     padding-right: 1em;
 }
 
 .columna5 {
     width: 22%;
     text-align: center;
-    padding-left: 0.5em;
+    align-self: center;
+    /* padding-left: 0.5em; */
 }
 
 .btnopciones {
-    width: 7em;
+    width: 6em;
     margin-left: 0.5em;
     margin-right: 0.5em;
+    margin-bottom: 0.25em;
 }
 
 .btns {
     padding-top: 0.5em;
     text-align: right;
+    margin-bottom: 2em;
 }
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 960px) {
     * {
         width: 100%;
     }
@@ -116,7 +123,21 @@
         font-size: 90%;
     }
 
+    .par {
+        height: 3.5em;
+        font-size: 80%;
+    }
+
+    .impar {
+        height: 3.5em;
+        font-size: 80%;
+    }
+
     .columna3 {
         display: none;
+    }
+
+    .btnopciones {
+        margin-left: -0.5em;
     }
 }

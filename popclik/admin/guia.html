@@ -8,7 +8,10 @@
 		<title>POP CLIK</title>
 		<link rel="stylesheet" href="guia.css">
 		<script type="text/javascript" src="../../js/funciones.js"></script>
-	</head>
+<!-- 		<script type="text/javascript" src="./jquery.js"></script>
+		<script type="text/javascript" src="./jquery.base64.js"></script>
+		<script type="text/javascript" src="./jquery.zoomwebservices.js"></script>		
+ -->	</head>
 	<body onload="inicio()">
 		<div id="container">
 			<div class="logo" align="center">
@@ -16,7 +19,7 @@
 			</div>
 			<h2 style="text-align: center; color: black;">Administración</h2>
 			<h3 id="menu" align="center"></h3>
-			<h3 align="center">Genereación de guías de despacho Zoom</h3>
+			<h3 align="center">Generación de guías de despacho Zoom</h3>
 			<br/>
 			<div id="div1" align="center">
 				<!-- Nombres -->
@@ -39,48 +42,13 @@
 					<!-- Dirección -->
 					<div class="cmps">
 						<span class="etiq">Dirección de envío:</span>
-						<input id="direccion" class="campo" type="text" size="50" maxlength="100" style="background: yellow;" readonly />
+						<textarea id="direccion" class="campo2" size="50" readonly />
+						</textarea>
 					</div>
 					<!-- Zona postal -->
 					<div class="cmps">
 						<span class="etiq">Zona postal:</span>
 						<input id="zonapostal" class="campo" type="text" size="50" maxlength="100" style="background: yellow;" readonly />
-					</div>
-					<!-- Ciudad -->
-					<div class="cmps">
-						<span class="etiq">Ciudad:</span>
-						<input id="ciudad" class="campo" type="text" size="50" maxlength="100" style="background: yellow;" readonly />
-					</div>
-					<!-- Estado -->
-					<div class="cmps">
-						<span class="etiq">Estado:</span>
-						<input id="estado" class="campo" type="text" size="50" maxlength="100" style="background: yellow;" readonly />
-					</div>
-
-					<!-- Inmueble destino -->
-					<div class="cmps">
-						<span class="etiq">Inmueble destino:</span>
-						<input id="inmuebledestino" class="campo" type="text" size="50" maxlength="100" />
-					</div>
-					<!-- Parroquia -->
-					<div class="cmps">
-						<span class="etiq">Parroquia:</span>
-						<input id="parroquia" class="campo" type="text" size="50" maxlength="100" />
-					</div>
-					<!-- Municipio -->
-					<div class="cmps">
-						<span class="etiq">Municipio:</span>
-						<input id="municipio" class="campo" type="text" size="50" maxlength="100" />
-					</div>
-					<!-- Codigo de oficina -->
-					<div class="cmps">
-						<span class="etiq">Oficina Zoom:</span>
-						<input id="codigo_oficina" class="campo" type="text" size="50" maxlength="100" />
-					</div>
-					<!-- CI / RIF -->
-					<div class="cmps">
-						<span class="etiq">CI / RIF:</span>
-						<input id="cirif" class="campo" type="text" size="50" maxlength="100" />
 					</div>
 
 				</div>
@@ -96,7 +64,9 @@
 			</div>
 		</div>
 		<div>
-			<p id="mensaje"></p>
+			<p id="mensaje">
+				<embed id="objeto" src="" type="data:application/pdf;base64" width="100%" style="display: none;">
+			</p>
 		</div>
 		<div align="right" style="width: 100%; position: fixed; padding-bottom: 0.25em; bottom: 0">
 			<pie style="font-size: 100%; margin-right: 1em;">
@@ -106,9 +76,8 @@
 		<script>
 			const baseurl = window.location.origin + '/clubdeconsumidores/';
 
-			let orden = "";
-			let nombres = "", telefono = "", direccion = "", zonapostal = "", ciudad = "", estado = "";
-			let parroquia = "", municipio = "", codigo_oficina = "", cirif = "", inmuebledestino = "";
+			let orden = "", orden_id = "";
+			let nombres = "", telefono = "", direccion = "", zonapostal = "";
 			let datos = new FormData();
 
 
@@ -126,26 +95,12 @@
 				telefono = "";
 				direccion = "";
 				zonapostal = "";
-				ciudad = "";
-				parroquia = "";
-				municipio = "";
-				estado = "";
-				codigo_oficina = "";
-				cirif = "";
-				inmuebledestino = "";
 				datos = new FormData()
 				document.getElementById("orden").value = "";
 				document.getElementById("nombres").value = "";
 				document.getElementById("telefono").value = "";
 				document.getElementById("direccion").value = "";
 				document.getElementById("zonapostal").value = "";
-				document.getElementById("ciudad").value = "";
-				document.getElementById("parroquia").value = "";
-				document.getElementById("municipio").value = "";
-				document.getElementById("estado").value = "";
-				document.getElementById("codigo_oficina").value = "";
-				document.getElementById("cirif").value = "";
-				document.getElementById("inmuebledestino").value = "";
 
 				document.getElementById("div3").style.display = 'none';
 				document.getElementById("btnbuscar").style.display = 'inline-block';
@@ -188,13 +143,16 @@
 
 			function enviar() {
 				datos.append("orden", orden);
+				datos.append("orden_id", orden_id);
 
 				var xmlhttp = new XMLHttpRequest();
 				xmlhttp.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
 						respuesta = JSON.parse(this.responseText);
 						if (respuesta.exito == 'SI') {
-							mensaje.innerHTML = respuesta.mensaje;
+							// mensaje.innerHTML = respuesta.mensaje;
+							alert(respuesta.mensaje);
+							// generapdf(respuesta.numguia);
 							limpiar2();
 						} else {
 							alert(respuesta.mensaje);
@@ -209,28 +167,11 @@
 				document.getElementById("nombres").value = ldatos.nombres;
 				document.getElementById("telefono").value = ldatos.telefono;
 				document.getElementById("direccion").value = ldatos.direccion;
-				document.getElementById("zonapostal").value = ldatos.zonapostal;
-				document.getElementById("ciudad").value = ldatos.ciudad;
-				document.getElementById("estado").value = ldatos.estado;
 
-				// document.getElementById("parroquia").value = ldatos.parroquia;
-				// document.getElementById("municipio").value = ldatos.municipio;
-				// document.getElementById("codigo_oficina").value = ldatos.codigo_oficina;
-				// document.getElementById("cirif").value = ldatos.cirif;
-				// document.getElementById("inmuebledestino").value = ldatos.inmuebledestino;
 				orden_id = ldatos.id;
 				nombres = ldatos.nombres;
 				telefono = ldatos.telefono;
 				direccion = ldatos.direccion;
-				zonapostal = ldatos.zonapostal;
-				ciudad = ldatos.ciudad;
-				estado = ldatos.estado;
-
-				// parroquia = ldatos.parroquia;
-				// municipio = ldatos.municipio;
-				// codigo_oficina = ldatos.codigo_oficina;
-				// cirif = ldatos.cirif;
-				// inmuebledestino = ldatos.inmuebledestino;
 
 				document.getElementById("div3").style.display = 'block';
 				document.getElementById("btnbuscar").style.display = 'none';
@@ -244,315 +185,39 @@
 				telefono = "";
 				direccion = "";
 				zonapostal = "";
-				ciudad = "";
-				estado = "";
-
-				parroquia = "";
-				municipio = "";
-				codigo_oficina = "";
-				cirif = "";
-				inmuebledestino = "";
 				datos = new FormData()
 				document.getElementById("orden").value = "";
 				document.getElementById("nombres").value = "";
 				document.getElementById("telefono").value = "";
 				document.getElementById("direccion").value = "";
 				document.getElementById("zonapostal").value = "";
-				document.getElementById("ciudad").value = "";
-				document.getElementById("estado").value = "";
 
-				document.getElementById("parroquia").value = "";
-				document.getElementById("municipio").value = "";
-				document.getElementById("codigo_oficina").value = "";
-				document.getElementById("cirif").value = "";
-				document.getElementById("inmuebledestino").value = "";
-
-				// document.getElementById("div3").style.display = 'none';
+				document.getElementById("div3").style.display = 'none';
 				document.getElementById("btnbuscar").style.display = 'inline-block';
 				document.getElementById("btnenviar").style.display = 'none';
 
 				document.getElementById("orden").focus();
 			}
 
+			// // Genera PDF de la guía
+			// function generapdf(numguia) {
+			// 	var urlServicio = 'http://sandbox.grupozoom.com/proveedores/frontend/webservicesge/';
+			// 	$.ZoomWebServices( urlServicio, {
+			// 		service: 'generarPDF',
+			// 		data: {
+			// 			"codcliente": '1',
+			// 			"password": '456789',
+			// 			"numguia": numguia
+			// 		},
+			// 		onSuccess: function(midata){
+			// 			objeto.src = midata.objetopdf;
+			// 			objeto.style.display = 'block';
+			// 		},
+			// 		onError: function(mensaje) {
+			// 			alert(mensaje);		
+			// 		}
+			// 	});
+			// }
 		</script>
 	</body>
 </html>
-
-<!--
- 				<option id="25"  value="ACARIGUA">ACARIGUA</option>
-				<option id="46"  value="AEREOPUERTO CARACAS">AEREOPUERTO CARACAS</option>
-				<option id="47"  value="AEROPUERTO (35 KM)">AEROPUERTO (35 KM)</option>
-				<option id="446"  value="AEROPUERTO LAS FLORES">AEROPUERTO LAS FLORES</option>
-				<option id="53"  value="ALTAGRACIA DE ORITUCO">ALTAGRACIA DE ORITUCO</option>
-				<option id="55"  value="AMUAY">AMUAY</option>
-				<option id="24"  value="ANACO">ANACO</option>
-				<option id="56"  value="APARTADEROS (ESTADO MERIDA)">APARTADEROS (ESTADO MERIDA)</option>
-				<option id="58"  value="ARAGUA DE BARCELONA">ARAGUA DE BARCELONA</option>
-				<option id="60"  value="ARAIRA">ARAIRA</option>
-				<option id="61"  value="ARAURE">ARAURE</option>
-				<option id="586"  value="AV. INTERCOMUNAL LAS CABILLAS">AV. INTERCOMUNAL LAS CABILLAS</option>
-				<option id="65"  value="BAHIA DE PLATA">BAHIA DE PLATA</option>
-				<option id="66"  value="BAJO GRANDE">BAJO GRANDE</option>
-				<option id="68"  value="BARCELONA">BARCELONA</option>
-				<option id="33"  value="BARINAS">BARINAS</option>
-				<option id="44"  value="BARQUISIMETO">BARQUISIMETO</option>
-				<option id="72"  value="BEJUMA">BEJUMA</option>
-				<option id="75"  value="BISCUCUY">BISCUCUY</option>
-				<option id="76"  value="BOCA DE AROA">BOCA DE AROA</option>
-				<option id="77"  value="BOCA DE POZO">BOCA DE POZO</option>
-				<option id="78"  value="BOCA DEL RIO">BOCA DEL RIO</option>
-				<option id="79"  value="BOCONO">BOCONO</option>
-				<option id="81"  value="BORAURE (AV. PRINCIPAL MELINTON CAMBERO)">BORAURE (AV. PRINCIPAL MELINTON CAMBERO)</option>
-				<option id="473"  value="BRAMON">BRAMON</option>
-				<option id="29"  value="CABIMAS">CABIMAS</option>
-				<option id="7"  value="CABUDARE">CABUDARE</option>
-				<option id="86"  value="CAGUA">CAGUA</option>
-				<option id="88"  value="CAJA SECA">CAJA SECA</option>
-				<option id="2"  value="CALABOZO">CALABOZO</option>
-				<option id="91"  value="CAMATAGUA">CAMATAGUA</option>
-				<option id="97"  value="CAMURI CHICO">CAMURI CHICO</option>
-				<option id="101"  value="CANO ZANCUDO">CANO ZANCUDO</option>
-				<option id="102"  value="CANTAURA">CANTAURA</option>
-				<option id="474"  value="CAPACHO">CAPACHO</option>
-				<option id="104"  value="CAPITANEJO">CAPITANEJO</option>
-				<option id="426"  value="CARABALLEDA">CARABALLEDA</option>
-				<option id="19"  value="CARACAS">CARACAS</option>
-				<option id="107"  value="CARBONERO">CARBONERO</option>
-				<option id="42"  value="CARORA">CARORA</option>
-				<option id="113"  value="CARRE PANAMERICANA DEL KM 8 AL 30">CARRE PANAMERICANA DEL KM 8 AL 30</option>
-				<option id="585"  value="CARRETERA N">CARRETERA N</option>
-				<option id="115"  value="CARRIZAL">CARRIZAL</option>
-				<option id="20"  value="CARUPANO">CARUPANO</option>
-				<option id="425"  value="CATIA LA MAR">CATIA LA MAR</option>
-				<option id="118"  value="CAUCAGUA (EXCEPTUANDO CAPAYA)">CAUCAGUA (EXCEPTUANDO CAPAYA)</option>
-				<option id="120"  value="CAUJARAO">CAUJARAO</option>
-				<option id="123"  value="CHARALLAVE (EDO.SUCRE)">CHARALLAVE (EDO.SUCRE)</option>
-				<option id="26"  value="CHARALLAVE">CHARALLAVE</option>
-				<option id="38"  value="CHIVACOA">CHIVACOA</option>
-				<option id="593"  value="CHUPARIN ABAJO">CHUPARIN ABAJO</option>
-				<option id="11"  value="CIUDAD BOLIVAR">CIUDAD BOLIVAR</option>
-				<option id="128"  value="CIUDAD BOLIVIA">CIUDAD BOLIVIA</option>
-				<option id="527"  value="CIUDAD GUAYANA">CIUDAD GUAYANA</option>
-				<option id="28"  value="CIUDAD OJEDA">CIUDAD OJEDA</option>
-				<option id="476"  value="COLON">COLON</option>
-				<option id="131"  value="COLONCITO">COLONCITO</option>
-				<option id="477"  value="CORDERO">CORDERO</option>
-				<option id="12"  value="CORO">CORO</option>
-				<option id="134"  value="CRIOGENICO JOSE">CRIOGENICO JOSE</option>
-				<option id="135"  value="CUA">CUA</option>
-				<option id="10"  value="CUMANA">CUMANA</option>
-				<option id="138"  value="CUMAREBO">CUMAREBO</option>
-				<option id="139"  value="CUMBRE ROJA">CUMBRE ROJA</option>
-				<option id="141"  value="CURBATI">CURBATI</option>
-				<option id="144"  value="EJIDO">EJIDO</option>
-				<option id="145"  value="EL CALLAO">EL CALLAO</option>
-				<option id="147"  value="EL CARDON">EL CARDON</option>
-				<option id="479"  value="EL COBRE">EL COBRE</option>
-				<option id="150"  value="EL CONSEJO">EL CONSEJO</option>
-				<option id="535"  value="EL COROZO">EL COROZO</option>
-				<option id="151"  value="EL DANTO">EL DANTO</option>
-				<option id="489"  value="EL DIVIDIVE">EL DIVIDIVE</option>
-				<option id="564"  value="EL DORADO">EL DORADO</option>
-				<option id="553"  value="EL GUAFAL">EL GUAFAL</option>
-				<option id="153"  value="EL GUAMACHE">EL GUAMACHE</option>
-				<option id="506"  value="EL JUNQUITO">EL JUNQUITO</option>
-				<option id="643"  value="EL LIMON">EL LIMON</option>
-				<option id="155"  value="EL MACO">EL MACO</option>
-				<option id="156"  value="EL MENE">EL MENE</option>
-				<option id="157"  value="EL MENITO">EL MENITO</option>
-				<option id="158"  value="EL MOJAN (LA GUAJIRA)">EL MOJAN (LA GUAJIRA)</option>
-				<option id="162"  value="EL PEÃON">EL PEÃON</option>
-				<option id="163"  value="EL PIACHE">EL PIACHE</option>
-				<option id="165"  value="EL PINAL">EL PINAL</option>
-				<option id="626"  value="EL PLANETARIO (LA GUAJIRA)">EL PLANETARIO (LA GUAJIRA)</option>
-				<option id="167"  value="EL PRADO">EL PRADO</option>
-				<option id="168"  value="EL RETIRO">EL RETIRO</option>
-				<option id="170"  value="EL ROSADO">EL ROSADO</option>
-				<option id="174"  value="EL TAMBOR">EL TAMBOR</option>
-				<option id="30"  value="EL TIGRE">EL TIGRE</option>
-				<option id="176"  value="EL TIGRITO">EL TIGRITO</option>
-				<option id="177"  value="EL TOCUYO">EL TOCUYO</option>
-				<option id="411"  value="EL VALLE DEL ESPIRITU SANTO">EL VALLE DEL ESPIRITU SANTO</option>
-				<option id="32"  value="EL VIGIA">EL VIGIA</option>
-				<option id="179"  value="EL YAQUE (AEROPUERTO)">EL YAQUE (AEROPUERTO)</option>
-				<option id="182"  value="ESTACION DE SERVICIO CARORA">ESTACION DE SERVICIO CARORA</option>
-				<option id="183"  value="FLOR DE PATRIA">FLOR DE PATRIA</option>
-				<option id="589"  value="FUERTE TIUNA">FUERTE TIUNA</option>
-				<option id="186"  value="GUACARA">GUACARA</option>
-				<option id="188"  value="GUAMA (SOLO SECTOR CENTRO)">GUAMA (SOLO SECTOR CENTRO)</option>
-				<option id="189"  value="GUANADITO">GUANADITO</option>
-				<option id="43"  value="GUANARE">GUANARE</option>
-				<option id="190"  value="GUANARITO">GUANARITO</option>
-				<option id="191"  value="GUANTA">GUANTA</option>
-				<option id="8"  value="GUARENAS">GUARENAS</option>
-				<option id="194"  value="GUASIPATI">GUASIPATI</option>
-				<option id="196"  value="GUATIRE">GUATIRE</option>
-				<option id="199"  value="GUAYACAN DE LAS FLORES">GUAYACAN DE LAS FLORES</option>
-				<option id="200"  value="GUIGUE">GUIGUE</option>
-				<option id="507"  value="HIGUEROTE">HIGUEROTE</option>
-				<option id="205"  value="JUAN GRIEGO">JUAN GRIEGO</option>
-				<option id="206"  value="JUDIBANA">JUDIBANA</option>
-				<option id="209"  value="LA ASUNCION">LA ASUNCION</option>
-				<option id="211"  value="LA BEATRIZ">LA BEATRIZ</option>
-				<option id="212"  value="LA CANADA DE URDANETA">LA CANADA DE URDANETA</option>
-				<option id="214"  value="LA CONCEPCION">LA CONCEPCION</option>
-				<option id="215"  value="LA CONCEPCION(TRUJILLO)">LA CONCEPCION(TRUJILLO)</option>
-				<option id="529"  value="LA ENCRUCIJADA">LA ENCRUCIJADA</option>
-				<option id="217"  value="LA ENSENADA">LA ENSENADA</option>
-				<option id="219"  value="LA FRIA">LA FRIA</option>
-				<option id="220"  value="LA FUENTE">LA FUENTE</option>
-				<option id="221"  value="LA GRITA">LA GRITA</option>
-				<option id="222"  value="LA GUAIRA">LA GUAIRA</option>
-				<option id="223"  value="LA GUARDIA">LA GUARDIA</option>
-				<option id="456"  value="LA MORITA (LARA)">LA MORITA (LARA)</option>
-				<option id="231"  value="LA PALMITA">LA PALMITA</option>
-				<option id="234"  value="LA PLAZUELA">LA PLAZUELA</option>
-				<option id="590"  value="LA RINCONADA">LA RINCONADA</option>
-				<option id="238"  value="LA SABANA DE GUACUCO">LA SABANA DE GUACUCO</option>
-				<option id="240"  value="LA SALINA">LA SALINA</option>
-				<option id="241"  value="LA SIERRA">LA SIERRA</option>
-				<option id="243"  value="LA VELA DE CORO">LA VELA DE CORO</option>
-				<option id="244"  value="LA VICTORIA">LA VICTORIA</option>
-				<option id="246"  value="LAGUNILLAS (ZULIA)">LAGUNILLAS (ZULIA)</option>
-				<option id="468"  value="LAGUNILLAS">LAGUNILLAS</option>
-				<option id="248"  value="LAS GILES">LAS GILES</option>
-				<option id="627"  value="LAS MESAS DE ESNOJAQUE">LAS MESAS DE ESNOJAQUE</option>
-				<option id="595"  value="LAS MESAS">LAS MESAS</option>
-				<option id="528"  value="LAS PIEDRAS (EDO. FALCON)">LAS PIEDRAS (EDO. FALCON)</option>
-				<option id="253"  value="LECHERIAS">LECHERIAS</option>
-				<option id="493"  value="LOBATERA">LOBATERA</option>
-				<option id="625"  value="LOMA LINDA (LA GUAJIRA)">LOMA LINDA (LA GUAJIRA)</option>
-				<option id="255"  value="LOS BAGRES">LOS BAGRES</option>
-				<option id="578"  value="LOS GUAYOS">LOS GUAYOS</option>
-				<option id="256"  value="LOS MILLANES">LOS MILLANES</option>
-				<option id="257"  value="LOS PUERTOS (EL TABLAZO)">LOS PUERTOS (EL TABLAZO)</option>
-				<option id="461"  value="LOS PUERTOS DE ALTAGRACIA">LOS PUERTOS DE ALTAGRACIA</option>
-				<option id="258"  value="LOS ROBLES">LOS ROBLES</option>
-				<option id="259"  value="LOS TAQUES">LOS TAQUES</option>
-				<option id="21"  value="LOS TEQUES">LOS TEQUES</option>
-				<option id="594"  value="LOS VIDRIALES">LOS VIDRIALES</option>
-				<option id="260"  value="MACARAPANA">MACARAPANA</option>
-				<option id="261"  value="MACHIQUES">MACHIQUES</option>
-				<option id="262"  value="MAGDALENO">MAGDALENO</option>
-				<option id="23"  value="MAIQUETIA">MAIQUETIA</option>
-				<option id="264"  value="MANZANILLO">MANZANILLO</option>
-				<option id="624"  value="MAR BEACH (LA GUAJIRA)">MAR BEACH (LA GUAJIRA)</option>
-				<option id="6"  value="MARACAIBO">MARACAIBO</option>
-				<option id="3"  value="MARACAY">MARACAY</option>
-				<option id="268"  value="MATARUCA">MATARUCA</option>
-				<option id="22"  value="MATURIN">MATURIN</option>
-				<option id="18"  value="MERIDA">MERIDA</option>
-				<option id="273"  value="MICHELENA">MICHELENA</option>
-				<option id="275"  value="MIRANDA (CARABOBO)">MIRANDA (CARABOBO)</option>
-				<option id="536"  value="MIRI">MIRI</option>
-				<option id="276"  value="MONTALBAN">MONTALBAN</option>
-				<option id="277"  value="MORON">MORON</option>
-				<option id="283"  value="NUEVA BOLIVIA">NUEVA BOLIVIA</option>
-				<option id="285"  value="OCUMARE DEL TUY">OCUMARE DEL TUY</option>
-				<option id="286"  value="OSPINO">OSPINO</option>
-				<option id="288"  value="PALMIRA">PALMIRA</option>
-				<option id="289"  value="PALO NEGRO">PALO NEGRO</option>
-				<option id="292"  value="PAMPATAR">PAMPATAR</option>
-				<option id="294"  value="PARACOTOS (ZONA INDUSTRIAL LA CUMACA)">PARACOTOS (ZONA INDUSTRIAL LA CUMACA)</option>
-				<option id="296"  value="PEDRAZA">PEDRAZA</option>
-				<option id="298"  value="PEDREGALES">PEDREGALES</option>
-				<option id="299"  value="PEQUIVEN">PEQUIVEN</option>
-				<option id="300"  value="PETROQUIMICA">PETROQUIMICA</option>
-				<option id="301"  value="PIRITU">PIRITU</option>
-				<option id="302"  value="PIRITU(EDO ANZOATEGUI)">PIRITU(EDO ANZOATEGUI)</option>
-				<option id="303"  value="PLAYA EL ANGEL">PLAYA EL ANGEL</option>
-				<option id="304"  value="PLAYA GRANDE (EDO SUCRE)">PLAYA GRANDE (EDO SUCRE)</option>
-				<option id="15"  value="PORLAMAR">PORLAMAR</option>
-				<option id="305"  value="PRIMERO DE MAYO">PRIMERO DE MAYO</option>
-				<option id="35"  value="PUERTO AYACUCHO">PUERTO AYACUCHO</option>
-				<option id="31"  value="PUERTO CABELLO">PUERTO CABELLO</option>
-				<option id="463"  value="PUERTO ESCONDIDO">PUERTO ESCONDIDO</option>
-				<option id="9"  value="PUERTO LA CRUZ">PUERTO LA CRUZ</option>
-				<option id="14"  value="PUERTO ORDAZ">PUERTO ORDAZ</option>
-				<option id="310"  value="PUERTO PIRITU">PUERTO PIRITU</option>
-				<option id="311"  value="PUNTA CARDON">PUNTA CARDON</option>
-				<option id="312"  value="PUNTA DE LEIVA">PUNTA DE LEIVA</option>
-				<option id="313"  value="PUNTA DE MATA">PUNTA DE MATA</option>
-				<option id="314"  value="PUNTA DE PALMA">PUNTA DE PALMA</option>
-				<option id="315"  value="PUNTA DE PIEDRAS">PUNTA DE PIEDRAS</option>
-				<option id="316"  value="PUNTA GORDA">PUNTA GORDA</option>
-				<option id="13"  value="PUNTO FIJO">PUNTO FIJO</option>
-				<option id="319"  value="QUIBOR">QUIBOR</option>
-				<option id="513"  value="RIO CHICO">RIO CHICO</option>
-				<option id="325"  value="RUBIO">RUBIO</option>
-				<option id="327"  value="SABANA DE MENDOZA">SABANA DE MENDOZA</option>
-				<option id="328"  value="SABANA DE PARRA">SABANA DE PARRA</option>
-				<option id="329"  value="SABANETA (BARINAS)">SABANETA (BARINAS)</option>
-				<option id="334"  value="SAN ANTONIO (PORLAMAR)">SAN ANTONIO (PORLAMAR)</option>
-				<option id="331"  value="SAN ANTONIO DE LOS ALTOS">SAN ANTONIO DE LOS ALTOS</option>
-				<option id="16"  value="SAN ANTONIO DEL TACHIRA">SAN ANTONIO DEL TACHIRA</option>
-				<option id="335"  value="SAN CARLOS DEL ZULIA">SAN CARLOS DEL ZULIA</option>
-				<option id="1"  value="SAN CARLOS">SAN CARLOS</option>
-				<option id="336"  value="SAN CASIMIRO">SAN CASIMIRO</option>
-				<option id="17"  value="SAN CRISTOBAL">SAN CRISTOBAL</option>
-				<option id="337"  value="SAN DIEGO DE LOS ALTOS">SAN DIEGO DE LOS ALTOS</option>
-				<option id="2878"  value="SAN DIEGO">SAN DIEGO</option>
-				<option id="37"  value="SAN FELIPE">SAN FELIPE</option>
-				<option id="338"  value="SAN FELIX">SAN FELIX</option>
-				<option id="36"  value="SAN FERNANDO">SAN FERNANDO</option>
-				<option id="340"  value="SAN FRANCISCO DE MACANAO">SAN FRANCISCO DE MACANAO</option>
-				<option id="343"  value="SAN JOAQUIN">SAN JOAQUIN</option>
-				<option id="345"  value="SAN JOSE DE GUANIPA">SAN JOSE DE GUANIPA</option>
-				<option id="346"  value="SAN JOSE DE LOS ALTOS">SAN JOSE DE LOS ALTOS</option>
-				<option id="347"  value="SAN JOSE DE PERIJA">SAN JOSE DE PERIJA</option>
-				<option id="652"  value="SAN JUAN BAUTISTA">SAN JUAN BAUTISTA</option>
-				<option id="469"  value="SAN JUAN DE LAGUNILLAS">SAN JUAN DE LAGUNILLAS</option>
-				<option id="39"  value="SAN JUAN DE LOS MORROS">SAN JUAN DE LOS MORROS</option>
-				<option id="353"  value="SAN MATEO">SAN MATEO</option>
-				<option id="355"  value="SAN PABLO">SAN PABLO</option>
-				<option id="356"  value="SAN PEDRO DE LOS ALTOS">SAN PEDRO DE LOS ALTOS</option>
-				<option id="4228"  value="SAN RAFAEL DEL MOJAN">SAN RAFAEL DEL MOJAN</option>
-				<option id="4229"  value="SAN RAFAEL DEL PIÃAL">SAN RAFAEL DEL PIÃAL</option>
-				<option id="359"  value="SAN SEBASTIAN DE LOS REYES">SAN SEBASTIAN DE LOS REYES</option>
-				<option id="358"  value="SAN SEBASTIAN">SAN SEBASTIAN</option>
-				<option id="361"  value="SAN TOME">SAN TOME</option>
-				<option id="549"  value="SANARE (EDO. FALCON)">SANARE (EDO. FALCON)</option>
-				<option id="367"  value="SANTA BARBARA DE BARINAS">SANTA BARBARA DE BARINAS</option>
-				<option id="366"  value="SANTA BARBARA DEL ZULIA">SANTA BARBARA DEL ZULIA</option>
-				<option id="369"  value="SANTA CRUZ DE ARAGUA">SANTA CRUZ DE ARAGUA</option>
-				<option id="567"  value="SANTA ELENA DE UAIREN">SANTA ELENA DE UAIREN</option>
-				<option id="372"  value="SANTA LUCIA DEL TUY">SANTA LUCIA DEL TUY</option>
-				<option id="642"  value="SANTA RITA - ARAGUA">SANTA RITA - ARAGUA</option>
-				<option id="373"  value="SANTA RITA">SANTA RITA</option>
-				<option id="27"  value="SANTA TERESA DEL TUY">SANTA TERESA DEL TUY</option>
-				<option id="492"  value="SEBORUCO">SEBORUCO</option>
-				<option id="378"  value="SOCOPO">SOCOPO</option>
-				<option id="379"  value="SOLEDAD">SOLEDAD</option>
-				<option id="381"  value="SUPER OCTANOS">SUPER OCTANOS</option>
-				<option id="383"  value="TACARIGUA">TACARIGUA</option>
-				<option id="384"  value="TAMARE">TAMARE</option>
-				<option id="385"  value="TAPARITO">TAPARITO</option>
-				<option id="388"  value="TARIBA VIEJA">TARIBA VIEJA</option>
-				<option id="389"  value="TEMBLADOR">TEMBLADOR</option>
-				<option id="392"  value="TINACO">TINACO</option>
-				<option id="393"  value="TINAQUILLO">TINAQUILLO</option>
-				<option id="395"  value="TOVAR">TOVAR</option>
-				<option id="41"  value="TRUJILLO">TRUJILLO</option>
-				<option id="5"  value="TUCACAS">TUCACAS</option>
-				<option id="397"  value="TUCANIZON">TUCANIZON</option>
-				<option id="399"  value="TUCUPITA">TUCUPITA</option>
-				<option id="400"  value="TUMEREMO">TUMEREMO</option>
-				<option id="402"  value="TUREN">TUREN</option>
-				<option id="404"  value="TURMERO">TURMERO</option>
-				<option id="406"  value="UPATA">UPATA</option>
-				<option id="407"  value="URACHICHE">URACHICHE</option>
-				<option id="409"  value="URENA">URENA</option>
-				<option id="4"  value="VALENCIA">VALENCIA</option>
-				<option id="34"  value="VALERA">VALERA</option>
-				<option id="40"  value="VALLE DE LA PASCUA">VALLE DE LA PASCUA</option>
-				<option id="410"  value="VALLE DE PEDRO GONZALEZ">VALLE DE PEDRO GONZALEZ</option>
-				<option id="413"  value="VALLE VERDE">VALLE VERDE</option>
-				<option id="583"  value="VALMORE RODRIGUEZ">VALMORE RODRIGUEZ</option>
-				<option id="414"  value="VENEPAL">VENEPAL</option>
-				<option id="415"  value="VILLA DE CURA">VILLA DE CURA</option>
-				<option id="416"  value="VILLA DEL ROSARIO">VILLA DEL ROSARIO</option>
-				<option id="417"  value="VILLA ROSA">VILLA ROSA</option>
-				<option id="584"  value="VILLA TAMARE">VILLA TAMARE</option>
-				<option id="419"  value="YARACAL">YARACAL</option>
-				<option id="420"  value="YARITAGUA">YARITAGUA</option>
- -->

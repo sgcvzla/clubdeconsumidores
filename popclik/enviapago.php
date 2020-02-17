@@ -33,8 +33,8 @@ $variant = array('transaction' =>
     )
 );
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($variant));
-curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
+curl_setopt($ch, CURLOPT_POSTFIELDS, $variant);
+// curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $response = curl_exec($ch);
 curl_close($ch);
@@ -96,10 +96,10 @@ if (isset($response)) {
         if ($ro2 = mysqli_fetch_array($resul2)) {
           $nombrepunto = $ro2['nombre'];
           $emailpunto = $ro2['email'];
-          $lineadecredito = $ro2['lineadecredito'];
-          $lineadecredito -= $_POST["monto"];
+          $saldolineadecredito = $ro2['saldolineadecredito'];
+          $saldolineadecredito += $_POST["monto"];
 
-          $quer3 = 'UPDATE puntosderecaudacion SET lineadecredito='.$lineadecredito.' WHERE id='.$_POST["punto"];
+          $quer3 = 'UPDATE puntosderecaudacion SET saldolineadecredito='.$saldolineadecredito.' WHERE id='.$_POST["punto"];
           if ($resul3 = mysqli_query($link, $quer3)){
             $si = 'SI';
             $mensaje = 'Pago enviado exitosamente';

@@ -21,9 +21,15 @@ foreach ($valores["confirmar"] as $confirmar => $transaccion) {
       $query = 'SELECT * FROM puntosderecaudacion where id='.$punto;
       $result = mysqli_query($link, $query);
       if ($row = mysqli_fetch_array($result)) {
-        $lineadecredito = $row['lineadecredito'];
-        $lineadecredito += $monto;
-        $query = 'UPDATE puntosderecaudacion SET lineadecredito='.$lineadecredito.' WHERE id='.$punto;
+        $ultimopago = $row['proximopago'];
+        $diasdecredito = $row['diasdecredito'];
+        // Fecha de vecnimiento (1 año)
+        $proximopago = strtotime('+'.$diasdecredito.' days', strtotime ($ultimopago));
+        $proximopago = date('Y-m-d', $proximopago);
+
+        $saldolineadecredito = $row['saldolineadecredito'];
+        $saldolineadecredito -= $monto;
+        $query = 'UPDATE puntosderecaudacion SET saldolineadecredito='.$saldolineadecredito.', proximopago="'.$proximopago.'" WHERE id='.$punto;
         if ($result = mysqli_query($link, $query)){
           $flagerror = false;
         } else {

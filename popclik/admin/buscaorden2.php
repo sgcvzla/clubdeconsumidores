@@ -24,6 +24,7 @@ $respuesta .= '"zonapostal":"",';
 $respuesta .= '"ciudad":"",';
 $respuesta .= '"estado":""}';
 $respuesta .= '}';
+
 if (isset($result)) {
     $ordenes=json_decode($result,true);
     foreach ($ordenes["orders"] as $lista => $orden) {
