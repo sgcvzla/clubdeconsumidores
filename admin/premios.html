@@ -91,7 +91,7 @@
 					if (this.readyState == 4 && this.status == 200) {
 						respuesta = JSON.parse(this.responseText);
 						if (respuesta.exito == 'SI') {
-							document.title = "Club de consumidores - Módulo administrativo";
+							document.title = "Cash-Flag - Módulo administrativo";
 							logo = respuesta.proveedor.logo;
 							if (logo!="") {
 								document.getElementById("logo").src = "../img/" + logo;

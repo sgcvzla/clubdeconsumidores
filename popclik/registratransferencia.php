@@ -20,7 +20,7 @@ $referencia = $_POST["referencia"];
 $status = 'Pendiente por verificar';
 $correo = $_POST["email"];
 
-$query  = 'INSERT INTO reportepago(tipodepositante, fechareporte, idorden, orden, origen, fechatransaccion, nombredepositante, monto, referencia, status) VALUES ("'.$tipodepositante.'","'.$fechareporte.'",'.$idorden.','.$orden.',"'.$origen.'","'.$fechatransaccion.'","'.$nombredepositante.'",'.$monto.',"'.$referencia.'","'.$status.'")';
+$query  = 'INSERT INTO reportepago(tipodepositante, fechareporte, idorden, orden, origen, fechatransaccion, nombredepositante, monto, referencia, status, email) VALUES ("'.$tipodepositante.'","'.$fechareporte.'",'.$idorden.','.$orden.',"'.$origen.'","'.$fechatransaccion.'","'.$nombredepositante.'",'.$monto.',"'.$referencia.'","'.$status.'","'.$correo.'")';
 if($result = mysqli_query($link, $query)) {
   $si = 'SI';
   $mensaje = 'Pago registrado exitosamente';

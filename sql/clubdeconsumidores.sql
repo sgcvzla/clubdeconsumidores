@@ -155,7 +155,7 @@ CREATE TABLE `_parametros` (
 --
 
 INSERT INTO `_parametros` (`empresa`, `nombresistema`, `logosistema`, `rif`) VALUES
-('SGC Consultores C.A.', 'Club de Consumidores', 'sgc.jpg', 'J402424418');
+('SGC Consultores C.A.', 'Cash-Flag', 'sgc.jpg', 'J402424418');
 
 -- --------------------------------------------------------
 

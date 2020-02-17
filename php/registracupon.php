@@ -167,7 +167,7 @@ if ($row = mysqli_fetch_array($result)) {
 		$mensaje .= utf8_decode('¡Te esperamos!'.'<br/><br/>');
 
 		$mensaje .= utf8_decode('Atentamente'.'<br/><br/>');
-		$mensaje .= utf8_decode('Club de consumidores'.'<br/><br/>');
+		$mensaje .= utf8_decode('Cash-Flag'.'<br/><br/>');
 
 		$mensaje .= utf8_decode('<b>Nota:</b> Esta cuenta no es monitoreada, por favor no respondas este email, si deseas comunicarte con tu club escribe a: <b><a href="mailto:info@clubdeconsumidores.com.ve">info@clubdeconsumidores.com.ve</a></b>'.'<br/><br/>');
 
@@ -272,20 +272,20 @@ function mensajebienvenida($reg) {
 	$correo = $reg["email"];
 
 	$mensaje = utf8_decode('Hola '.trim($reg["nombres"]).',<br/><br/>');
-	$mensaje .= utf8_decode('¡Gracias por querer formar parte de nuestro club!<br/><br/>');
+	$mensaje .= utf8_decode('¡Gracias por querer formar parte de nuestra comunidad!<br/><br/>');
 
-	$mensaje .= utf8_decode('Queremos conocerte un poco más y ofrecerte premios, promociones o productos/servicios especialmente diseñados para ti, pero necesitamos que nos brindes alguna información que nos ayudará a prestarte un mejor servicio, innovar en nuestros premios y hacerte la vida mucho más fácil y gratificante, además desde ya comenzaras a ganar, luego de completar <a href="https://www.clubdeconsumidores.com.ve/registro/registro.html?idp='.$_POST['id_proveedor'].'&ids='.$reg["id"].'">este formulario</a> recibirás un premio de bienvenida.<br/><br/>');
+	$mensaje .= utf8_decode('Queremos conocerte un poco más y ofrecerte premios, promociones o productos/servicios especialmente diseñados para ti, pero necesitamos que nos brindes alguna información que nos ayudará a prestarte un mejor servicio, innovar en nuestros premios y hacerte la vida mucho más fácil y gratificante, además desde ya comenzaras a ganar, luego de completar <a href="https://www.cash-flag.com/registro/registro.html?idp='.$_POST['id_proveedor'].'&ids='.$reg["id"].'">este formulario</a> recibirás un premio de bienvenida.<br/><br/>');
 
 	$mensaje .= utf8_decode('<b>Te garantizamos que tu información será guardada celosamente y nunca será compartida con ningún tercero sin tu consentimiento y te aseguramos que siempre cumpliremos con las Leyes vigentes en lo relacionado al tratamiento de tus datos personales.</b><br/><br/>');
 
-	$mensaje .= utf8_decode('Nuestro club está en permanente evolución y tú como un miembro muy importante puedes aportarnos ideas o sugerencias que harán crecer esta comunidad, ten la certeza que serás escuchado(a) y tus sugerencias o comentarios serán repondidos en un lapso de tiempo razonable con mucho entusiasmo por resolver tus inquietudes, para nosotros será un placer atenderte por medio del email: <a href="mailto:info@clubdeconsumidores.com.ve">info@clubdeconsumidores.com.ve</a>.<br/><br/>');
+	$mensaje .= utf8_decode('Nuestra comunidad está en permanente evolución y tú como un miembro muy importante puedes aportarnos ideas o sugerencias que la harán crecer, ten la certeza que serás escuchado(a) y tus sugerencias o comentarios serán repondidos en un lapso de tiempo razonable con mucho entusiasmo por resolver tus inquietudes, para nosotros será un placer atenderte por medio del email: <a href="mailto:info@clubdeconsumidores.com.ve">info@clubdeconsumidores.com.ve</a>.<br/><br/>');
 
 	$mensaje .= utf8_decode('Bienvenido!!!'.'<br/><br/>');
-	$mensaje .= utf8_decode('Club de consumidores'.'<br/><br/>');
+	$mensaje .= utf8_decode('Cash-Flag'.'<br/><br/>');
 
 	$mensaje .= utf8_decode('<b>Nota:</b> Esta cuenta no es monitoreada, por favor no respondas este email, si deseas comunicarte con tu club escribe a: <b><a href="mailto:info@clubdeconsumidores.com.ve">info@clubdeconsumidores.com.ve</a></b>'.'<br/><br/>');
 
-	$asunto = utf8_decode(trim($reg["nombres"]).', Bienvenido a tu club de consumidores!!!');
+	$asunto = utf8_decode(trim($reg["nombres"]).', Bienvenido a Cash-Flag, tu comunidad de beneficios!!!');
 	$cabeceras = 'Content-type: text/html;';
 	if ($_SERVER["HTTP_HOST"]!='localhost') {
 		mail($correo,$asunto,$mensaje,$cabeceras);

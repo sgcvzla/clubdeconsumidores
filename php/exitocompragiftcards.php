@@ -31,7 +31,7 @@ echo '
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, scalable=yes"> -->
-        <title>Club de consumidores</title>
+        <title>Cash-Flag</title>
         <link rel="stylesheet" href="./compra.css">
         <script type="text/javascript" src="../js/funciones.js"></script>
     </head>
@@ -40,7 +40,7 @@ echo '
             <div class="logo" align="center">
                 <img class="img-logo" id="logo" src="../img/'.$logo.'" alt="">
             </div>
-            <h2 style="text-align: center; color: black;">Club de consumidores</h2>
+            <h2 style="text-align: center; color: black;">Cash-Flag</h2>
             <h3 align="center">Recargar tarjetas de regalo</h3>
             <div id="div1" align="center">
                 <div class="logo" align="center">

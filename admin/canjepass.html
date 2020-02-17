@@ -64,7 +64,7 @@
 						respuesta = JSON.parse(this.responseText);
 						if (respuesta.exito == 'SI') {
 							hash = respuesta.proveedor.hash;
-							document.title = "Club de consumidores - Módulo administrativo";
+							document.title = "Cash-Flag - Módulo administrativo";
 							logo = respuesta.proveedor.logo;
 							if (logo!="") {
 								document.getElementById("logo").src = "../img/" + logo;
