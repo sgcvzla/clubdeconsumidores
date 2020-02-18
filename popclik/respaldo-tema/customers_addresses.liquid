@@ -1,0 +1,693 @@
+<header class="section-header">
+  <h1 class="section-header--left">{{ 'customer.account.title' | t }}</h1>
+  <div class="section-header--right">
+    <a id="addr_new" href="#" class="btn btn--small" onclick="Shopify.CustomerAddress.toggleNewForm(); return false;">{{ 'customer.addresses.add_new' | t }}</a>
+	<script>
+		addr_new.addEventListener('click', function() { listaciudadesnew(); });	
+	</script>
+  </div>
+</header>
+
+<hr class="hr--small">
+
+
+<div class="grid">
+
+  <div class="grid-item one-third medium-down--one-whole">
+    <p><a href="/account">{{ 'customer.account.return' | t }}</a></p>
+  </div>
+  <div class="grid-item two-thirds medium-down--one-whole">
+    {% form 'customer_address', customer.new_address %}
+
+      <div id="add_address" {% unless form.errors %}style="display: none;"{% endunless %}>
+
+        <h2>{{ 'customer.addresses.add_new' | t }}</h2>
+
+        {% include 'form-errors-custom' %}
+
+        <div class="grid">
+
+          <div class="grid-item one-half small--one-whole">
+            <label for="address_first_name_new">{{ 'customer.addresses.first_name' | t }}</label>
+            <input type="text" id="address_first_name_new" class="address_form" name="address[first_name]" value="{{ form.first_name }}">
+          </div>
+
+          <div class="grid-item one-half small--one-whole">
+            <label for="address_last_name_new">{{ 'customer.addresses.last_name' | t }}</label>
+            <input type="text" id="address_last_name_new" class="address_form" name="address[last_name]" value="{{ form.last_name }}">
+          </div>
+
+        </div>
+
+<!--         <label for="address_company_new">{{ 'customer.addresses.company' | t }}</label> -->
+<!--         <input type="text" id="address_company_new" class="address_form" name="address[company]" value="{{ form.company }}"> -->
+        
+        <div class="grid">
+<!-- Luis Rodríguez Enero 2020, desde aquí -->           
+          <div class="grid-item large--one-half">
+            <label for="address_sector_new">Urbanización o sector</label>
+            <input type="text" id="address_sector_new" class="address_form" name="address[sector]" value="" autocapitalize="characters" onchange="fill_address(0)">
+          </div>
+
+          <div class="grid-item large--one-half">
+            <label for="address_street_new">Calle o avenida</label>
+            <input type="text" id="address_street_new" class="address_form" name="address[street]" value="" autocapitalize="characters" onchange="fill_address(0)">
+          </div>
+
+          <div class="grid-item large--one-half">
+            <label for="address_building_new">Nombre de Edificio/casa</label>
+            <input type="text" id="address_building_new" class="address_form" name="address[building]" value="" autocapitalize="characters" onchange="fill_address(0)">
+          </div>
+
+          <div class="grid-item large--one-half">
+            <label for="address_number_new">Número del inmueble</label>
+            <input type="text" id="address_number_new" class="address_form" name="address[number]" value="" autocapitalize="characters" onchange="fill_address(0)">
+          </div>
+
+          <div class="grid-item large--one-half">
+            <label for="address_referencepoint_new">Punto de referencia</label>
+            <input type="text" id="address_referencepoint_new" class="address_form" name="address[referencepoint]" value="" autocapitalize="characters" onchange="fill_address(0)">
+          </div>
+          
+          <div class="grid-item large--one-half">
+            <label for="address_city_new">{{ 'customer.addresses.city' | t }}</label>
+<!-- Luis Rodríguez Enero 2020, desde aquí -->           
+<!--             <input type="text" id="address_city_new" class="address_form" name="address[city]" value="{{ form.city }}"> -->
+            <select id="address_city_new" name="address[city]" onchange="fill_address(1)">
+				<option id="0"  value="SELECCIONE">SELECCIONE</option>
+            </select>
+<!-- Luis Rodríguez Enero 2020, hasta aquí -->
+          </div>
+
+          
+<!-- Luis Rodríguez Febrero 2020, desde aquí - para rellenar dirección -->           
+          <div class="grid-item large--one-half">
+            <label for="address_municipality_new">Municipio</label>
+            <select id="address_municipality_new" name="address[municipality]" onchange="fill_address(2)">
+				<option id="0"  value="SELECCIONE">SELECCIONE</option>
+            </select>
+          </div>
+        
+          <div class="grid-item large--one-half">
+            <label for="address_parish_new">Parroquia</label>
+            <select id="address_parish_new" name="address[parish]" onchange="fill_address(3)">
+				<option id="0"  value="SELECCIONE">SELECCIONE</option>
+            </select>
+          </div>
+
+        <script>
+          function fill_address(valor) {
+            let tam, respuesta, codciudad, codmunicipio, xmlhttp;
+            switch(valor) {
+              case 1:
+                tam = address_municipality_new.childNodes.length;
+                for (i = 2; i < tam; i++) address_municipality_new.removeChild(address_municipality_new.childNodes[2]);
+
+                xmlhttp = new XMLHttpRequest();
+
+                codciudad = address_city_new.selectedOptions[0].id;
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        respuesta = JSON.parse(this.responseText);
+                        respuesta.entidadRespuesta.forEach( function(element, index) {
+
+                          	str = element.nombre_municipio;
+							str2 = str.substr(0,1).toUpperCase()+str.substr(1).toLowerCase();
+
+                            txtmunicipality = document.createTextNode(str2);          
+
+                            municipality = document.createElement("option");
+                            municipality.value = element.nombre_municipio;
+                            municipality.id = element.codigo_municipio;
+                            municipality.appendChild(txtmunicipality);
+
+                            address_municipality_new.appendChild(municipality);
+                        });
+                    }
+                };
+                xmlhttp.open("GET", 'https://www.clubdeconsumidores.com.ve/popclik/admin/getmunicipio.php?codciudad='+codciudad, true);
+                xmlhttp.send();
+                break;
+              case 2:
+                tam = address_parish_new.childNodes.length;
+                for (i = 2; i < tam; i++) address_parish_new.removeChild(address_parish_new.childNodes[2]);
+
+                xmlhttp = new XMLHttpRequest();
+
+                codciudad = address_city_new.selectedOptions[0].id;
+                codmunicipio = address_municipality_new.selectedOptions[0].id;
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        respuesta = JSON.parse(this.responseText);
+                        respuesta.entidadRespuesta.forEach( function(element, index) {
+
+                          	str = element.nombre_parroquia;
+							str2 = str.substr(0,1).toUpperCase()+str.substr(1).toLowerCase();
+
+                            txtparish = document.createTextNode(str2);          
+
+                            parish = document.createElement("option");
+                            parish.value = element.nombre_parroquia;
+                            parish.id = element.codigo_parroquia.trim()+"-"+element.codigo_postal.trim();
+                            parish.appendChild(txtparish);
+//                           	address_zip_new.value = element.codigo_postal;
+
+                            address_parish_new.appendChild(parish);
+                        });
+                    }
+                };
+                xmlhttp.open("GET", 'https://www.clubdeconsumidores.com.ve/popclik/admin/getparroquia.php?codciudad='+codciudad+'&codmunicipio='+codmunicipio, true);
+                xmlhttp.send();
+                break;
+            }
+            
+            pos = address_parish_new.selectedOptions[0].id.search("-") + 1;
+            lar = pos - 1;
+            
+			address_zip_new.value = address_parish_new.selectedOptions[0].id.trim().substr(pos);
+
+            address_address1_new.value = 
+              address_sector_new.value+"; calle "+
+              address_street_new.value+"; inmueble "+
+              address_building_new.value+"; número "+
+              address_number_new.value+"; "+
+              address_referencepoint_new.value+"; "+
+              address_city_new.value+"; municipio "+
+              address_municipality_new.value+"; parroquia "+
+              address_parish_new.value;
+            
+            address_address2_new.value = 
+              "Internal code: "+address_city_new.selectedOptions[0].id.trim()+"."+
+              address_municipality_new.selectedOptions[0].id.trim()+"."+
+              address_parish_new.selectedOptions[0].id.trim().substr(0,lar);
+          }
+        </script>
+        
+<!-- Luis Rodríguez Febrero 2020, hasta aquí -->
+
+          <div class="grid-item large--one-half">
+            <label for="address_country_new">{{ 'customer.addresses.country' | t }}</label>
+            <select id="address_country_new" name="address[country]" data-default="{{ form.country }}">{{ all_country_option_tags }}</select>
+          </div>
+
+          <div class="grid-item" id="address_province_container_new" style="display:none">
+            <label for="address_province_new">{{ 'customer.addresses.province' | t }}</label>
+            <select id="address_province_new" class="address_form" name="address[province]" data-default="{{ form.province }}"></select>
+          </div>
+
+          <div class="grid-item large--one-half">
+            <label for="address_zip_new">{{ 'customer.addresses.zip' | t }}</label>
+            <input type="text" id="address_zip_new" class="address_form" name="address[zip]" value="{{ form.zip }}" autocapitalize="characters">
+          </div>
+
+          <div class="grid-item large--one-half">
+            <label for="address_phone_new">{{ 'customer.addresses.phone' | t }}</label>
+            <input type="tel" id="address_phone_new" class="address_form" name="address[phone]" value="{{ form.phone }}" placeholder="555-555-1234">
+          </div>
+        </div>
+
+<!--         <label for="address_address1_new">{{ 'customer.addresses.address1' | t }}</label> -->
+        <input type="hidden" id="address_address1_new" class="address_form" name="address[address1]" value=" {{ form.address1 }}">
+
+<!--         <label for="address_address2_new">{{ 'customer.addresses.address2' | t }}</label> -->
+        <input type="hidden" id="address_address2_new" class="address_form" name="address[address2]" value=" {{ form.address2 }}">
+
+        <p>
+          {{ form.set_as_default_checkbox }}
+          <label for="address_default_address_new" class="inline">{{ 'customer.addresses.set_default' | t }}</label>
+        </p>
+
+        <input type="submit" class="btn" value="{{ 'customer.addresses.add' | t }}">
+        <span class="form-spacer">{{ 'customer.addresses.or' | t }}</span>
+        <a href="#" onclick="Shopify.CustomerAddress.toggleNewForm(); return false;">{{ 'customer.addresses.cancel' | t }}</a>
+
+        <hr>
+      </div>
+    {% endform %}
+
+    <h2>{{ 'customer.addresses.title' | t }}</h2>
+
+    {% paginate customer.addresses by 5 %}
+      {% for address in customer.addresses %}
+
+        <h3>
+          {{ address.first_name | capitalize }} {{ address.last_name | capitalize }}
+          {% if address == customer.default_address %}<em>({{ 'customer.addresses.default' | t }})</em>{% endif %}
+        </h3>
+
+        {{ address | format_address }}
+
+        <p>
+          {{ 'customer.addresses.edit' | t | edit_customer_address_link: address.id }} |
+          {{ 'customer.addresses.delete' | t | delete_customer_address_link: address.id }}
+        </p>
+	    <script>
+          tag = document.getElementsByTagName("a");
+          for (i = 0; i < tag.length; i++) {
+            if (tag[i]!=undefined) {
+              if (tag[i].innerHTML=="Editar") {
+                str = tag[i].outerHTML;
+                find = '{{ address.id }}';
+                if (str.search(find) >= 0) {
+				  tag[i].addEventListener('click', function() { listaciudades({{ address.id }}); });	
+                }
+              }
+            }
+          }
+    	</script>
+    
+
+        {% form 'customer_address', address %}
+          <div id="edit_address_{{ address.id }}" {% unless form.errors %}style="display:none;"{% endunless %}>
+
+            <h4>{{ 'customer.addresses.edit_address' | t }}</h4>
+            {% include 'form-errors-custom' %}
+            <div class="grid">
+
+              <div class="grid-item one-half small--one-whole">
+                <label for="address_first_name_{{ form.id }}">{{ 'customer.addresses.first_name' | t }}</label>
+                <input type="text" id="address_first_name_{{ form.id }}" class="address_form" name="address[first_name]" value="{{ form.first_name }}">
+              </div>
+
+              <div class="grid-item one-half small--one-whole">
+                <label for="address_last_name_{{ form.id }}">{{ 'customer.addresses.last_name' | t }}</label>
+                <input type="text" id="address_last_name_{{ form.id }}" class="address_form" name="address[last_name]" value="{{ form.last_name }}">
+              </div>
+
+<!--               <div class="grid-item one-half small--one-whole"> -->
+<!-- 	            <label for="address_company_{{ form.id }}">{{ 'customer.addresses.company' | t }}</label> -->
+<!--     	        <input type="text" id="address_company_{{ form.id }}" class="address_form" name="address[company]" value="{{ form.company }}"> -->
+<!--               </div> -->
+              
+<!-- Luis Rodríguez Enero 2020, desde aquí -->           
+            <div class="grid-item one-half small--one-whole">
+              <label for="address_sector_{{ form.id }}">Urbanización o sector</label>
+              <input type="text" id="address_sector_{{ form.id }}" class="address_form" name="address[sector]" value="" autocapitalize="characters" onchange="fill_address2(0,this,{{ form.id }})">
+            </div>
+
+            <div class="grid-item one-half small--one-whole">
+              <label for="address_street_{{ form.id }}">Calle o avenida</label>
+              <input type="text" id="address_street_{{ form.id }}" class="address_form" name="address[street]" value="" autocapitalize="characters" onchange="fill_address2(0,this,{{ form.id }})">
+            </div>
+
+            <div class="grid-item one-half small--one-whole">
+              <label for="address_building_{{ form.id }}">Nombre de Edificio/casa</label>
+              <input type="text" id="address_building_{{ form.id }}" class="address_form" name="address[building]" value="" autocapitalize="characters" onchange="fill_address2(0,this,{{ form.id }})">
+            </div>
+
+            <div class="grid-item one-half small--one-whole">
+              <label for="address_number_{{ form.id }}">Número del inmueble</label>
+              <input type="text" id="address_number_{{ form.id }}" class="address_form" name="address[number]" value="" autocapitalize="characters" onchange="fill_address2(0,this,{{ form.id }})">
+            </div>
+
+            <div class="grid-item one-half small--one-whole">
+              <label for="address_referencepoint_{{ form.id }}">Punto de referencia</label>
+              <input type="text" id="address_referencepoint_{{ form.id }}" class="address_form" name="address[referencepoint]" value="" autocapitalize="characters" onchange="fill_address2(0,this,{{ form.id }})">
+            </div>
+         
+            
+			<div class="grid-item one-half small--one-whole">
+            	<label for="address_city_{{ form.id }}">{{ 'customer.addresses.city' | t }}</label>
+<!-- Luis Rodríguez Enero 2020, desde aquí -->
+<!--             <input type="text" id="address_city_{{ form.id }}" class="address_form" name="address[city]" value="{{ form.city }}"> -->
+	            <select id="address_city_{{ form.id }}" name="address[city]" onchange="fill_address2(1,this,{{ form.id }})">
+					<option id="0"  value="SELECCIONE">SELECCIONE</option>
+        	    </select>
+                <script>
+                  
+                  tag = address_city_{{ form.id }};
+
+                  xmlhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                     respuesta = JSON.parse(this.responseText);
+                     respuesta.entidadRespuesta.forEach( function(element, index) {
+
+                       str = element.nombre_ciudad;
+                       str2 = str.substr(0,1).toUpperCase()+str.substr(1).toLowerCase();
+                       txtciudad = document.createTextNode(str2);          
+
+                       ciudad = document.createElement("option");
+                       ciudad.value = element.nombre_ciudad;
+                       ciudad.id = element.codciudad;
+                       ciudad.appendChild(txtciudad);
+
+                       tag.appendChild(ciudad);
+	                 });
+                   }
+                 };
+                 xmlhttp.open("GET", 'https://www.clubdeconsumidores.com.ve/popclik/admin/getcodciudad.php', true);
+                 xmlhttp.send();
+                </script>
+              
+            </div>
+<!-- Luis Rodríguez Enero 2020, hasta aquí -->
+          
+<!-- Luis Rodríguez Febrero 2020, desde aquí - para rellenar dirección -->           
+          <div class="grid-item one-half small--one-whole">
+            <label for="address_municipality_{{ form.id }}">Municipio</label>
+            <select id="address_municipality_{{ form.id }}" name="address[municipality]" onchange="fill_address2(2,this,{{ form.id }})">
+				<option id="0"  value="SELECCIONE">SELECCIONE</option>
+            </select>
+          </div>
+        
+          <div class="grid-item one-half small--one-whole">
+            <label for="address_parish_{{ form.id }}">Parroquia</label>
+            <select id="address_parish_{{ form.id }}" name="address[parish]" onchange="fill_address2(3,this,{{ form.id }})">
+				<option id="0"  value="SELECCIONE">SELECCIONE</option>
+            </select>
+          </div>
+        </div>
+
+        <script>
+          function fill_address2(valor,cod,id) {
+            let tam, respuesta, codciudad, codmunicipio, xmlhttp;
+            switch(valor) {
+              case 1:
+				mun = "address_municipality_"+id;
+                tag = document.getElementById(mun);
+                
+                tam = tag.childNodes.length;
+                for (i = 2; i < tam; i++) tag.removeChild(tag.childNodes[2]);
+
+                xmlhttp = new XMLHttpRequest();
+                
+                codciudad = cod.selectedOptions[0].id;
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        respuesta = JSON.parse(this.responseText);
+                        respuesta.entidadRespuesta.forEach( function(element, index) {
+
+                          	str = element.nombre_municipio;
+							str2 = str.substr(0,1).toUpperCase()+str.substr(1).toLowerCase();
+
+                            txtmunicipality = document.createTextNode(str2);          
+
+                            municipality = document.createElement("option");
+                            municipality.value = element.nombre_municipio;
+                            municipality.id = element.codigo_municipio;
+                            municipality.appendChild(txtmunicipality);
+
+                            tag.appendChild(municipality);
+                        });
+                    }
+                };
+                xmlhttp.open("GET", 'https://www.clubdeconsumidores.com.ve/popclik/admin/getmunicipio.php?codciudad='+codciudad, true);
+                xmlhttp.send();
+                break;
+              case 2:
+				par = "address_parish_"+id;
+                tag = document.getElementById(par);
+
+                tam = tag.childNodes.length;
+                for (i = 2; i < tam; i++) tag.removeChild(tag.childNodes[2]);
+
+                xmlhttp = new XMLHttpRequest();
+
+                
+                codciudad = document.getElementById("address_city_"+id).selectedOptions[0].id;
+                codmunicipio = cod.selectedOptions[0].id;
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        respuesta = JSON.parse(this.responseText);
+                        respuesta.entidadRespuesta.forEach( function(element, index) {
+
+                          	str = element.nombre_parroquia;
+							str2 = str.substr(0,1).toUpperCase()+str.substr(1).toLowerCase();
+
+                            txtparish = document.createTextNode(str2);          
+
+                            parish = document.createElement("option");
+                            parish.value = element.nombre_parroquia;
+                            parish.id = element.codigo_parroquia.trim()+"-"+element.codigo_postal.trim();
+                            parish.appendChild(txtparish);
+//                           	document.getElementById("address_zip_"+id).value = element.codigo_postal;
+
+                            tag.appendChild(parish);
+                        });
+                    }
+                };
+                xmlhttp.open("GET", 'https://www.clubdeconsumidores.com.ve/popclik/admin/getparroquia.php?codciudad='+codciudad+'&codmunicipio='+codmunicipio, true);
+                xmlhttp.send();
+                break;
+            }
+
+            pos = document.getElementById("address_parish_"+id).selectedOptions[0].id.search("-") + 1;
+            lar = pos - 1;
+            
+			document.getElementById("address_zip_"+id).value = document.getElementById("address_parish_"+id).selectedOptions[0].id.trim().substr(pos);
+            
+            document.getElementById("address_address1_"+id).value = 
+              document.getElementById("address_sector_"+id).value+"; calle "+
+              document.getElementById("address_street_"+id).value+"; inmueble "+
+              document.getElementById("address_building_"+id).value+"; número "+
+              document.getElementById("address_number_"+id).value+"; "+
+              document.getElementById("address_referencepoint_"+id).value+"; "+
+              document.getElementById("address_city_"+id).value+"; municipio "+
+              document.getElementById("address_municipality_"+id).value+"; parroquia "+
+              document.getElementById("address_parish_"+id).value;
+            
+            document.getElementById("address_address2_"+id).value = 
+              "Internal code: "+document.getElementById("address_city_"+id).selectedOptions[0].id.trim()+"."+
+              document.getElementById("address_municipality_"+id).selectedOptions[0].id.trim()+"."+
+              document.getElementById("address_parish_"+id).selectedOptions[0].id.trim().substr(0,lar);
+          }
+        </script>
+        
+<!-- Luis Rodríguez Febrero 2020, hasta aquí -->
+
+            <label for="address_country_{{ form.id }}">{{ 'customer.addresses.country' | t }}</label>
+            <select id="address_country_{{ form.id }}" name="address[country]" data-default="{{ form.country }}">{{ all_country_option_tags }}</select>
+
+            <div id="address_province_container_{{ form.id }}" style="display:none">
+              <label for="address_province_{{ form.id }}">{{ 'customer.addresses.province' | t }}</label>
+              <select id="address_province_{{ form.id }}" class="address_form" name="address[province]" data-default="{{ form.province }}"></select>
+            </div>
+
+            <div class="grid">
+              <div class="grid-item one-half small--one-whole">
+                <label for="address_zip_{{ form.id }}">{{ 'customer.addresses.zip' | t }}</label>
+                <input type="text" id="address_zip_{{ form.id }}" class="address_form" name="address[zip]" value="{{ form.zip }}" autocapitalize="characters">
+              </div>
+
+              <div class="grid-item one-half small--one-whole">
+                <label for="address_phone_{{ form.id }}">{{ 'customer.addresses.phone' | t }}</label>
+                <input type="tel" id="address_phone_{{ form.id }}" class="address_form" name="address[phone]" value="{{ form.phone }}" placeholder="555-555-1234">
+              </div>
+            </div>
+            
+<!--             <label for="address_address1_{{ form.id }}">{{ 'customer.addresses.address1' | t }}</label> -->
+            <input type="text" id="address_address1_{{ form.id }}" class="address_form" name="address[address1]" style="display: none;" value="{{ form.address1 }}">
+
+<!--             <label for="address_address2_{{ form.id }}">{{ 'customer.addresses.address2' | t }}</label> -->
+            <input type="text" id="address_address2_{{ form.id }}" class="address_form" name="address[address2]" style="display: none;" value="{{ form.address2 }}">
+
+
+            <p>
+              {{ form.set_as_default_checkbox }}
+              <label for="address_default_address_new" class="inline">{{ 'customer.addresses.set_default' | t }}</label>
+            </p>
+
+            <input type="submit" class="btn" value="{{ 'customer.addresses.update' | t }}">
+            {{ 'customer.addresses.or' | t }} <a href="#" onclick="Shopify.CustomerAddress.toggleForm({{ form.id }}); return false;">{{ 'customer.addresses.cancel' | t }}</a>
+
+            <hr>
+          </div>
+        {% endform %}
+
+        <script>
+          // Setup province selector on each customer address
+          new Shopify.CountryProvinceSelector('address_country_{{ address.id }}', 'address_province_{{ address.id }}', {
+            hideElement: 'address_province_container_{{ address.id }}'}
+          );
+        </script>
+
+      {% endfor %}
+
+    
+<script>
+function listaciudadesnew() {
+  	let city = "SELECCIONE", respuesta = "", xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			respuesta = JSON.parse(this.responseText);
+			respuesta.entidadRespuesta.forEach( function(element, index) {
+				str = element.nombre_ciudad;
+				str2 = str.substr(0,1).toUpperCase()+str.substr(1).toLowerCase();
+				txtciudad = document.createTextNode(str2);          
+
+				ciudad = document.createElement("option");
+				ciudad.value = element.nombre_ciudad;
+				ciudad.id = element.codciudad;
+				ciudad.appendChild(txtciudad);
+
+				document.getElementById("address_city_new").appendChild(ciudad);
+          	});
+			document.getElementById("address_city_new").value = city;
+		}
+	};
+	xmlhttp.open("GET", 'https://www.clubdeconsumidores.com.ve/popclik/admin/getcodciudad.php', true);
+	xmlhttp.send();
+}
+
+  
+function listaciudades(id) {
+	let addr1 = document.getElementById("address_address1_"+id).value.split(";");
+	let addr2 = document.getElementById("address_address2_"+id).value.split(".");
+  
+	sector         = addr1[0].trim();
+	street         = addr1[1].trim();
+  	building       = addr1[2].trim();
+	number         = addr1[3].trim();
+	referencepoint = addr1[4].trim();
+	city           = addr1[5].trim();
+	municipality   = addr1[6].trim();
+	parish         = addr1[7].trim();
+
+	codcity         = addr2[0].trim();
+	codmunicipality = addr2[1].trim();
+	codparish       = addr2[2].trim();
+
+	codcity = codcity.replace("Internal code: ","");
+  
+	street       = street.replace("calle ","");
+	building     = building.replace("inmueble ","");
+	number       = number.replace("número ","");
+	municipality = municipality.replace("municipio ","");
+	parish       = parish.replace("parroquia ","");
+  
+    document.getElementById("address_sector_"+id).value         = sector;
+    document.getElementById("address_street_"+id).value         = street;
+    document.getElementById("address_building_"+id).value       = building;
+    document.getElementById("address_number_"+id).value         = number;
+    document.getElementById("address_referencepoint_"+id).value = referencepoint;
+//     document.getElementById("address_city_"+id).value           = city;
+//     document.getElementById("address_municipality_"+id).value   = municipality;
+//     document.getElementById("address_parish_"+id).value         = parish;
+
+	respuesta = "";
+  	xmlhttp = new XMLHttpRequest();
+
+    respuesta2 = "";
+  	xmlhttp2 = new XMLHttpRequest();
+
+ 	respuesta3 = "";
+  	xmlhttp3 = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			respuesta = JSON.parse(this.responseText);
+			respuesta.entidadRespuesta.forEach( function(element, index) {
+				str = element.nombre_ciudad;
+				str2 = str.substr(0,1).toUpperCase()+str.substr(1).toLowerCase();
+				txtciudad = document.createTextNode(str2);          
+
+				ciudad = document.createElement("option");
+				ciudad.value = element.nombre_ciudad;
+				ciudad.id = element.codciudad;
+				ciudad.appendChild(txtciudad);
+
+				document.getElementById("address_city_"+id).appendChild(ciudad);
+          	});
+			document.getElementById("address_city_"+id).value = city;
+		}
+	};
+	xmlhttp.open("GET", 'https://www.clubdeconsumidores.com.ve/popclik/admin/getcodciudad.php', true);
+	xmlhttp.send();
+
+  
+    xmlhttp2.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+           respuesta2 = JSON.parse(this.responseText);
+           respuesta2.entidadRespuesta.forEach( function(element, index) {
+
+ 				str = element.nombre_municipio;
+				str2 = str.substr(0,1).toUpperCase()+str.substr(1).toLowerCase();
+
+                txtmunicipality = document.createTextNode(str2);          
+
+                oMunicipality = document.createElement("option");
+                oMunicipality.value = element.nombre_municipio;
+                oMunicipality.id = element.codigo_municipio;
+                oMunicipality.appendChild(txtmunicipality);
+
+                document.getElementById("address_municipality_"+id).appendChild(oMunicipality);
+		   });
+		   document.getElementById("address_municipality_"+id).value = municipality;
+        }
+	};
+    xmlhttp2.open("GET", 'https://www.clubdeconsumidores.com.ve/popclik/admin/getmunicipio.php?codciudad='+codcity, true);
+    xmlhttp2.send();
+
+  
+    xmlhttp3.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			respuesta3 = JSON.parse(this.responseText);
+            respuesta3.entidadRespuesta.forEach( function(element, index) {
+
+            	str = element.nombre_parroquia;
+				str2 = str.substr(0,1).toUpperCase()+str.substr(1).toLowerCase();
+
+                txtparish = document.createTextNode(str2);          
+
+                oParish = document.createElement("option");
+                oParish.value = element.nombre_parroquia;
+                oParish.id = element.codigo_parroquia.trim()+"-"+element.codigo_postal.trim();
+                oParish.appendChild(txtparish);
+//                 document.getElementById("address_zip_"+id).value = element.codigo_postal;
+
+                document.getElementById("address_parish_"+id).appendChild(oParish);
+			});
+		   document.getElementById("address_parish_"+id).value = parish;
+
+           pos = document.getElementById("address_parish_"+id).selectedOptions[0].id.search("-") + 1;
+           lar = pos - 1;
+
+		   document.getElementById("address_zip_"+id).value = document.getElementById("address_parish_"+id).selectedOptions[0].id.trim().substr(pos);
+		}
+	};
+	xmlhttp3.open("GET", 'https://www.clubdeconsumidores.com.ve/popclik/admin/getparroquia.php?codciudad='+codcity+'&codmunicipio='+codmunicipality, true);
+	xmlhttp3.send();
+}
+</script>    
+
+      {% if paginate.pages > 1 %}
+      <div class="text-center">
+        {% include 'pagination-custom' %}
+      </div>
+      {% endif %}
+
+    {% endpaginate %}
+  </div>
+
+</div>
+
+
+<script>
+  // Initialize observers on address selectors
+  new Shopify.CountryProvinceSelector('address_country_new', 'address_province_new', {
+    hideElement: 'address_province_container_new'
+  });
+
+  // Contents of customer_area.js (global asset)
+  Shopify.CustomerAddress = {
+    toggleForm: function(id) {
+      var editEl = document.getElementById('edit_address_'+id);
+      editEl.style.display = editEl.style.display == 'none' ? '' : 'none';
+      return false;
+    },
+
+    toggleNewForm: function() {
+      var el = document.getElementById('add_address');
+      el.style.display = el.style.display == 'none' ? '' : 'none';
+      return false;
+    },
+
+    destroy: function(id, confirm_msg) {
+      if (confirm(confirm_msg || {{ 'customer.addresses.delete_confirm' | t | json }})) {
+        Shopify.postLink('/account/addresses/'+id, {'parameters': {'_method': 'delete'}});
+      }
+    }
+  }
+
+</script>
