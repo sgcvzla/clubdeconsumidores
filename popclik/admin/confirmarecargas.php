@@ -22,10 +22,14 @@ foreach ($valores["confirmar"] as $confirmar => $transaccion) {
       $result = mysqli_query($link, $query);
       if ($row = mysqli_fetch_array($result)) {
         $ultimopago = $row['proximopago'];
-        $diasdecredito = $row['diasdecredito'];
+        // echo $ultimopago.' - ';
+        $diasdecredito = '+'.$row['diasdecredito'].' days';
+
         // Fecha de vecnimiento (1 año)
-        $proximopago = strtotime('+'.$diasdecredito.' days', strtotime ($ultimopago));
+        // echo $diasdecredito;
+        $proximopago = strtotime($diasdecredito, strtotime ($ultimopago));
         $proximopago = date('Y-m-d', $proximopago);
+        // echo ' - '.$proximopago;
 
         $saldolineadecredito = $row['saldolineadecredito'];
         $saldolineadecredito -= $monto;

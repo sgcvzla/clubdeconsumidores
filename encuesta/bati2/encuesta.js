@@ -124,7 +124,7 @@ function enviar() {
 			if (respuesta.exito == 'SI') {
 				alert(fmensaje(respuesta.mensaje));
 				limpiar();
-				// window.location.replace("www.clubdeconsumidores.com.ve/index.html");
+				// window.location.replace("www.cash-flag.com/index.html");
 				// window.location.replace("../index.html");
 				window.location.replace("gracias.html");
 			} else {

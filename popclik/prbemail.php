@@ -7,7 +7,7 @@
 // $from = ini_get('sendmail_from');
     $mensaje .= 
     '<div style="border: solid thin lightgray; width: auto;">
-      <p><img src="https://www.clubdeconsumidores.com.ve/img/popclikhoriz.png" width="237" height="54.1096" /></p>
+      <p><img src="https://www.cash-flag.com/img/popclikhoriz.png" width="237" height="54.1096" /></p>
       <p>Comprobante de pago #9999</p>
       <h2><b>¡Pago recibido!</b></h2>
       <p>Estimado, <b>Luis Rodriguez</b></p>

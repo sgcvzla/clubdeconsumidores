@@ -21,7 +21,7 @@ $config = array(
 $scopes = 'read_orders,write_orders';
 //This is also valid
 //$scopes = array('read_products','write_products','read_script_tags', 'write_script_tags'); 
-$redirectUrl = 'https://www.clubdeconsumidores.com.ve/popclik/exito.php';
+$redirectUrl = 'https://www.cash-flag.com/popclik/exito.php';
 
 \PHPShopify\AuthHelper::createAuthRequest($scopes, $redirectUrl);
 If you want the function to return the authentication url instead of auto-redirecting, you can set the argument $return (5th argument) to true.

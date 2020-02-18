@@ -3,14 +3,14 @@ header('Content-Type: application/json');
 include_once("../_config/conexion.php");
 
 $monto = (isset($_GET['monto'])) ? $_GET['monto'] : 0 ;
-$urlcb = (isset($_GET['urlback'])) ? $_GET['urlback'] : 'https://www.clubdeconsumidores.com.ve' ;
-// $urlback = 'https://www.clubdeconsumidores.com.ve';
+$urlcb = (isset($_GET['urlback'])) ? $_GET['urlback'] : 'https://www.cash-flag.com' ;
+// $urlback = 'https://www.cash-flag.com';
 
 $registro = (isset($_GET['registro'])) ? $_GET['registro'] : '{"nombres":"","apellidos":"","telefono":"","email":"","moneda":"","monto":0.00,"idproveedor":0,"tipopago":"online","origen":"online","referencia":"0"}' ;
 
-$urlok = 'https://www.clubdeconsumidores.com.ve/php/exitocompraprepago.php?url='.$urlcb.'&registro='.$registro;
+$urlok = 'https://www.cash-flag.com/php/exitocompraprepago.php?url='.$urlcb.'&registro='.$registro;
 
-$okrequest = "https://www.clubdeconsumidores.com.ve/php/procesaprepago.php?url=".$urlcb."&registro=".$registro;
+$okrequest = "https://www.cash-flag.com/php/procesaprepago.php?url=".$urlcb."&registro=".$registro;
 
 include_once('../apis/pagoflash.api.client.php');
 

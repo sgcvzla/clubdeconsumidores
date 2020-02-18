@@ -3,7 +3,7 @@ include_once("../_config/conexion.php");
 include_once("./funciones.php");
 
 $registro = json_decode($_GET['registro'],true);
-$url = (isset($_GET['url'])) ? $_GET['url'] : "https://www.clubdeconsumidores.com.ve" ;
+$url = (isset($_GET['url'])) ? $_GET['url'] : "https://www.cash-flag.com" ;
 
 // Asignación de variables
 $nombres = $registro['nombres'];
@@ -80,7 +80,7 @@ $mensaje .= number_format($saldo,2,',','.').'"]';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 $cadena = $url.'&exito=si&mensaje='.$mensaje; 
-// $cadena = 'https://www.clubdeconsumidores.com.ve/prepago/exito.html'; 
+// $cadena = 'https://www.cash-flag.com/prepago/exito.html'; 
 
 echo "
 	<script>

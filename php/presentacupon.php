@@ -46,7 +46,7 @@ El hash se va a armar con los siguientes datos:
 $hash = hash("sha256",$_POST['cupon'].$id_proveedor.$id_socio.$tipopremio.$montopremio.$descpremio."Generado");
 
 // codigo de barras
-$barras = 'https://www.clubdeconsumidores.com.ve/php/barcode.php?';
+$barras = 'https://www.cash-flag.com/php/barcode.php?';
 $barras .= 'text='.$_POST['cupon'];
 $barras .= '&size=50';
 // $barras .= 'text=';
@@ -57,7 +57,7 @@ $barras .= '&print=true';
 $barras .= '&sizefactor=1';
 
 // código qr
-$ruta = 'https://www.clubdeconsumidores.com.ve/php/';
+$ruta = 'https://www.cash-flag.com/php/';
 $dir = 'qr/';
 if(!file_exists($dir)) mkdir($dir);
 
@@ -66,7 +66,7 @@ $level = 'H';
 $frameSize = 1;
 //$contenido = $cuponlargo;
 //$contenido = '{"id_proveedor":'.$_POST['id_proveedor'].',"cupon":"'.$cuponlargo.'"}';
-$contenido = 'https://www.clubdeconsumidores.com.ve/canje/canje.html?cJson={"id_proveedor":'.$id_proveedor.',"cupon":"'.$_POST['cupon'].'"}';
+$contenido = 'https://www.cash-flag.com/canje/canje.html?cJson={"id_proveedor":'.$id_proveedor.',"cupon":"'.$_POST['cupon'].'"}';
 
 QRcode::png($contenido,$dir.$_POST['cupon'].'.png', $level, $tamanio, $frameSize);
 $codigoqr = $ruta.$dir.$_POST['cupon'].'.png';

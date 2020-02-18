@@ -17,7 +17,7 @@ while ($row = mysqli_fetch_array($result)) {
 	$tamanio = 5;
 	$level = 'H';
 	$frameSize = 1;
-	$contenido = 'https://www.clubdeconsumidores.com.ve/cupones/cupon.html?id='.$id_proveedor;
+	$contenido = 'https://www.cash-flag.com/cupones/cupon.html?id='.$id_proveedor;
 
 	QRcode::png($contenido, $filename, $level, $tamanio, $frameSize);
 

@@ -34,12 +34,25 @@
 				</div>
 
 				<div id="div2" class="cmps">
-					<span class="etiq">Origen de los fondos:</span>
+					<span class="etiq">Tipo de pago:</span>
+					<select id="tipopago" class="campo" onchange="cambiaetq()">
+						<option value="zelle" selected>Zelle</option>
+						<option value="banco">Transferencia</option>
+					</select>
+				</div>
+				<script type="text/javascript">
+					function cambiaetq() {
+						etqorigen.innerHTML = (tipopago.value=="banco") ? "Banco de origen" : "Titular de la cuenta" ;
+					}
+				</script>
+
+				<div id="div2" class="cmps">
+					<span id="etqorigen" class="etiq">Titular de la cuenta</span>
 					<input id="origenpago" class="campo" type="text" size="50" maxlength="100" />
 				</div>
 
 				<div id="div2" class="cmps">
-					<span class="etiq">fecha del pago:</span>
+					<span class="etiq">Fecha del pago:</span>
 					<input id="fechapago" class="campo" type="date" size="50" maxlength="100" />
 				</div>
 
@@ -137,7 +150,8 @@
 				}
 				if (vacios>0) { continuar = false; }
 				if (continuar) {
-					origen = document.getElementById("origenpago").value;
+					tipo = (tipopago.value=="banco") ? "Banco de origen: " : "Titular de zelle: " ;
+					origen = tipo+document.getElementById("origenpago").value;
 					fecha = document.getElementById("fechapago").value;
 					referencia = document.getElementById("referenciapago").value;
 					monto = document.getElementById("montopago").value;

@@ -103,7 +103,7 @@ $query .= $transaccion["m"].",'".$instrumento."','".$card."','".$referencia."','
 $result = mysqli_query($link,$query);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
-$cadena = 'https://www.clubdeconsumidores.com.ve/card/exito.html?p='.$idproveedor; 
+$cadena = 'https://www.cash-flag.com/card/exito.html?p='.$idproveedor; 
 
 echo "
 	<script>

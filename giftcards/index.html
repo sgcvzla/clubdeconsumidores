@@ -97,7 +97,7 @@
 				<!-- Linea de botones -->
 				<div class="btns">
 					<button id="btnenviardatos" onclick="enviardatos()" style="width: 10em;">Enviar datos</button>
-					<button id="btnpagoenlinea" onclick="botondepago('online')" style="width: 10em;">Pago en línea</button>
+					<!-- <button id="btnpagoenlinea" onclick="botondepago('online')" style="width: 10em;">Pago en línea</button> -->
 					<button id="btnreporte" onclick="botondepago('reporte')" style="width: 10em;">Reporte de pago</button>
 					<button id="limpiar" onclick="limpiar()" style="width: 7em;">Limpiar</button>
 				</div>
@@ -170,7 +170,7 @@
 				document.getElementById("datospago").style.display = 'none';
 
 				document.getElementById("btnenviardatos").style.display = 'none';
-				document.getElementById("btnpagoenlinea").style.display = 'inline-block';
+				// document.getElementById("btnpagoenlinea").style.display = 'inline-block';
 				document.getElementById("btnreporte").style.display = 'inline-block';
 
 				document.getElementById("remitente").focus();
@@ -352,7 +352,7 @@
 				document.getElementById("datospago").style.display = 'block';
 
 				document.getElementById("btnenviardatos").style.display = 'inline-block';
-				document.getElementById("btnpagoenlinea").style.display = 'none';
+				// document.getElementById("btnpagoenlinea").style.display = 'none';
 				document.getElementById("btnreporte").style.display = 'none';
 			}
 

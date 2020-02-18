@@ -116,6 +116,13 @@
 								saldolineadecredito = respuesta.saldolineadecredito;
 								// lineadecredito = parseFloat(respuesta.lineadecredito);
 								// saldolineadecredito = parseFloat(respuesta.saldolineadecredito);
+								console.log('saldolineadecredito '+saldolineadecredito);
+								console.log('lineadecredito '+lineadecredito);
+								console.log('proximopago '+proximopago);
+								console.log('hoy '+hoy);
+								console.log('saldolineadecredito < lineadecredito '+(saldolineadecredito < lineadecredito));
+								console.log('proximopago > hoy '+(proximopago > hoy));
+								console.log('(saldolineadecredito < lineadecredito) && (proximopago > hoy) '+(saldolineadecredito < lineadecredito && proximopago > hoy));
 								if (respuesta.exito == 'SI') {
 									if (saldolineadecredito < lineadecredito && proximopago > hoy) {
 										document.getElementById("div2").style.display = 'flex';

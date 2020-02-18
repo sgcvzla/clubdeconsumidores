@@ -130,7 +130,7 @@ if ($row = mysqli_fetch_array($result)) {
 
 		// codigo de barras
 		$mensaje .= '<p style="text-align:center;">';
-			$mensaje .= '<img src="https://www.clubdeconsumidores.com.ve/php/barcode.php?';
+			$mensaje .= '<img src="https://www.cash-flag.com/php/barcode.php?';
 			$mensaje .= 'text='.$cuponlargo;
 			$mensaje .= '&size=50';
 			$mensaje .= '&orientation=horizontal';
@@ -142,9 +142,9 @@ if ($row = mysqli_fetch_array($result)) {
 		// código qr
 		$mensaje .= utf8_decode('<p style="text-align:center;">Para canjear desde el móvil:</p>');
 
-//		$dir = 'https://www.clubdeconsumidores.com.ve/php/temp/';
+//		$dir = 'https://www.cash-flag.com/php/temp/';
 //		if(!file_exists($dir)) mkdir($dir);
-		$ruta = 'https://www.clubdeconsumidores.com.ve/php/';
+		$ruta = 'https://www.cash-flag.com/php/';
 		$dir = 'qr/';
 		if(!file_exists($dir)) mkdir($dir);
 
@@ -154,7 +154,7 @@ if ($row = mysqli_fetch_array($result)) {
 		$frameSize = 1;
 //		$contenido = $cuponlargo;
 //		$contenido = '{"id_proveedor":'.$_POST['id_proveedor'].',"cupon":"'.$cuponlargo.'"}';
-		$contenido = 'https://www.clubdeconsumidores.com.ve/canje/canje.html?cJson={"id_proveedor":'.$_POST['id_proveedor'].',"cupon":"'.$cuponlargo.'"}';
+		$contenido = 'https://www.cash-flag.com/canje/canje.html?cJson={"id_proveedor":'.$_POST['id_proveedor'].',"cupon":"'.$cuponlargo.'"}';
 
 //		QRcode::png($contenido, $filename, $level, $tamanio, $frameSize);
 		QRcode::png($contenido,$dir.$numcupon.'.png', $level, $tamanio, $frameSize);
@@ -169,7 +169,7 @@ if ($row = mysqli_fetch_array($result)) {
 		$mensaje .= utf8_decode('Atentamente'.'<br/><br/>');
 		$mensaje .= utf8_decode('Cash-Flag'.'<br/><br/>');
 
-		$mensaje .= utf8_decode('<b>Nota:</b> Esta cuenta no es monitoreada, por favor no respondas este email, si deseas comunicarte con tu club escribe a: <b><a href="mailto:info@clubdeconsumidores.com.ve">info@clubdeconsumidores.com.ve</a></b>'.'<br/><br/>');
+		$mensaje .= utf8_decode('<b>Nota:</b> Esta cuenta no es monitoreada, por favor no respondas este email, si deseas comunicarte con tu club escribe a: <b><a href="mailto:info@cash-flag.com">info@cash-flag.com</a></b>'.'<br/><br/>');
 
 		// $mensaje .= $numcupon;
 
@@ -278,12 +278,12 @@ function mensajebienvenida($reg) {
 
 	$mensaje .= utf8_decode('<b>Te garantizamos que tu información será guardada celosamente y nunca será compartida con ningún tercero sin tu consentimiento y te aseguramos que siempre cumpliremos con las Leyes vigentes en lo relacionado al tratamiento de tus datos personales.</b><br/><br/>');
 
-	$mensaje .= utf8_decode('Nuestra comunidad está en permanente evolución y tú como un miembro muy importante puedes aportarnos ideas o sugerencias que la harán crecer, ten la certeza que serás escuchado(a) y tus sugerencias o comentarios serán repondidos en un lapso de tiempo razonable con mucho entusiasmo por resolver tus inquietudes, para nosotros será un placer atenderte por medio del email: <a href="mailto:info@clubdeconsumidores.com.ve">info@clubdeconsumidores.com.ve</a>.<br/><br/>');
+	$mensaje .= utf8_decode('Nuestra comunidad está en permanente evolución y tú como un miembro muy importante puedes aportarnos ideas o sugerencias que la harán crecer, ten la certeza que serás escuchado(a) y tus sugerencias o comentarios serán repondidos en un lapso de tiempo razonable con mucho entusiasmo por resolver tus inquietudes, para nosotros será un placer atenderte por medio del email: <a href="mailto:info@cash-flag.com">info@cash-flag.com</a>.<br/><br/>');
 
 	$mensaje .= utf8_decode('Bienvenido!!!'.'<br/><br/>');
 	$mensaje .= utf8_decode('Cash-Flag'.'<br/><br/>');
 
-	$mensaje .= utf8_decode('<b>Nota:</b> Esta cuenta no es monitoreada, por favor no respondas este email, si deseas comunicarte con tu club escribe a: <b><a href="mailto:info@clubdeconsumidores.com.ve">info@clubdeconsumidores.com.ve</a></b>'.'<br/><br/>');
+	$mensaje .= utf8_decode('<b>Nota:</b> Esta cuenta no es monitoreada, por favor no respondas este email, si deseas comunicarte con tu club escribe a: <b><a href="mailto:info@cash-flag.com">info@cash-flag.com</a></b>'.'<br/><br/>');
 
 	$asunto = utf8_decode(trim($reg["nombres"]).', Bienvenido a Cash-Flag, tu comunidad de beneficios!!!');
 	$cabeceras = 'Content-type: text/html;';

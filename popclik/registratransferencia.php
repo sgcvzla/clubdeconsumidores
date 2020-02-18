@@ -51,7 +51,7 @@ $mensaje =
     <style>
       @font-face {
         font-family: recibo;
-        src: url("https://www.clubdeconsumidores.com.ve/popclik/MyriadWebPro.ttf") format("truetype");
+        src: url("https://www.cash-flag.com/popclik/MyriadWebPro.ttf") format("truetype");
       }
     </style>
   </head>
@@ -61,9 +61,9 @@ $mensaje =
         <tr>
           <td>
             <div style="padding: 10px; border: solid 12.5px gray; text-align: center;font-family: Arial; color: gray;">
-              <p><img src="https://www.clubdeconsumidores.com.ve/img/popclikhoriz.png" width="120" height="27.39" /></p>
+              <p><img src="https://www.cash-flag.com/img/popclikhoriz.png" width="120" height="27.39" /></p>
               <p>
-                <img src="https://www.clubdeconsumidores.com.ve/img/icono-03.png" width="60" height="60.41" /><br/>
+                <img src="https://www.cash-flag.com/img/icono-03.png" width="60" height="60.41" /><br/>
                 <span style="font-size: 150%; color: #00770b;">
                   <b>¡Reporte de Pago recibido!</b>
                 </span>

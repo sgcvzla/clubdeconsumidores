@@ -160,7 +160,7 @@ echo $respuesta;
 
 // 			// codigo de barras
 // 			$mensaje .= '<p style="text-align:center;">';
-// 				$mensaje .= '<img src="https://www.clubdeconsumidores.com.ve/php/barcode.php?';
+// 				$mensaje .= '<img src="https://www.cash-flag.com/php/barcode.php?';
 // 				$mensaje .= 'text='.$cuponlargo;
 // 				$mensaje .= '&size=50';
 // 				$mensaje .= '&orientation=horizontal';
@@ -172,9 +172,9 @@ echo $respuesta;
 // 			// código qr
 // 			$mensaje .= utf8_decode('<p style="text-align:center;">Para canjear desde el móvil:</p>');
 
-// 	//		$dir = 'https://www.clubdeconsumidores.com.ve/php/temp/';
+// 	//		$dir = 'https://www.cash-flag.com/php/temp/';
 // 	//		if(!file_exists($dir)) mkdir($dir);
-// 			$ruta = 'https://www.clubdeconsumidores.com.ve/php/';
+// 			$ruta = 'https://www.cash-flag.com/php/';
 // 			$dir = 'qr/';
 // 			if(!file_exists($dir)) mkdir($dir);
 
@@ -184,7 +184,7 @@ echo $respuesta;
 // 			$frameSize = 1;
 // 	//		$contenido = $cuponlargo;
 // 	//		$contenido = '{"id_proveedor":'.$_POST['id_proveedor'].',"cupon":"'.$cuponlargo.'"}';
-// 			$contenido = 'https://www.clubdeconsumidores.com.ve/canje/canje.html?cJson={"id_proveedor":'.$_POST['id_proveedor'].',"cupon":"'.$cuponlargo.'"}';
+// 			$contenido = 'https://www.cash-flag.com/canje/canje.html?cJson={"id_proveedor":'.$_POST['id_proveedor'].',"cupon":"'.$cuponlargo.'"}';
 
 // 	//		QRcode::png($contenido, $filename, $level, $tamanio, $frameSize);
 // 			QRcode::png($contenido,$dir.$numcupon.'.png', $level, $tamanio, $frameSize);
@@ -199,7 +199,7 @@ echo $respuesta;
 // 			$mensaje .= utf8_decode('Atentamente'.'<br/><br/>');
 // 			$mensaje .= utf8_decode('Cash-Flag'.'<br/><br/>');
 
-// 			$mensaje .= utf8_decode('<b>Nota:</b> Esta cuenta no es monitoreada, por favor no respondas este email, si deseas comunicarte con tu club escribe a: <b><a href="mailto:info@clubdeconsumidores.com.ve">info@clubdeconsumidores.com.ve</a></b>'.'<br/><br/>');
+// 			$mensaje .= utf8_decode('<b>Nota:</b> Esta cuenta no es monitoreada, por favor no respondas este email, si deseas comunicarte con tu club escribe a: <b><a href="mailto:info@cash-flag.com">info@cash-flag.com</a></b>'.'<br/><br/>');
 
 // 			// $mensaje .= $numcupon;
 

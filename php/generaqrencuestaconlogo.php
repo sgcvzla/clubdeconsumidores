@@ -18,11 +18,11 @@ while ($row = mysqli_fetch_array($result)) {
 	$level = 'H';
 	$frameSize = 1;
 	if ($id_proveedor==1) {
-		$contenido = 'https://www.clubdeconsumidores.com.ve/encuesta/mrfalafel/';
+		$contenido = 'https://www.cash-flag.com/encuesta/mrfalafel/';
 	} elseif ($id_proveedor==2) {
-		$contenido = 'https://www.clubdeconsumidores.com.ve/encuesta/bati2/';
+		$contenido = 'https://www.cash-flag.com/encuesta/bati2/';
 	} else {
-		$contenido = 'https://www.clubdeconsumidores.com.ve';
+		$contenido = 'https://www.cash-flag.com';
 	}
 
 	QRcode::png($contenido, $filename, $level, $tamanio, $frameSize);
